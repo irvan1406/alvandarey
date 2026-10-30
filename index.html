@@ -245,6 +245,10 @@
         <div class="panel" id="panel2" style="display:none">
           <h3>Data Mempelai</h3>
           <p class="ket">Isi nama lengkap, nama panggilan, dan nama orang tua. Foto boleh tautan (URL) — kosongkan bila belum ada.</p>
+          <b>Foto Sampul (Cover)</b>
+          <label class="lbl">Tautan foto sampul (opsional)</label><input class="inp" data-bind="sampul" placeholder="https://...">
+          <p class="ket" style="margin:6px 0 4px">Foto besar di halaman pembuka undangan. Kolomnya sendiri — tidak mengikuti foto pria. Kosongkan untuk memakai foto bawaan template.</p>
+          <hr style="border:none;border-top:1px solid var(--garis);margin:20px 0">
           <b>Mempelai Pria</b>
           <label class="lbl">Nama lengkap</label><input class="inp" data-bind="pria.nama" placeholder="cth: Rizky Pratama, S.T.">
           <div class="duo"><div><label class="lbl">Nama panggilan</label><input class="inp" data-bind="pria.panggil" placeholder="cth: Rizky"></div>
@@ -319,6 +323,24 @@
             </div>
           </div>
           <hr style="border:none;border-top:1px solid var(--garis);margin:20px 0">
+          <b>Link Super Pendek ⭐</b>
+          <p class="ket" style="margin:6px 0 10px">Tautan biasa di atas memuat seluruh data undangan, jadi panjang. Link pendek menyimpan data undanganmu sebagai berkas di situs ini — hasilnya sependek <code>alvandarey.my.id/?to=Nama+Tamu#s=irvan-ananda</code>. Sekali terbit, Daftar Tamu di bawah otomatis ikut memakai link pendek. Link aktif sekitar 1–3 menit setelah diterbitkan (menunggu situs diperbarui).</p>
+          <label class="lbl">Nama link (slug) — huruf kecil, angka, tanda hubung</label>
+          <input class="inp" id="inpSlug" placeholder="cth: irvan-ananda" autocomplete="off">
+          <label class="lbl">Token GitHub — untuk menerbitkan ke repo alvandarey</label>
+          <input class="inp" id="inpToken" type="password" placeholder="Tempel token di sini" autocomplete="off">
+          <p class="ket" style="margin:6px 0 10px">Token tersimpan hanya di browser ini, jangan dibagikan dan jangan ditempel di chat. Bila tokenmu fine-grained, repo <b>alvandarey</b> harus masuk Repository access dengan izin Contents: Read and write — bila belum, GitHub akan menolak penerbitannya.</p>
+          <div><button class="btn btn-emas" id="btnTerbit" onclick="terbitkanPendek()">Terbitkan Link Pendek</button></div>
+          <div class="kotak-tautan" id="kotakPendek" style="display:none">
+            <div style="font-size:12px;font-weight:700;margin-bottom:4px">LINK PENDEK UNTUK TAMU INI</div>
+            <code id="tautanPendek"></code>
+            <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">
+              <button class="btn btn-putih btn-kecil" onclick="salinTeks(document.getElementById('tautanPendek').innerText)">Salin Link Pendek</button>
+              <a class="btn btn-emas btn-kecil" id="btnWaPendek" target="_blank" rel="noopener">Kirim via WhatsApp</a>
+            </div>
+            <p class="ket" style="margin:10px 0 0">Tunggu sekitar 1–3 menit sampai link-nya aktif sebelum disebar ke tamu.</p>
+          </div>
+          <hr style="border:none;border-top:1px solid var(--garis);margin:20px 0">
           <b>Daftar Tamu — Buat Tautan Sekaligus</b>
           <p class="ket" style="margin:6px 0 10px">Tempel daftar nama tamu (satu nama per baris), lalu buat semua tautan personalnya sekaligus — tinggal salin atau kirim per tamu.</p>
           <textarea class="inp" id="inpDaftarTamu" rows="5" placeholder="Keluarga Besar Hartono&#10;Bapak Budi Santoso&#10;Dewi Lestari"></textarea>
@@ -361,7 +383,7 @@ const TEMPLATES = [
 
 /* ================= STATE ================= */
 function stateAwal(){ return {
-  template:'pusaka-jawa',
+  template:'pusaka-jawa', sampul:'',
   pria:{nama:'',panggil:'',ayah:'',ibu:'',ig:'',foto:''},
   wanita:{nama:'',panggil:'',ayah:'',ibu:'',ig:'',foto:''},
   akad:{tanggal:'',jam:'',tempat:'',alamat:'',maps:''},
@@ -395,6 +417,7 @@ function ringkas(o){
   if((o.wa||'').trim() && !wa.length) wa.push(['', o.wa]);
   if(wa.length) r.h=wa;
   if((o.wa||'').trim()) r.v=o.wa;
+  if((o.sampul||'').trim()) r.z=o.sampul;
   let rk = (o.rekening||[]).filter(x => x && ((x.nomor||'').trim() || (x.jenis||'').trim())).map(x => [x.jenis||'', x.nomor||'', x.an||'']);
   if(!rk.length) rk = [o.amplop1, o.amplop2].filter(x => x && ((x.nomor||'').trim() || (x.jenis||'').trim())).map(x => [x.jenis||'', x.nomor||'', x.an||'']);
   if(rk.length) r.k=rk;
@@ -416,7 +439,7 @@ function uraiRingkas(r){
   if(Array.isArray(r.h)){ o.waList = r.h.map(x => ({label:x[0]||'', nomor:x[1]||''})); }
   o.wa = r.v||'';
   if(Array.isArray(r.k)) o.rekening = r.k.map(x => ({jenis:x[0]||'', nomor:x[1]||'', an:x[2]||''}));
-  o.galeri = r.g||''; o.domain = r.d||''; o.musik = r.m||'';
+  o.galeri = r.g||''; o.domain = r.d||''; o.musik = r.m||''; o.sampul = r.z||'';
   if(Array.isArray(r.c)) o.dresscode = {warna:r.c[0]||'', catatan:r.c[1]||''};
   o.turut = r.u||'';
   if(Array.isArray(r.s)) o.cerita = r.s.map(x => ({judul:x[0]||'', tanggal:x[1]||'', isi:x[2]||''}));
@@ -429,14 +452,14 @@ function kemas(o){
   const aman = v => String(v==null?'':v).replace(/[\u001c-\u001f]/g,' ');
   const gab = a => (a||[]).map(aman).join('\u001f');
   const grup = list => (list||[]).map(gab).join('\u001d');
-  const bagian = [r.t, gab(r.p), gab(r.w), gab(r.a), gab(r.e), grup(r.h), grup(r.k), aman(r.g||''), aman(r.d||''), aman(r.m||''), gab(r.c), aman(r.u||''), grup(r.s), aman(r.v||'')];
+  const bagian = [r.t, gab(r.p), gab(r.w), gab(r.a), gab(r.e), grup(r.h), grup(r.k), aman(r.g||''), aman(r.d||''), aman(r.m||''), gab(r.c), aman(r.u||''), grup(r.s), aman(r.v||''), aman(r.z||'')];
   return bagian.join('\u001e').replace(/[\u001e]+$/,'');
 }
 function uraiKemas(teks){
   const b = String(teks).split('\u001e');
   const pecah = x => x ? x.split('\u001f') : undefined;
   const pecahGrup = x => x ? x.split('\u001d').map(g => g.split('\u001f')) : undefined;
-  const r = {t:b[0]||'p', p:pecah(b[1]), w:pecah(b[2]), a:pecah(b[3]), e:pecah(b[4]), h:pecahGrup(b[5]), k:pecahGrup(b[6]), g:b[7]||'', d:b[8]||'', m:b[9]||'', c:pecah(b[10]), u:b[11]||'', s:pecahGrup(b[12]), v:b[13]||''};
+  const r = {t:b[0]||'p', p:pecah(b[1]), w:pecah(b[2]), a:pecah(b[3]), e:pecah(b[4]), h:pecahGrup(b[5]), k:pecahGrup(b[6]), g:b[7]||'', d:b[8]||'', m:b[9]||'', c:pecah(b[10]), u:b[11]||'', s:pecahGrup(b[12]), v:b[13]||'', z:b[14]||''};
   return uraiRingkas(r);
 }
 function kdecKode(s){ s=String(s); if(s.charAt(0)==='S') return uraiKemas(kodeKeTeks(s.slice(1))); return s.charAt(0)==='R' ? uraiRingkas(kdec(s.slice(1))) : kdec(s); }
@@ -506,7 +529,7 @@ function partikelHTML(t){
 }
 function sampulHTML(t, namaTamu, mode){
   const tglUtama = S.akad.tanggal || S.resepsi.tanggal;
-  const fotoSampul = S.pria.foto || t.foto;
+  const fotoSampul = S.sampul || t.foto;
   const tombolBuka = mode==='tamu' ? '<button class="btn-buka" onclick="bukaUndangan()">✉ Buka Undangan</button>' : (mode==='mini' ? '<div class="btn-buka">✉ Buka Undangan</div>' : '<div style="margin-top:16px;font-size:12px;opacity:.75">(Tombol Buka Undangan tampil di tampilan tamu)</div>');
   const kepada = '<div class="kepada">Kepada Yth.<br>Bapak/Ibu/Saudara/i<b>' + esc(namaTamu || 'Tamu Undangan') + '</b></div>';
   const namaDua = esc(S.pria.panggil||'Mempelai') + ' &amp;<br>' + esc(S.wanita.panggil||'Mempelai');
@@ -635,6 +658,8 @@ let tautanAktif = '';
 function segarkanLangkah4(){
   $('#kodeUndangan').innerText = kodeSaya();
   buatTautanTamu(true);
+  const sl = $('#inpSlug'); if(sl && !sl.value) sl.value = slugDariNama();
+  const tk = $('#inpToken'); if(tk && !tk.value){ try{ tk.value = localStorage.getItem('undanganku_pat') || ''; }catch(e){} }
 }
 function buatTautanTamu(diam){
   const nama = ($('#inpNamaTamu').value || '').trim();
@@ -647,6 +672,70 @@ function buatTautanTamu(diam){
   $('#pesanWa').value = pesan;
   $('#btnWaKirim').href = 'https://wa.me/?text=' + encodeURIComponent(pesan);
   if(!diam) toast('Tautan tamu dibuat');
+}
+
+/* ================= LINK SUPER PENDEK (berkas u/<slug>.json) ================= */
+let slugAktif = '', slugKode = '';
+const REPO_GH = 'irvan1406/alvandarey';
+function slugDariNama(){ const s = ((S.pria.panggil || '') + '-' + (S.wanita.panggil || '')).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, ''); return s || 'undangan'; }
+function bersihSlug(v){ return String(v || '').toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 40); }
+function tautanPendekUntuk(nama, slug){ return basisTautan() + (nama ? ('?to=' + encodeURIComponent(nama).replace(/%20/g, '+')) : '') + '#s=' + slug; }
+async function terbitkanPendek(){
+  const btn = $('#btnTerbit');
+  let slug = bersihSlug($('#inpSlug').value) || slugDariNama();
+  const token = ($('#inpToken').value || '').trim();
+  if(!token){ toast('Tempel token GitHub dulu'); $('#inpToken').focus(); return; }
+  try{ localStorage.setItem('undanganku_pat', token); }catch(e){}
+  const api = 'https://api.github.com/repos/' + REPO_GH + '/contents/u/';
+  const headers = {'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28'};
+  const b64 = btoa(unescape(encodeURIComponent(JSON.stringify(S))));
+  const labelAwal = btn.innerText;
+  btn.disabled = true; btn.innerText = 'Menerbitkan…';
+  try{
+    let terpilih = '', sha = null;
+    for(let percobaan = 0; percobaan < 6 && !terpilih; percobaan++){
+      const calon = percobaan === 0 ? slug : slug + '-' + (percobaan + 1);
+      const cek = await fetch(api + calon + '.json', {headers});
+      if(cek.status === 404){ terpilih = calon; sha = null; break; }
+      if(!cek.ok) throw new Error('HTTP ' + cek.status);
+      const meta = await cek.json();
+      let sama = false;
+      try{ const lama = JSON.parse(decodeURIComponent(escape(atob(String(meta.content || '').replace(/\n/g, ''))))); sama = ((lama.pria && lama.pria.nama) || '') === (S.pria.nama || '') && ((lama.wanita && lama.wanita.nama) || '') === (S.wanita.nama || ''); }catch(e){}
+      if(sama){ terpilih = calon; sha = meta.sha || null; break; }
+    }
+    if(!terpilih) throw new Error('nama link bentrok terus');
+    slug = terpilih; $('#inpSlug').value = slug;
+    const badan = {message: 'Undangan ' + slug, content: b64};
+    if(sha) badan.sha = sha;
+    const put = await fetch(api + slug + '.json', {method: 'PUT', headers, body: JSON.stringify(badan)});
+    if(!put.ok) throw new Error('HTTP ' + put.status);
+    slugAktif = slug; slugKode = kodeSaya();
+    buatTautanTamu(true);
+    const nama = ($('#inpNamaTamu').value || '').trim();
+    const linkP = tautanPendekUntuk(nama, slug);
+    $('#tautanPendek').innerText = linkP;
+    $('#kotakPendek').style.display = 'block';
+    const pesanP = ($('#pesanWa').value || '').split(tautanAktif).join(linkP);
+    $('#btnWaPendek').href = 'https://wa.me/?text=' + encodeURIComponent(pesanP);
+    toast('Link pendek terbit ✓ Tunggu 1–3 menit sampai aktif');
+  }catch(e){
+    toast('Gagal menerbitkan (' + e.message + ') — cek token & akses repo alvandarey');
+  }finally{ btn.disabled = false; btn.innerText = labelAwal; }
+}
+async function muatDariSlug(slug, namaTamu){
+  sembunyiSemua();
+  $('#viewTamu').style.display = 'block';
+  $('#tamuIsi').innerHTML = '<div style="padding:60px 22px;text-align:center;font-family:sans-serif">Memuat undangan…</div>';
+  try{
+    const r = await fetch('u/' + encodeURIComponent(slug) + '.json', {cache: 'no-store'});
+    if(!r.ok) throw new Error('HTTP ' + r.status);
+    const data = await r.json();
+    const nyata = data && data.kode ? kdecKode(data.kode) : data;
+    S = Object.assign(stateAwal(), nyata); normalisasi(S);
+    tampilTamu(namaTamu);
+  }catch(e){
+    $('#tamuIsi').innerHTML = '<div style="padding:60px 22px;text-align:center;font-family:sans-serif"><h2>Undangan belum siap</h2><p>Link ini mungkin baru saja diterbitkan — tunggu 1–3 menit lalu muat ulang halaman. Bila tetap tidak bisa, minta link terbaru kepada mempelai.</p></div>';
+  }
 }
 
 /* ================= PAKET HTML MANDIRI ================= */
@@ -676,7 +765,8 @@ function buatDaftarTamu(){
   const nama2 = ($('#inpDaftarTamu').value || '').split('\n').map(x => x.trim()).filter(Boolean);
   const wadah = $('#hasilDaftarTamu');
   if(!nama2.length){ wadah.innerHTML = ''; toast('Isi dulu daftar nama tamu'); return; }
-  wadah.innerHTML = nama2.map(n => { const link = basisTautan() + '?to=' + encodeURIComponent(n).replace(/%20/g, '+') + '#u=' + kodeSaya(); const pesan = 'Halo ' + n + ', kami mengundang Anda ke pernikahan kami. Buka undangannya di sini: ' + link; return `<div class="baris-tamu"><span>${esc(n)}</span><button class="btn btn-putih btn-kecil" onclick="salinTeks('` + '${link}' + `')">Salin Tautan</button><a class="btn btn-emas btn-kecil" target="_blank" rel="noopener" href="https://wa.me/?text=${encodeURIComponent(pesan)}">Kirim WA</a></div>`; }).join('');
+  window.__tautanDaftar = nama2.map(n => (slugAktif && slugKode === kodeSaya()) ? tautanPendekUntuk(n, slugAktif) : basisTautan() + '?to=' + encodeURIComponent(n).replace(/%20/g, '+') + '#u=' + kodeSaya());
+  wadah.innerHTML = nama2.map((n, i) => { const link = window.__tautanDaftar[i]; const pesan = 'Halo ' + n + ', kami mengundang Anda ke pernikahan kami. Buka undangannya di sini: ' + link; return `<div class="baris-tamu"><span>${esc(n)}</span><button class="btn btn-putih btn-kecil" onclick="salinTeks(window.__tautanDaftar[${i}])">Salin Tautan</button><a class="btn btn-emas btn-kecil" target="_blank" rel="noopener" href="https://wa.me/?text=${encodeURIComponent(pesan)}">Kirim WA</a></div>`; }).join('');
   toast(nama2.length + ' tautan tamu dibuat');
 }
 
@@ -694,6 +784,11 @@ function terapkanKode(kode){
 }
 function bukaDariKode(){
   let v = ($('#inpKode').value||'').trim();
+  const mS2 = v.match(/#s=([A-Za-z0-9\-]+)/);
+  if(mS2){
+    fetch('u/' + mS2[1] + '.json').then(r => { if(!r.ok) throw new Error('404'); return r.json(); }).then(data => { const nyata = data && data.kode ? kdecKode(data.kode) : data; S = Object.assign(stateAwal(), nyata); normalisasi(S); mulaiBuat(); keLangkah(1); toast('Undangan dibuka — silakan edit'); }).catch(() => toast('Link pendek tidak ditemukan'));
+    return;
+  }
   const m = v.match(/#(?:u|edit)=([A-Za-z0-9\-_]+)/); if(m) v = m[1];
   if(terapkanKode(v)){ mulaiBuat(); keLangkah(1); toast('Undangan dibuka — silakan edit'); }
   else toast('Kode tidak dikenali');
@@ -723,6 +818,8 @@ function init(){
   const namaTamu = q.get('to') || '';
   const mU = hash.match(/#u=([A-Za-z0-9\-_]+)/);
   const mE = hash.match(/#edit=([A-Za-z0-9\-_]+)/);
+  const mS = hash.match(/#s=([A-Za-z0-9\-]+)/);
+  if(mS){ muatDariSlug(mS[1], namaTamu); return; }
   if(mU && terapkanKode(mU[1])){ tampilTamu(namaTamu); return; }
   const st=$('#statTemplate'); if(st) st.innerText = TEMPLATES.length;
   renderGaleri(); renderWizard(); renderPratinjau(); renderDraf();
