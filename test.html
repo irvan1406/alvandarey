@@ -64,11 +64,12 @@
         .lightbox .lb-caption { color: #f3e5c3; margin-top: 12px; font-family: 'Playfair Display', serif; letter-spacing: .06em; }
         #tombolAtas { position: fixed; right: 20px; bottom: 92px; z-index: 50; width: 44px; height: 44px; border-radius: 50%; border: 2px solid #c5a059; background: #fff; color: #c5a059; font-size: 17px; cursor: pointer; box-shadow: 0 6px 18px rgba(0,0,0,.18); opacity: 0; pointer-events: none; transition: opacity .3s ease; }
         #tombolAtas.muncul { opacity: 1; pointer-events: auto; }
-        .d-inline-block { display: inline-block; }
-        .bayangan-md { box-shadow: 0 4px 6px -1px rgba(0,0,0,.1), 0 2px 4px -2px rgba(0,0,0,.1); }
-        .teks-putih-90 { color: rgba(255,255,255,.9); }
-        @media (min-width: 768px) { .cta-lebar { grid-column: span 2 / span 2; } }
-        @media (min-width: 1024px) { .cta-lebar { grid-column: span 3 / span 3; } }
+        @media (min-width: 768px) {
+            .kartu-lebar { grid-column: 1 / -1; display: grid; grid-template-columns: 1fr 1fr; column-gap: 2rem; align-items: stretch; }
+            .kartu-lebar > * { grid-column: 2; }
+            .kartu-lebar > div:nth-child(3) { grid-column: 1; grid-row: 1 / span 6; height: auto; margin-bottom: 0; }
+            .kartu-lebar > a { align-self: end; }
+        }
     </style>
 </head>
 <body class="bg-brand-white text-brand-darktext font-sans antialiased selection:bg-brand-yellow selection:text-brand-white">
@@ -335,8 +336,8 @@
                     </a>
                 </div>
 
-                <!-- Paket 7: Tray Full Acrylic -->
-                <div class="bg-brand-white border border-yellow-200 rounded-2xl p-8 hover:border-brand-yellow/50 transition duration-300 group shadow-sm hover:shadow-md flex flex-col overflow-hidden">
+                <!-- Paket 7: Tray Full Acrylic (kartu lebar penutup grid) -->
+                <div class="kartu-lebar bg-brand-white border border-yellow-200 rounded-2xl p-8 hover:border-brand-yellow/50 transition duration-300 group shadow-sm hover:shadow-md flex flex-col overflow-hidden">
                     <div class="w-14 h-14 bg-brand-card rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition duration-300">
                         <i class="fas fa-cube text-2xl text-brand-yellow"></i>
                     </div>
@@ -364,13 +365,6 @@
                     </a>
                 </div>
 
-                <!-- Kartu penutup: konsultasi (mengisi baris terakhir grid) -->
-                <div class="cta-lebar rounded-2xl p-8 md:p-10 text-center text-white bayangan-md" style="background:linear-gradient(120deg,#b08d4a,#c5a059 55%,#d9ba7a)">
-                    <div class="text-3xl mb-3"><i class="fas fa-comments"></i></div>
-                    <h3 class="text-2xl md:text-3xl font-serif font-bold mb-3">Belum Menemukan Paket yang Pas?</h3>
-                    <p class="teks-putih-90 max-w-2xl mx-auto mb-6">Ceritakan impian mahar &amp; seserahanmu — tim kami siap bantu wujudkan sesuai tema dan budget kamu. Konsultasi gratis, tanpa komitmen.</p>
-                    <a href="https://wa.me/6289669636206?text=Halo%20Adrisya%20Decoration,%20saya%20ingin%20konsultasi%20paket%20mahar%20dan%20seserahan." target="_blank" class="d-inline-block bg-white text-brand-yellow px-8 py-3 rounded-full font-bold text-lg hover:opacity-90 transition duration-300 shadow"><i class="fab fa-whatsapp mr-2"></i> Konsultasi Gratis via WhatsApp</a>
-                </div>
 
             </div>
         </div>
