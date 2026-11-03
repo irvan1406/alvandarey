@@ -42,6 +42,23 @@
   .galat { color:#b3261e; font-size:13.5px; margin-top:8px; min-height:18px; }
   .sukses { color:#1c7a35; font-size:13.5px; margin-top:8px; min-height:18px; }
   a.tautan { color:var(--emas-gelap); font-weight:600; }
+
+  .kapsul { border:1.5px solid var(--emas); color:var(--emas-gelap); background:#fff; border-radius:999px; padding:7px 14px; font-size:13px; font-weight:700; }
+  .kapsul.aktif { background:var(--emas); color:#fff; }
+  .btn-bahaya { background:#fbe9e7; color:#b3261e; padding:7px 12px; font-size:13px; }
+  .btn-bahaya.yakin { background:#b3261e; color:#fff; }
+  .btn-gerak { background:#f3ecd9; color:#7a5f22; padding:7px 12px; font-size:13px; }
+  .ed-kepala { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+  .ed-judul { font-weight:700; flex:1; font-size:15px; }
+  .pv-grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap:10px; }
+  .pv-kartu { border:1px solid var(--garis); border-radius:12px; overflow:hidden; background:#fff; }
+  .pv-kartu img.sampul { width:100%; height:92px; object-fit:cover; display:block; background:#f6f1e2; }
+  .pv-isi { padding:8px 10px; font-size:12.5px; }
+  .pv-nama { font-weight:700; font-size:13.5px; }
+  .pv-harga { color:var(--emas-gelap); font-weight:700; }
+  .pv-besar { grid-column: 1 / -1; }
+  .pv-besar img.sampul { height:120px; }
+  .pv-lencana { display:inline-block; background:#f3ecd9; color:#7a5f22; border-radius:999px; padding:1px 8px; font-size:11px; font-weight:700; margin-left:6px; }
 </style>
 </head>
 <body>
@@ -88,6 +105,12 @@
     <div id="statusSandi" class="galat"></div>
     <button class="btn-emas" id="tombolGantiSandi" style="margin-top:4px;">Ganti Sandi</button>
   </div>
+
+  <div class="kartu" id="kartuPratinjau">
+    <h1 style="font-size:17px;">Pratinjau Paket</h1>
+    <p class="petunjuk">Tampilan kartu paket dari isian formulir saat ini (termasuk yang belum disimpan), mengikuti urutan dan gaya yang dipilih. Halaman asli berubah setelah <b>Simpan Perubahan</b>.</p>
+    <div class="pv-grid" id="pratinjauPaket"></div>
+  </div>
 </div>
 
 <div id="bilahSimpan">
@@ -106,6 +129,9 @@
   var PATH_KONTEN = 'test-konten.json';
   var sandiHashAktif = '';
   var ubahanTersimpan = {};
+  var daftarPaket = [];
+  var PAKET0 = [];
+  var paketTersimpan = null;
   var $ = function (id) { return document.getElementById(id); };
 
   function tampilStatus(teks, lama) {
@@ -207,7 +233,7 @@
       var baris = document.createElement('div'); baris.className = 'baris-foto';
       var tumbuh = document.createElement('div'); tumbuh.className = 'tumbuh';
       var iu = document.createElement('input'); iu.type = 'text'; iu.value = awal || ''; iu.placeholder = 'Tautan foto (https://...)';
-      var img = document.createElement('img'); img.className = 'pratinjau'; img.alt = ''; if (awal) img.src = awal;
+      var img = document.createElement('img'); img.className = 'pratinjau'; img.alt = ''; if (awal) img.src = awal.indexOf('http') === 0 ? awal : '../' + awal;
       iu.addEventListener('input', function () { img.src = iu.value; });
       tumbuh.appendChild(iu); tumbuh.appendChild(img);
       var berkas = document.createElement('input'); berkas.type = 'file'; berkas.accept = 'image/*'; berkas.style.marginTop = '7px';
@@ -283,8 +309,219 @@
     return hasil;
   }
   function segarkanInfo() {
-    var n = Object.keys(kumpulkanUbahan()).length;
-    $('infoUbah').textContent = n === 0 ? 'Belum ada perubahan dari bawaan.' : (n + ' perubahan belum disimpan.');
+    var kini = kumpulkanUbahan();
+    var n = 0;
+    var semuaKunci = {};
+    Object.keys(kini).forEach(function (k) { semuaKunci[k] = 1; });
+    Object.keys(ubahanTersimpan).forEach(function (k) { semuaKunci[k] = 1; });
+    Object.keys(semuaKunci).forEach(function (k) {
+      if (JSON.stringify(kini[k]) !== JSON.stringify(ubahanTersimpan[k])) n++;
+    });
+    var dasarPaket = paketTersimpan || PAKET0;
+    var pk = JSON.stringify(daftarPaket.map(normPaket)) !== JSON.stringify(dasarPaket.map(normPaket));
+    if (n === 0 && !pk) { $('infoUbah').textContent = 'Belum ada perubahan yang belum disimpan.'; return; }
+    var bagian = [];
+    if (n) bagian.push(n + ' isian');
+    if (pk) bagian.push('susunan paket berubah');
+    $('infoUbah').textContent = bagian.join(' + ') + ' — belum disimpan.';
+  }
+
+
+  /* ---------- Kelola Paket (dinamis) ---------- */
+  function salin(o) { return JSON.parse(JSON.stringify(o)); }
+  function normPaket(p) {
+    return {
+      nama: (p.nama || '').trim(),
+      harga: (p.harga || '').trim(),
+      tagline: (p.tagline || '').trim(),
+      fitur: (p.fitur || []).map(function (s) { return (s || '').trim(); }).filter(Boolean),
+      tombol: (p.tombol || '').trim(),
+      foto: (p.foto || []).map(function (s) { return (s || '').trim(); }).filter(Boolean),
+      gaya: p.gaya === 'besar' ? 'besar' : 'biasa'
+    };
+  }
+  function paketUntukSimpan() {
+    var kini = daftarPaket.map(normPaket);
+    var awal = PAKET0.map(normPaket);
+    return JSON.stringify(kini) === JSON.stringify(awal) ? null : kini;
+  }
+  function el(tag, kelas, teks) {
+    var e = document.createElement(tag);
+    if (kelas) e.className = kelas;
+    if (teks != null) e.textContent = teks;
+    return e;
+  }
+  function gambarPratinjau() {
+    var wadah = $('pratinjauPaket');
+    if (!wadah) return;
+    wadah.innerHTML = '';
+    daftarPaket.map(normPaket).forEach(function (p) {
+      var k = el('div', 'pv-kartu' + (p.gaya === 'besar' ? ' pv-besar' : ''));
+      if (p.foto.length) {
+        var img = el('img', 'sampul');
+        img.src = p.foto[0].indexOf('http') === 0 ? p.foto[0] : '../' + p.foto[0];
+        img.alt = '';
+        k.appendChild(img);
+      }
+      var isi = el('div', 'pv-isi');
+      var nm = el('div', 'pv-nama', p.nama || '(tanpa nama)');
+      if (p.gaya === 'besar') nm.appendChild(el('span', 'pv-lencana', 'BESAR'));
+      isi.appendChild(nm);
+      isi.appendChild(el('div', 'pv-harga', p.harga));
+      if (p.tagline) isi.appendChild(el('div', null, p.tagline));
+      var ul = el('ul');
+      ul.style.margin = '5px 0 0'; ul.style.paddingLeft = '16px';
+      p.fitur.slice(0, 4).forEach(function (f) { ul.appendChild(el('li', null, f)); });
+      if (p.fitur.length > 4) ul.appendChild(el('li', null, '… +' + (p.fitur.length - 4) + ' lagi'));
+      isi.appendChild(ul);
+      isi.appendChild(el('div', 'petunjuk', '📷 ' + p.foto.length + ' foto • tombol: ' + (p.tombol || '-')));
+      k.appendChild(isi);
+      wadah.appendChild(k);
+    });
+    if (!daftarPaket.length) wadah.appendChild(el('p', 'petunjuk', 'Belum ada paket. Tambah lewat tombol di Kelola Paket.'));
+  }
+  function segarkanSetelahPaketBerubah() { segarkanInfo(); gambarPratinjau(); }
+  function bangunPaketEditor() {
+    if ($('seksiPaket')) return;
+    var wadahGrup = $('wadahGrup');
+    var det = el('details', 'grup');
+    det.id = 'seksiPaket';
+    det.open = true;
+    det.appendChild(el('summary', null, 'Kelola Paket (tambah, urutan, gaya, foto)'));
+    var isi = el('div', 'isi');
+    var tambahAtas = el('button', 'btn-putih', '＋ Tambah Paket Baru');
+    tambahAtas.type = 'button';
+    tambahAtas.addEventListener('click', function () {
+      daftarPaket.push({ nama: 'Paket Baru', harga: 'Rp 0', tagline: '', fitur: [], tombol: 'Pesan Sekarang', foto: [], gaya: 'biasa' });
+      gambarUlangEditor();
+      segarkanSetelahPaketBerubah();
+    });
+    isi.appendChild(tambahAtas);
+    var daftar = el('div');
+    daftar.id = 'daftarEditorPaket';
+    isi.appendChild(daftar);
+    det.appendChild(isi);
+    var target = null;
+    wadahGrup.querySelectorAll('details.grup').forEach(function (d) {
+      var s = d.querySelector('summary');
+      if (!target && s && s.textContent.indexOf('Katalog') === 0) target = d;
+    });
+    if (target) wadahGrup.insertBefore(det, target); else wadahGrup.appendChild(det);
+    gambarUlangEditor();
+  }
+  function gambarUlangEditor() {
+    var daftar = $('daftarEditorPaket');
+    if (!daftar) return;
+    daftar.innerHTML = '';
+    daftarPaket.forEach(function (p, idx) { daftar.appendChild(buatEditorPaket(p, idx)); });
+    gambarPratinjau();
+  }
+  function buatEditorPaket(p, idx) {
+    var kartu = el('div', 'kartu');
+    kartu.style.marginTop = '12px';
+    var kepala = el('div', 'ed-kepala');
+    kepala.appendChild(el('span', 'ed-judul', 'Paket ' + (idx + 1) + ' — ' + (p.nama || '')));
+    var naik = el('button', 'btn-gerak', '↑ Naik'); naik.type = 'button';
+    naik.disabled = idx === 0;
+    naik.addEventListener('click', function () {
+      if (idx === 0) return;
+      var t = daftarPaket[idx - 1]; daftarPaket[idx - 1] = daftarPaket[idx]; daftarPaket[idx] = t;
+      gambarUlangEditor(); segarkanSetelahPaketBerubah();
+    });
+    var turun = el('button', 'btn-gerak', '↓ Turun'); turun.type = 'button';
+    turun.disabled = idx === daftarPaket.length - 1;
+    turun.addEventListener('click', function () {
+      if (idx >= daftarPaket.length - 1) return;
+      var t = daftarPaket[idx + 1]; daftarPaket[idx + 1] = daftarPaket[idx]; daftarPaket[idx] = t;
+      gambarUlangEditor(); segarkanSetelahPaketBerubah();
+    });
+    var hapus = el('button', 'btn-bahaya', 'Hapus'); hapus.type = 'button';
+    hapus.addEventListener('click', function () {
+      if (!hapus.classList.contains('yakin')) {
+        hapus.classList.add('yakin'); hapus.textContent = 'Yakin hapus?';
+        setTimeout(function () { hapus.classList.remove('yakin'); hapus.textContent = 'Hapus'; }, 3000);
+        return;
+      }
+      daftarPaket.splice(idx, 1);
+      gambarUlangEditor(); segarkanSetelahPaketBerubah();
+    });
+    kepala.appendChild(naik); kepala.appendChild(turun); kepala.appendChild(hapus);
+    kartu.appendChild(kepala);
+
+    function kolom(label, nilai, ubah, area) {
+      var l = el('label', 'lbl', label);
+      kartu.appendChild(l);
+      var inp = area ? document.createElement('textarea') : document.createElement('input');
+      if (!area) inp.type = 'text';
+      if (area) inp.rows = 4;
+      inp.value = nilai;
+      inp.addEventListener('input', function () { ubah(inp.value); segarkanSetelahPaketBerubah(); });
+      kartu.appendChild(inp);
+      return inp;
+    }
+    kolom('Nama paket', p.nama || '', function (v) { p.nama = v; kepala.querySelector('.ed-judul').textContent = 'Paket ' + (idx + 1) + ' — ' + v; });
+    kolom('Harga', p.harga || '', function (v) { p.harga = v; });
+    kolom('Tagline di bawah harga', p.tagline || '', function (v) { p.tagline = v; });
+    kolom('Daftar fitur (1 baris = 1 fitur)', (p.fitur || []).join('\n'), function (v) { p.fitur = v.split('\n'); }, true);
+    kolom('Teks tombol pesan', p.tombol || '', function (v) { p.tombol = v; });
+
+    var lg = el('label', 'lbl', 'Gaya kartu');
+    kartu.appendChild(lg);
+    var barisKapsul = el('div');
+    barisKapsul.style.display = 'flex'; barisKapsul.style.gap = '8px';
+    [['biasa', 'Biasa'], ['besar', 'Besar — lebar penuh']].forEach(function (g) {
+      var b = el('button', 'kapsul' + (p.gaya === g[0] ? ' aktif' : ''), g[1]);
+      b.type = 'button';
+      b.setAttribute('data-gaya', g[0]);
+      b.addEventListener('click', function () {
+        p.gaya = g[0];
+        barisKapsul.querySelectorAll('.kapsul').forEach(function (x) { x.classList.toggle('aktif', x.getAttribute('data-gaya') === p.gaya); });
+        segarkanSetelahPaketBerubah();
+      });
+      barisKapsul.appendChild(b);
+    });
+    kartu.appendChild(barisKapsul);
+
+    var lf = el('label', 'lbl', 'Foto paket (boleh banyak)');
+    kartu.appendChild(lf);
+    var wadahFoto = el('div');
+    kartu.appendChild(wadahFoto);
+    function barisFoto(awal) {
+      var baris = el('div', 'baris-foto');
+      var tumbuh = el('div', 'tumbuh');
+      var iu = document.createElement('input');
+      iu.type = 'text'; iu.value = awal || ''; iu.placeholder = 'Tautan foto (https://...)';
+      var img = el('img', 'pratinjau');
+      if (awal) img.src = awal.indexOf('http') === 0 ? awal : '../' + awal;
+      iu.addEventListener('input', function () {
+        img.src = iu.value;
+        sinkronFoto();
+      });
+      tumbuh.appendChild(iu); tumbuh.appendChild(img);
+      var berkas = document.createElement('input');
+      berkas.type = 'file'; berkas.accept = 'image/*'; berkas.style.marginTop = '7px';
+      berkas.addEventListener('change', function () {
+        if (berkas.files && berkas.files[0]) unggahFoto(berkas.files[0], 'paketfoto', function (path) {
+          iu.value = path; img.src = '../' + path; sinkronFoto(); segarkanSetelahPaketBerubah();
+        });
+      });
+      tumbuh.appendChild(berkas);
+      baris.appendChild(tumbuh);
+      var x = el('button', 'btn-bahaya', '✕');
+      x.type = 'button'; x.style.marginTop = '2px';
+      x.addEventListener('click', function () { baris.remove(); sinkronFoto(); segarkanSetelahPaketBerubah(); });
+      baris.appendChild(x);
+      wadahFoto.appendChild(baris);
+    }
+    function sinkronFoto() {
+      p.foto = [].map.call(wadahFoto.querySelectorAll('input[type=text]'), function (i2) { return i2.value; });
+    }
+    (p.foto || []).forEach(function (u) { barisFoto(u); });
+    var tambahFoto = el('button', 'btn-putih', '＋ Tambah foto (tautan)');
+    tambahFoto.type = 'button'; tambahFoto.style.marginTop = '8px';
+    tambahFoto.addEventListener('click', function () { barisFoto(''); sinkronFoto(); });
+    kartu.appendChild(tambahFoto);
+    return kartu;
   }
 
   /* ---------- unggah foto ke repo ---------- */
@@ -316,10 +553,13 @@
   }
 
   /* ---------- simpan & sandi ---------- */
-  function simpanKonten(sandiHash, ubahan, pesanSukses) {
-    var isi = JSON.stringify({ sandiHash: sandiHash, ubahan: ubahan }, null, 1);
+  function simpanKonten(sandiHash, ubahan, paket, pesanSukses) {
+    var data = { sandiHash: sandiHash, ubahan: ubahan };
+    if (paket) data.paket = paket;
+    var isi = JSON.stringify(data, null, 1);
     return ghTulis(PATH_KONTEN, b64utf8(isi), 'Admin tes: perbarui konten halaman').then(function () {
       sandiHashAktif = sandiHash; ubahanTersimpan = ubahan;
+      paketTersimpan = paket ? salin(paket) : null;
       tampilStatus(pesanSukses || 'Tersimpan ✔ Halaman tes akan memakai isi baru (muat ulang halamannya).', 4600);
       segarkanInfo();
     });
@@ -327,7 +567,7 @@
   $('tombolSimpan').addEventListener('click', function () {
     if (!tokenAktif()) { tampilStatus('Isi token GitHub dulu (kolom di atas) sebelum menyimpan.', 4600); return; }
     tampilStatus('Menyimpan...');
-    simpanKonten(sandiHashAktif, kumpulkanUbahan()).catch(function (e) { tampilStatus('Simpan gagal: ' + e.message, 5600); });
+    simpanKonten(sandiHashAktif, kumpulkanUbahan(), paketUntukSimpan()).catch(function (e) { tampilStatus('Simpan gagal: ' + e.message, 5600); });
   });
   $('tombolGantiSandi').addEventListener('click', function () {
     var st = $('statusSandi'); st.textContent = '';
@@ -338,7 +578,7 @@
     sha256(lama).then(function (h) {
       if (h !== sandiHashAktif) { st.textContent = 'Sandi lama salah.'; return; }
       return sha256(baru).then(function (hb) {
-        return simpanKonten(hb, kumpulkanUbahan(), 'Sandi berhasil diganti ✔').then(function () {
+        return simpanKonten(hb, kumpulkanUbahan(), paketUntukSimpan(), 'Sandi berhasil diganti ✔').then(function () {
           st.className = 'sukses'; st.textContent = 'Sandi berhasil diganti. Pakai sandi baru saat masuk berikutnya.';
           $('sandiLama').value = ''; $('sandiBaru').value = ''; $('sandiBaru2').value = '';
         });
@@ -364,6 +604,7 @@
       $('petunjukToken').textContent = 'Token UndanganKu terdeteksi di browser ini dan akan dipakai otomatis untuk menyimpan. Token hanya disimpan di browser ini.';
     }
     bangunForm();
+    bangunPaketEditor();
   }
   function cobaMasuk() {
     var s = $('sandiMasuk').value;
@@ -383,6 +624,9 @@
   ambilKonten().then(function (k) {
     sandiHashAktif = (k && k.sandiHash) || '';
     ubahanTersimpan = (k && k.ubahan) || {};
+    PAKET0 = salin(window.PAKET_BAWAAN || []);
+    paketTersimpan = (k && Array.isArray(k.paket) && k.paket.length) ? salin(k.paket) : null;
+    daftarPaket = salin((k && Array.isArray(k.paket) && k.paket.length) ? k.paket : (window.PAKET_BAWAAN || []));
     if (sessionStorage.getItem('testadm_masuk') === '1' && sandiHashAktif) masukPanel();
   }).catch(function (e) {
     $('galatKunci').textContent = 'Gagal memuat data konten (' + e.message + '). Periksa koneksi lalu muat ulang halaman.';

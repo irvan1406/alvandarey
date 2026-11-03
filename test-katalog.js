@@ -112,407 +112,6 @@ window.KATALOG_TEST = [
   "bawaan": "Pilih paket mahar dan seserahan yang paling sempurna untuk menyempurnakan hari bahagia Anda. Desain premium, harga bersahabat."
  },
  {
-  "kunci": "paket1_nama",
-  "grup": "Paket: Standing Rotary",
-  "label": "Nama paket",
-  "tipe": "teks",
-  "sel": "#paket .grid > div:nth-of-type(1) h3",
-  "bawaan": "Standing Rotary"
- },
- {
-  "kunci": "paket1_foto",
-  "grup": "Paket: Standing Rotary",
-  "label": "Foto paket (3 foto slider)",
-  "tipe": "foto3",
-  "sel": "#slider-1 img",
-  "bawaan": [
-   "https://lh3.googleusercontent.com/d/1q6MWQ_RquFw9-X8TbSXCBSxWrOtxcXn1",
-   "https://lh3.googleusercontent.com/d/1ncDUn0L-DsVDPmkxr4hikxACLmTSsPCB",
-   "https://lh3.googleusercontent.com/d/1q6MWQ_RquFw9-X8TbSXCBSxWrOtxcXn1"
-  ]
- },
- {
-  "kunci": "paket1_harga",
-  "grup": "Paket: Standing Rotary",
-  "label": "Harga",
-  "tipe": "teksAwal",
-  "sel": "#paket .grid > div:nth-of-type(1) .text-3xl",
-  "bawaan": "Rp 500.000"
- },
- {
-  "kunci": "paket1_tagline",
-  "grup": "Paket: Standing Rotary",
-  "label": "Tagline di bawah harga",
-  "tipe": "teksAwal",
-  "sel": "#paket .grid > div:nth-of-type(1) .border-b",
-  "bawaan": "Eksklusif & Unik"
- },
- {
-  "kunci": "paket1_fitur",
-  "grup": "Paket: Standing Rotary",
-  "label": "Daftar fitur (1 baris = 1 fitur)",
-  "tipe": "daftar",
-  "sel": "#paket .grid > div:nth-of-type(1) ul",
-  "bawaan": [
-   "Display standing berputar otomatis (rotary)",
-   "Menonjolkan detail dari segala sisi ✨",
-   "Sangat cocok untuk display perhiasan/mahar",
-   "Kesan mewah, modern, dan tidak pasaran",
-   "Sudah include dengan pembatas",
-   "Tidak termasuk bunga hias standing rotary"
-  ]
- },
- {
-  "kunci": "paket1_tombol",
-  "grup": "Paket: Standing Rotary",
-  "label": "Teks tombol pesan",
-  "tipe": "teksAwal",
-  "sel": "#paket .grid > div:nth-of-type(1) a",
-  "bawaan": "Pesan Standing Rotary"
- },
- {
-  "kunci": "paket2_nama",
-  "grup": "Paket: Tray Putih",
-  "label": "Nama paket",
-  "tipe": "teks",
-  "sel": "#paket .grid > div:nth-of-type(2) h3",
-  "bawaan": "Tray Putih"
- },
- {
-  "kunci": "paket2_foto",
-  "grup": "Paket: Tray Putih",
-  "label": "Foto paket (3 foto slider)",
-  "tipe": "foto3",
-  "sel": "#slider-2 img",
-  "bawaan": [
-   "https://lh3.googleusercontent.com/d/1MGDjDn0qScToc7tlVv3cD_x52IYYhFh_",
-   "https://lh3.googleusercontent.com/d/1De326NlSXMwL5OLd-5Y3UpuPsZZeEQMR",
-   "https://lh3.googleusercontent.com/d/1Dhg7PyRYi03qKbgNOfutH-qwJFJkkNTH"
-  ]
- },
- {
-  "kunci": "paket2_harga",
-  "grup": "Paket: Tray Putih",
-  "label": "Harga",
-  "tipe": "teksAwal",
-  "sel": "#paket .grid > div:nth-of-type(2) .text-3xl",
-  "bawaan": "Rp 65.000"
- },
- {
-  "kunci": "paket2_tagline",
-  "grup": "Paket: Tray Putih",
-  "label": "Tagline di bawah harga",
-  "tipe": "teksAwal",
-  "sel": "#paket .grid > div:nth-of-type(2) .border-b",
-  "bawaan": "Promo 5 Box:"
- },
- {
-  "kunci": "paket2_fitur",
-  "grup": "Paket: Tray Putih",
-  "label": "Daftar fitur (1 baris = 1 fitur)",
-  "tipe": "daftar",
-  "sel": "#paket .grid > div:nth-of-type(2) ul",
-  "bawaan": [
-   "Tampilan bersih, estetik & minimalis",
-   "Termasuk Sewa Tempat Cincin & Uang ✨",
-   "Hiasan bunga artificial cantik",
-   "Sewa > 5 box harga mengikuti diskon paket"
-  ]
- },
- {
-  "kunci": "paket2_tombol",
-  "grup": "Paket: Tray Putih",
-  "label": "Teks tombol pesan",
-  "tipe": "teksAwal",
-  "sel": "#paket .grid > div:nth-of-type(2) a",
-  "bawaan": "Pesan Tray Putih"
- },
- {
-  "kunci": "paket3_nama",
-  "grup": "Paket: Tray Crystal",
-  "label": "Nama paket",
-  "tipe": "teks",
-  "sel": "#paket .grid > div:nth-of-type(3) h3",
-  "bawaan": "Tray Crystal"
- },
- {
-  "kunci": "paket3_foto",
-  "grup": "Paket: Tray Crystal",
-  "label": "Foto paket (3 foto slider)",
-  "tipe": "foto3",
-  "sel": "#slider-3 img",
-  "bawaan": [
-   "https://lh3.googleusercontent.com/d/1WhVw_ul8PTpFJpMRPUaIkwoTj2LLjiTt",
-   "https://lh3.googleusercontent.com/d/1pZzw4OaTUqmyz3JDYgCJOsWafZDIHlBk",
-   "https://lh3.googleusercontent.com/d/1DdGO1_j-k4PHyt12flTCFrz8GHkfc5Qy"
-  ]
- },
- {
-  "kunci": "paket3_harga",
-  "grup": "Paket: Tray Crystal",
-  "label": "Harga",
-  "tipe": "teksAwal",
-  "sel": "#paket .grid > div:nth-of-type(3) .text-3xl",
-  "bawaan": "Rp 85.000"
- },
- {
-  "kunci": "paket3_tagline",
-  "grup": "Paket: Tray Crystal",
-  "label": "Tagline di bawah harga",
-  "tipe": "teksAwal",
-  "sel": "#paket .grid > div:nth-of-type(3) .border-b",
-  "bawaan": "Promo 5 Box:"
- },
- {
-  "kunci": "paket3_fitur",
-  "grup": "Paket: Tray Crystal",
-  "label": "Daftar fitur (1 baris = 1 fitur)",
-  "tipe": "daftar",
-  "sel": "#paket .grid > div:nth-of-type(3) ul",
-  "bawaan": [
-   "Kotak full akrilik bening mewah",
-   "Termasuk Sewa Tempat Cincin & Uang ✨",
-   "Rangkaian bunga premium & eksklusif",
-   "Sewa > 5 box harga mengikuti diskon paket"
-  ]
- },
- {
-  "kunci": "paket3_tombol",
-  "grup": "Paket: Tray Crystal",
-  "label": "Teks tombol pesan",
-  "tipe": "teksAwal",
-  "sel": "#paket .grid > div:nth-of-type(3) a",
-  "bawaan": "Pesan Tray Crystal"
- },
- {
-  "kunci": "paket4_nama",
-  "grup": "Paket: Hidden Tray (Kain)",
-  "label": "Nama paket",
-  "tipe": "teks",
-  "sel": "#paket .grid > div:nth-of-type(4) h3",
-  "bawaan": "Hidden Tray (Kain)"
- },
- {
-  "kunci": "paket4_foto",
-  "grup": "Paket: Hidden Tray (Kain)",
-  "label": "Foto paket (3 foto slider)",
-  "tipe": "foto3",
-  "sel": "#slider-4 img",
-  "bawaan": [
-   "https://lh3.googleusercontent.com/d/1BxY-xMqi13F_0NDvw71ueAdUl8ekFm8a",
-   "https://lh3.googleusercontent.com/d/1pyel0V0xcwplw_ZkJVH3wJYuMP0Qtnl8",
-   "https://lh3.googleusercontent.com/d/1pH5NA3VyMlhCadj3Pg2pJBZvTo0ohub6"
-  ]
- },
- {
-  "kunci": "paket4_harga",
-  "grup": "Paket: Hidden Tray (Kain)",
-  "label": "Harga",
-  "tipe": "teksAwal",
-  "sel": "#paket .grid > div:nth-of-type(4) .text-3xl",
-  "bawaan": "Rp 75.000"
- },
- {
-  "kunci": "paket4_tagline",
-  "grup": "Paket: Hidden Tray (Kain)",
-  "label": "Tagline di bawah harga",
-  "tipe": "teksAwal",
-  "sel": "#paket .grid > div:nth-of-type(4) .border-b",
-  "bawaan": "Promo 5 Box:"
- },
- {
-  "kunci": "paket4_fitur",
-  "grup": "Paket: Hidden Tray (Kain)",
-  "label": "Daftar fitur (1 baris = 1 fitur)",
-  "tipe": "daftar",
-  "sel": "#paket .grid > div:nth-of-type(4) ul",
-  "bawaan": [
-   "Desain tertutup berbalut kain privasi",
-   "Termasuk Sewa Tempat Cincin & Uang ✨",
-   "Kesan elegan, klasik & sangat rapi",
-   "Sewa > 5 box harga mengikuti diskon paket"
-  ]
- },
- {
-  "kunci": "paket4_tombol",
-  "grup": "Paket: Hidden Tray (Kain)",
-  "label": "Teks tombol pesan",
-  "tipe": "teksAwal",
-  "sel": "#paket .grid > div:nth-of-type(4) a",
-  "bawaan": "Pesan Hidden Kain"
- },
- {
-  "kunci": "paket5_nama",
-  "grup": "Paket: Hidden Box Ukir",
-  "label": "Nama paket",
-  "tipe": "teks",
-  "sel": "#paket .grid > div:nth-of-type(5) h3",
-  "bawaan": "Hidden Box Ukir"
- },
- {
-  "kunci": "paket5_foto",
-  "grup": "Paket: Hidden Box Ukir",
-  "label": "Foto paket (3 foto slider)",
-  "tipe": "foto3",
-  "sel": "#slider-5 img",
-  "bawaan": [
-   "https://lh3.googleusercontent.com/d/1J7hsnEr8qS_uoDlm1eY6sR9njomFiOvU",
-   "https://lh3.googleusercontent.com/d/1EMymptg7_C3htBAf-ITDjq_TqwLBtwxx",
-   "https://lh3.googleusercontent.com/d/149WobfiarlFlJbshOJ5VnSiPD4O23rYc"
-  ]
- },
- {
-  "kunci": "paket5_harga",
-  "grup": "Paket: Hidden Box Ukir",
-  "label": "Harga",
-  "tipe": "teksAwal",
-  "sel": "#paket .grid > div:nth-of-type(5) .text-3xl",
-  "bawaan": "Rp 80.000"
- },
- {
-  "kunci": "paket5_tagline",
-  "grup": "Paket: Hidden Box Ukir",
-  "label": "Tagline di bawah harga",
-  "tipe": "teksAwal",
-  "sel": "#paket .grid > div:nth-of-type(5) .border-b",
-  "bawaan": "Promo 5 Box:"
- },
- {
-  "kunci": "paket5_fitur",
-  "grup": "Paket: Hidden Box Ukir",
-  "label": "Daftar fitur (1 baris = 1 fitur)",
-  "tipe": "daftar",
-  "sel": "#paket .grid > div:nth-of-type(5) ul",
-  "bawaan": [
-   "Paper box premium ukiran eksklusif",
-   "Termasuk Sewa Tempat Cincin & Uang ✨",
-   "Melindungi hantaran dengan kemewahan",
-   "Sewa > 5 box harga mengikuti diskon paket"
-  ]
- },
- {
-  "kunci": "paket5_tombol",
-  "grup": "Paket: Hidden Box Ukir",
-  "label": "Teks tombol pesan",
-  "tipe": "teksAwal",
-  "sel": "#paket .grid > div:nth-of-type(5) a",
-  "bawaan": "Pesan Box Ukir"
- },
- {
-  "kunci": "paket6_nama",
-  "grup": "Paket: Kreasi Mahar",
-  "label": "Nama paket",
-  "tipe": "teks",
-  "sel": "#paket .grid > div:nth-of-type(6) h3",
-  "bawaan": "Kreasi Mahar"
- },
- {
-  "kunci": "paket6_foto",
-  "grup": "Paket: Kreasi Mahar",
-  "label": "Foto paket (3 foto slider)",
-  "tipe": "foto3",
-  "sel": "#slider-6 img",
-  "bawaan": [
-   "https://lh3.googleusercontent.com/d/1kEqsw9YKMszOJWXfYnOCnpz2SgrqLsas",
-   "https://lh3.googleusercontent.com/d/1fHsdbQ38lA853hXWsSlKoGHuYx40SUb5",
-   "https://lh3.googleusercontent.com/d/1fHsdbQ38lA853hXWsSlKoGHuYx40SUb5"
-  ]
- },
- {
-  "kunci": "paket6_harga",
-  "grup": "Paket: Kreasi Mahar",
-  "label": "Harga",
-  "tipe": "teksAwal",
-  "sel": "#paket .grid > div:nth-of-type(6) .text-3xl",
-  "bawaan": "Mulai"
- },
- {
-  "kunci": "paket6_tagline",
-  "grup": "Paket: Kreasi Mahar",
-  "label": "Tagline di bawah harga",
-  "tipe": "teksAwal",
-  "sel": "#paket .grid > div:nth-of-type(6) .border-b",
-  "bawaan": "Spesial Kustom"
- },
- {
-  "kunci": "paket6_fitur",
-  "grup": "Paket: Kreasi Mahar",
-  "label": "Daftar fitur (1 baris = 1 fitur)",
-  "tipe": "daftar",
-  "sel": "#paket .grid > div:nth-of-type(6) ul",
-  "bawaan": [
-   "Desain mahar kustom sesuai impian",
-   "Pigura premium anti rayap",
-   "Hiasan cutting nama & bunga detail",
-   "Bebas request tema warna"
-  ]
- },
- {
-  "kunci": "paket6_tombol",
-  "grup": "Paket: Kreasi Mahar",
-  "label": "Teks tombol pesan",
-  "tipe": "teksAwal",
-  "sel": "#paket .grid > div:nth-of-type(6) a",
-  "bawaan": "Pesan Mahar"
- },
- {
-  "kunci": "paket7_nama",
-  "grup": "Paket: Tray Full Acrylic",
-  "label": "Nama paket",
-  "tipe": "teks",
-  "sel": "#paket .grid > div:nth-of-type(7) h3",
-  "bawaan": "Tray Full Acrylic"
- },
- {
-  "kunci": "paket7_foto",
-  "grup": "Paket: Tray Full Acrylic",
-  "label": "Foto paket (3 foto slider)",
-  "tipe": "foto3",
-  "sel": "#slider-7 img",
-  "bawaan": [
-   "https://lh3.googleusercontent.com/d/1xTYe52fyd5mIIhiP19Qbf50MW2iCsCdx",
-   "https://lh3.googleusercontent.com/d/1iU1KG9jvSVtjsPk5LV-lb0u3woYaD-W7",
-   "https://lh3.googleusercontent.com/d/1lZMDYRzbAKxhrSvUIVi8ZqgFYb9e8oNi"
-  ]
- },
- {
-  "kunci": "paket7_harga",
-  "grup": "Paket: Tray Full Acrylic",
-  "label": "Harga",
-  "tipe": "teksAwal",
-  "sel": "#paket .grid > div:nth-of-type(7) .text-3xl",
-  "bawaan": "Rp 75.000"
- },
- {
-  "kunci": "paket7_tagline",
-  "grup": "Paket: Tray Full Acrylic",
-  "label": "Tagline di bawah harga",
-  "tipe": "teksAwal",
-  "sel": "#paket .grid > div:nth-of-type(7) .border-b",
-  "bawaan": "Promo 5 Box:"
- },
- {
-  "kunci": "paket7_fitur",
-  "grup": "Paket: Tray Full Acrylic",
-  "label": "Daftar fitur (1 baris = 1 fitur)",
-  "tipe": "daftar",
-  "sel": "#paket .grid > div:nth-of-type(7) ul",
-  "bawaan": [
-   "Desain full akrilik premium & transparan",
-   "Termasuk Sewa Tempat Cincin & Uang ✨",
-   "Tampilan super mewah dari segala sisi",
-   "Sewa > 5 box harga mengikuti diskon paket"
-  ]
- },
- {
-  "kunci": "paket7_tombol",
-  "grup": "Paket: Tray Full Acrylic",
-  "label": "Teks tombol pesan",
-  "tipe": "teksAwal",
-  "sel": "#paket .grid > div:nth-of-type(7) a",
-  "bawaan": "Pesan Full Acrylic"
- },
- {
   "kunci": "katalog_judul",
   "grup": "Katalog / Galeri",
   "label": "Judul seksi katalog",
@@ -647,5 +246,135 @@ window.KATALOG_TEST = [
   "tipe": "html",
   "sel": "#syarat .space-y-12 > div:nth-of-type(4) > div",
   "bawaan": "<div class=\"flex gap-4\">\n                            <span class=\"flex-shrink-0 w-6 h-6 bg-brand-yellow/10 text-brand-yellow rounded-full flex items-center justify-center font-bold text-sm\">1</span>\n                            <p>Membawa box seserahan WAJIB menggunakan mobil</p>\n                        </div>\n                        <div class=\"flex gap-4\">\n                            <span class=\"flex-shrink-0 w-6 h-6 bg-brand-yellow/10 text-brand-yellow rounded-full flex items-center justify-center font-bold text-sm\">2</span>\n                            <p>Pengambilan dan pengembalian box menggunakan taxi online, maka ongkir ditanggung oleh customer</p>\n                        </div>\n                        <div class=\"flex gap-4\">\n                            <span class=\"flex-shrink-0 w-6 h-6 bg-brand-yellow/10 text-brand-yellow rounded-full flex items-center justify-center font-bold text-sm\">3</span>\n                            <p>Menggunakan jasa delivery order kami dihitung dari jarak lokasi customer</p>\n                        </div>"
+ }
+];
+window.PAKET_BAWAAN = [
+ {
+  "nama": "Standing Rotary",
+  "harga": "Rp 500.000",
+  "tagline": "Eksklusif & Unik",
+  "fitur": [
+   "Display standing berputar otomatis (rotary)",
+   "Menonjolkan detail dari segala sisi ✨",
+   "Sangat cocok untuk display perhiasan/mahar",
+   "Kesan mewah, modern, dan tidak pasaran",
+   "Sudah include dengan pembatas",
+   "Tidak termasuk bunga hias standing rotary"
+  ],
+  "tombol": "Pesan Standing Rotary",
+  "foto": [
+   "https://lh3.googleusercontent.com/d/1q6MWQ_RquFw9-X8TbSXCBSxWrOtxcXn1",
+   "https://lh3.googleusercontent.com/d/1ncDUn0L-DsVDPmkxr4hikxACLmTSsPCB",
+   "https://lh3.googleusercontent.com/d/1q6MWQ_RquFw9-X8TbSXCBSxWrOtxcXn1"
+  ],
+  "gaya": "biasa"
+ },
+ {
+  "nama": "Tray Putih",
+  "harga": "Rp 65.000",
+  "tagline": "Promo 5 Box:",
+  "fitur": [
+   "Tampilan bersih, estetik & minimalis",
+   "Termasuk Sewa Tempat Cincin & Uang ✨",
+   "Hiasan bunga artificial cantik",
+   "Sewa > 5 box harga mengikuti diskon paket"
+  ],
+  "tombol": "Pesan Tray Putih",
+  "foto": [
+   "https://lh3.googleusercontent.com/d/1MGDjDn0qScToc7tlVv3cD_x52IYYhFh_",
+   "https://lh3.googleusercontent.com/d/1De326NlSXMwL5OLd-5Y3UpuPsZZeEQMR",
+   "https://lh3.googleusercontent.com/d/1Dhg7PyRYi03qKbgNOfutH-qwJFJkkNTH"
+  ],
+  "gaya": "biasa"
+ },
+ {
+  "nama": "Tray Crystal",
+  "harga": "Rp 85.000",
+  "tagline": "Promo 5 Box:",
+  "fitur": [
+   "Kotak full akrilik bening mewah",
+   "Termasuk Sewa Tempat Cincin & Uang ✨",
+   "Rangkaian bunga premium & eksklusif",
+   "Sewa > 5 box harga mengikuti diskon paket"
+  ],
+  "tombol": "Pesan Tray Crystal",
+  "foto": [
+   "https://lh3.googleusercontent.com/d/1WhVw_ul8PTpFJpMRPUaIkwoTj2LLjiTt",
+   "https://lh3.googleusercontent.com/d/1pZzw4OaTUqmyz3JDYgCJOsWafZDIHlBk",
+   "https://lh3.googleusercontent.com/d/1DdGO1_j-k4PHyt12flTCFrz8GHkfc5Qy"
+  ],
+  "gaya": "biasa"
+ },
+ {
+  "nama": "Hidden Tray (Kain)",
+  "harga": "Rp 75.000",
+  "tagline": "Promo 5 Box:",
+  "fitur": [
+   "Desain tertutup berbalut kain privasi",
+   "Termasuk Sewa Tempat Cincin & Uang ✨",
+   "Kesan elegan, klasik & sangat rapi",
+   "Sewa > 5 box harga mengikuti diskon paket"
+  ],
+  "tombol": "Pesan Hidden Kain",
+  "foto": [
+   "https://lh3.googleusercontent.com/d/1BxY-xMqi13F_0NDvw71ueAdUl8ekFm8a",
+   "https://lh3.googleusercontent.com/d/1pyel0V0xcwplw_ZkJVH3wJYuMP0Qtnl8",
+   "https://lh3.googleusercontent.com/d/1pH5NA3VyMlhCadj3Pg2pJBZvTo0ohub6"
+  ],
+  "gaya": "biasa"
+ },
+ {
+  "nama": "Hidden Box Ukir",
+  "harga": "Rp 80.000",
+  "tagline": "Promo 5 Box:",
+  "fitur": [
+   "Paper box premium ukiran eksklusif",
+   "Termasuk Sewa Tempat Cincin & Uang ✨",
+   "Melindungi hantaran dengan kemewahan",
+   "Sewa > 5 box harga mengikuti diskon paket"
+  ],
+  "tombol": "Pesan Box Ukir",
+  "foto": [
+   "https://lh3.googleusercontent.com/d/1J7hsnEr8qS_uoDlm1eY6sR9njomFiOvU",
+   "https://lh3.googleusercontent.com/d/1EMymptg7_C3htBAf-ITDjq_TqwLBtwxx",
+   "https://lh3.googleusercontent.com/d/149WobfiarlFlJbshOJ5VnSiPD4O23rYc"
+  ],
+  "gaya": "biasa"
+ },
+ {
+  "nama": "Kreasi Mahar",
+  "harga": "Mulai",
+  "tagline": "Spesial Kustom",
+  "fitur": [
+   "Desain mahar kustom sesuai impian",
+   "Pigura premium anti rayap",
+   "Hiasan cutting nama & bunga detail",
+   "Bebas request tema warna"
+  ],
+  "tombol": "Pesan Mahar",
+  "foto": [
+   "https://lh3.googleusercontent.com/d/1kEqsw9YKMszOJWXfYnOCnpz2SgrqLsas",
+   "https://lh3.googleusercontent.com/d/1fHsdbQ38lA853hXWsSlKoGHuYx40SUb5",
+   "https://lh3.googleusercontent.com/d/1fHsdbQ38lA853hXWsSlKoGHuYx40SUb5"
+  ],
+  "gaya": "biasa"
+ },
+ {
+  "nama": "Tray Full Acrylic",
+  "harga": "Rp 75.000",
+  "tagline": "Promo 5 Box:",
+  "fitur": [
+   "Desain full akrilik premium & transparan",
+   "Termasuk Sewa Tempat Cincin & Uang ✨",
+   "Tampilan super mewah dari segala sisi",
+   "Sewa > 5 box harga mengikuti diskon paket"
+  ],
+  "tombol": "Pesan Full Acrylic",
+  "foto": [
+   "https://lh3.googleusercontent.com/d/1xTYe52fyd5mIIhiP19Qbf50MW2iCsCdx",
+   "https://lh3.googleusercontent.com/d/1iU1KG9jvSVtjsPk5LV-lb0u3woYaD-W7",
+   "https://lh3.googleusercontent.com/d/1lZMDYRzbAKxhrSvUIVi8ZqgFYb9e8oNi"
+  ],
+  "gaya": "besar"
  }
 ];
