@@ -10,7 +10,7 @@ window.KATALOG_TEST = [
  {
   "kunci": "logo",
   "grup": "Umum",
-  "label": "Logo (nav, hero, footer)",
+  "label": "Logo kecil (navigasi & footer)",
   "tipe": "img",
   "sel": "img[alt=\"Logo Adrisya\"]",
   "bawaan": "https://lh3.googleusercontent.com/d/1UCgEa8Zs3IfwbUfk911JYhhJqSuqH5ZD"
@@ -32,20 +32,20 @@ window.KATALOG_TEST = [
   "bawaan": "6289669636206"
  },
  {
-  "kunci": "ig_link",
-  "grup": "Umum",
-  "label": "Tautan Instagram (footer)",
-  "tipe": "href",
-  "sel": "footer a[href*=\"instagram.com\"]",
-  "bawaan": "https://www.instagram.com/adrisyadecoration?igsh=MTN3bjBpaW1iamUzag=="
- },
- {
   "kunci": "hero_bg",
   "grup": "Beranda (Hero)",
   "label": "Foto background hero",
   "tipe": "bg",
   "sel": "#beranda",
   "bawaan": "https://images.unsplash.com/photo-1519225421980-715cb0215aed?q=80&w=2070&auto=format&fit=crop"
+ },
+ {
+  "kunci": "logo_hero",
+  "grup": "Beranda (Hero)",
+  "label": "Logo BESAR di samping tulisan hero (kanan)",
+  "tipe": "img",
+  "sel": "img[alt=\"Adrisya Decoration Logo\"]",
+  "bawaan": "https://lh3.googleusercontent.com/d/1UCgEa8Zs3IfwbUfk911JYhhJqSuqH5ZD"
  },
  {
   "kunci": "hero_tagline",
@@ -126,54 +126,6 @@ window.KATALOG_TEST = [
   "tipe": "teks",
   "sel": "#katalog p.text-lg",
   "bawaan": "Lihat berbagai macam portofolio, desain mahar eksklusif, dan referensi dekorasi seserahan dari klien-klien kami sebelumnya melalui katalog di bawah ini."
- },
- {
-  "kunci": "galeri1",
-  "grup": "Katalog / Galeri",
-  "label": "Foto galeri 1",
-  "tipe": "img",
-  "sel": "img[alt=\"Galeri Seserahan 1\"]",
-  "bawaan": "https://lh3.googleusercontent.com/d/10a4pgS8jiISTfTh8tzJ2me88idLx6Oad"
- },
- {
-  "kunci": "galeri2",
-  "grup": "Katalog / Galeri",
-  "label": "Foto galeri 2",
-  "tipe": "img",
-  "sel": "img[alt=\"Galeri Seserahan 2\"]",
-  "bawaan": "https://lh3.googleusercontent.com/d/1RIFciIddboBFB_U6SNSCDlfBDzPj8kv0"
- },
- {
-  "kunci": "galeri3",
-  "grup": "Katalog / Galeri",
-  "label": "Foto galeri 3",
-  "tipe": "img",
-  "sel": "img[alt=\"Galeri Seserahan 3\"]",
-  "bawaan": "https://lh3.googleusercontent.com/d/1caSRXFyhBM0-UWx7NtwAkl_tF2zzMDTK"
- },
- {
-  "kunci": "galeri4",
-  "grup": "Katalog / Galeri",
-  "label": "Foto galeri 4",
-  "tipe": "img",
-  "sel": "img[alt=\"Galeri Seserahan 4\"]",
-  "bawaan": "https://lh3.googleusercontent.com/d/1F6dydW995lsgMySeALnyLW21bDJJqj7r"
- },
- {
-  "kunci": "galeri5",
-  "grup": "Katalog / Galeri",
-  "label": "Foto galeri 5",
-  "tipe": "img",
-  "sel": "img[alt=\"Galeri Seserahan 5\"]",
-  "bawaan": "https://lh3.googleusercontent.com/d/19C25huouD0WmONjtyyLYzspa6F_j0hWq"
- },
- {
-  "kunci": "galeri6",
-  "grup": "Katalog / Galeri",
-  "label": "Foto galeri 6",
-  "tipe": "img",
-  "sel": "img[alt=\"Galeri Seserahan 6\"]",
-  "bawaan": "https://lh3.googleusercontent.com/d/1nCriMDabUD32HxS5HjuN-K6oFOiZvxtm"
  },
  {
   "kunci": "syarat_judul",
@@ -376,5 +328,23 @@ window.PAKET_BAWAAN = [
    "https://lh3.googleusercontent.com/d/1lZMDYRzbAKxhrSvUIVi8ZqgFYb9e8oNi"
   ],
   "gaya": "besar"
+ }
+];
+window.GALERI_BAWAAN = [
+ "https://lh3.googleusercontent.com/d/10a4pgS8jiISTfTh8tzJ2me88idLx6Oad",
+ "https://lh3.googleusercontent.com/d/1RIFciIddboBFB_U6SNSCDlfBDzPj8kv0",
+ "https://lh3.googleusercontent.com/d/1caSRXFyhBM0-UWx7NtwAkl_tF2zzMDTK",
+ "https://lh3.googleusercontent.com/d/1F6dydW995lsgMySeALnyLW21bDJJqj7r",
+ "https://lh3.googleusercontent.com/d/19C25huouD0WmONjtyyLYzspa6F_j0hWq",
+ "https://lh3.googleusercontent.com/d/1nCriMDabUD32HxS5HjuN-K6oFOiZvxtm"
+];
+window.TAUTAN_BAWAAN = [
+ {
+  "label": "Instagram",
+  "url": "https://www.instagram.com/adrisyadecoration?igsh=MTN3bjBpaW1iamUzag=="
+ },
+ {
+  "label": "WhatsApp",
+  "url": "https://wa.me/6289669636206"
  }
 ];
