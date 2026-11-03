@@ -631,5 +631,77 @@
         <i class="fab fa-whatsapp"></i>
     </a>
 
+<script src="test-katalog.js"></script>
+<script>
+/* === Pemuat konten admin (test-konten.json) === */
+(function () {
+  function rapikan(s) { return (s || '').trim().replace(/\s+/g, ' '); }
+  function nodeTeksAwal(el) {
+    for (var i = 0; i < el.childNodes.length; i++) {
+      var n = el.childNodes[i];
+      if (n.nodeType === 3 && n.textContent.trim()) return n;
+    }
+    return null;
+  }
+  function terapkan(f, v) {
+    try {
+      if (f.tipe === 'judul') { document.title = v; return; }
+      if (f.tipe === 'wa') {
+        document.querySelectorAll('a[href*="wa.me/"]').forEach(function (a) {
+          a.href = a.href.replace(/wa\.me\/\d+/, 'wa.me/' + v);
+        });
+        return;
+      }
+      var els = document.querySelectorAll(f.sel);
+      if (!els.length) return;
+      if (f.tipe === 'foto3') {
+        els.forEach(function (img, i) { if (v[i]) img.src = v[i]; });
+        return;
+      }
+      if (f.tipe === 'daftar') {
+        var ul = els[0]; if (!ul) return;
+        var lama = [].slice.call(ul.children);
+        var frag = document.createDocumentFragment();
+        v.forEach(function (teks, i) {
+          var li;
+          if (lama[i] && rapikan(lama[i].textContent) === rapikan(teks)) {
+            li = lama[i];
+          } else {
+            var sumber = lama[i] || lama[0];
+            li = sumber ? sumber.cloneNode(false) : document.createElement('li');
+            if (sumber) {
+              var ikon = sumber.querySelector('i');
+              if (ikon) li.appendChild(ikon.cloneNode(true));
+            }
+            li.appendChild(document.createTextNode(' ' + teks));
+          }
+          frag.appendChild(li);
+        });
+        ul.innerHTML = '';
+        ul.appendChild(frag);
+        return;
+      }
+      els.forEach(function (el) {
+        if (f.tipe === 'teks') { el.textContent = v; }
+        else if (f.tipe === 'teksAwal') { var n = nodeTeksAwal(el); if (n) n.textContent = ' ' + v + ' '; }
+        else if (f.tipe === 'img') { el.src = v; }
+        else if (f.tipe === 'href') { el.setAttribute('href', v); }
+        else if (f.tipe === 'bg') { el.style.backgroundImage = 'url("' + v + '")'; }
+        else if (f.tipe === 'html') { el.innerHTML = v; }
+      });
+    } catch (e) { /* abaikan field yang gagal, halaman tetap tampil */ }
+  }
+  function muat() {
+    fetch('test-konten.json?_=' + Date.now()).then(function (r) { return r.json(); }).then(function (k) {
+      var u = (k && k.ubahan) || {};
+      (window.KATALOG_TEST || []).forEach(function (f) {
+        if (Object.prototype.hasOwnProperty.call(u, f.kunci)) terapkan(f, u[f.kunci]);
+      });
+    }).catch(function () { /* tanpa JSON, halaman tampil apa adanya */ });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', muat);
+  else muat();
+})();
+</script>
 </body>
 </html>
