@@ -730,7 +730,20 @@
       var elHarga = kartu.querySelector('.text-3xl');
       if (elHarga) elHarga.textContent = p.harga || '';
       var elTagline = kartu.querySelector('.border-b');
-      if (elTagline) elTagline.textContent = p.tagline || '';
+      if (elTagline) {
+        elTagline.textContent = '';
+        String(p.tagline || '').split(/(Rp\s?[\d.]+)/g).forEach(function (bagian) {
+          if (!bagian) return;
+          if (/^Rp/.test(bagian)) {
+            var sp = document.createElement('span');
+            sp.className = 'text-brand-yellow font-bold';
+            sp.textContent = bagian;
+            elTagline.appendChild(sp);
+          } else {
+            elTagline.appendChild(document.createTextNode(bagian));
+          }
+        });
+      }
       susunDaftar(kartu.querySelector('ul'), p.fitur || []);
       var tombol = kartu.querySelector('a');
       if (tombol) {
