@@ -728,7 +728,8 @@
       if (besar) kartu.classList.add('kartu-lebar'); else kartu.classList.remove('kartu-lebar');
       var h3 = kartu.querySelector('h3'); if (h3) h3.textContent = p.nama || '';
       isiTeksAwal(kartu.querySelector('.text-3xl'), p.harga || '');
-      isiTeksAwal(kartu.querySelector('.border-b'), p.tagline || '');
+      var elTagline = kartu.querySelector('.border-b');
+      if (elTagline) elTagline.textContent = p.tagline || '';
       susunDaftar(kartu.querySelector('ul'), p.fitur || []);
       var tombol = kartu.querySelector('a');
       if (tombol) {
