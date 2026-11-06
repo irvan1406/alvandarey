@@ -727,7 +727,8 @@
       kartu.classList.remove('reveal', 'tampil');
       if (besar) kartu.classList.add('kartu-lebar'); else kartu.classList.remove('kartu-lebar');
       var h3 = kartu.querySelector('h3'); if (h3) h3.textContent = p.nama || '';
-      isiTeksAwal(kartu.querySelector('.text-3xl'), p.harga || '');
+      var elHarga = kartu.querySelector('.text-3xl');
+      if (elHarga) elHarga.textContent = p.harga || '';
       var elTagline = kartu.querySelector('.border-b');
       if (elTagline) elTagline.textContent = p.tagline || '';
       susunDaftar(kartu.querySelector('ul'), p.fitur || []);
