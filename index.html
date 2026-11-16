@@ -352,6 +352,69 @@
 .gaya-koran.tk-mini .koran-foto{height:110px}
 .gaya-koran.tk-mini .koran-meta{font-size:7.5px}
 .gaya-koran.tk-mini .koran-ket{display:none}
+/* ===== STRUKTUR ISI PER KELUARGA ===== */
+.mempelai-duo{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:start}
+.mp-kolom .foto-mempelai{width:100%;height:190px;margin:8px auto 4px}
+.mp-label{font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;margin-bottom:8px}
+.gaya-folio .mp-label{font-family:'Space Mono',monospace;color:#5B7553;border-bottom:1.6px solid #1E2430;padding-bottom:7px}
+.gaya-folio .mp-kolom .nama-mempelai{font-size:23px}
+.gaya-koran .mempelai-duo{gap:0}
+.gaya-koran .mp-kolom{padding:0 13px}
+.gaya-koran .mp-kolom + .mp-kolom{border-left:1px solid #1C1A17}
+.gaya-koran .mp-label{font-family:'Special Elite',monospace;color:#8E3B2F;border-bottom:3px double #1C1A17;padding-bottom:7px}
+.gaya-koran .mp-kolom .nama-mempelai{font-size:24px}
+.mp-kartu{background:#fff;color:#14304D;border-radius:14px;padding:0 16px 18px;margin:0 auto 16px;max-width:430px;overflow:hidden;box-shadow:0 14px 30px rgba(3,14,26,.35)}
+.mp-kartu-kepala{display:flex;justify-content:space-between;background:#14304D;color:#fff;font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;padding:9px 16px;margin:0 -16px 14px}
+.gaya-tiket .mp-kartu .nama-mempelai{color:#14304D}
+.gaya-tiket .mp-kartu .foto-mempelai{border-color:#14304D}
+.gaya-amplop section.seksi-mempelai{background:#FBF5E4;border:1px solid #C9A24B;border-radius:12px;box-shadow:0 14px 30px rgba(74,52,33,.16);margin-top:26px;margin-bottom:26px}
+.cerita-folio,.cerita-rute,.cerita-artikel,.cerita-surat{max-width:440px;margin:16px auto 0;text-align:left}
+.cf-item{display:flex;gap:16px;padding:15px 0;border-bottom:1px solid rgba(30,36,48,.18)}
+.cf-item:last-child{border-bottom:none}
+.cf-no{font-family:'Space Mono',monospace;font-size:25px;font-weight:700;color:#5B7553;line-height:1}
+.cf-isi b{font-family:'Playfair Display',serif;font-size:19px;display:block;color:#1E2430}
+.cf-isi span{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;opacity:.6}
+.cf-isi p{margin:5px 0 0;font-size:14px;line-height:1.65;opacity:.88}
+.cr-item{position:relative;padding:0 0 20px 32px}
+.cr-item::before{content:'✈';position:absolute;left:0;top:1px;color:#E8871E;font-size:15px}
+.cr-item::after{content:'';position:absolute;left:7px;top:26px;bottom:2px;border-left:2px dashed #2E5A85}
+.cr-item:last-child::after{display:none}
+.cr-item b{font-family:'Montserrat',sans-serif;font-size:16.5px;display:block;color:#EAF1F8}
+.cr-item span{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#FFB347}
+.cr-item p{margin:5px 0 0;font-size:14px;line-height:1.65;opacity:.88}
+.ca-item{padding:15px 0;border-bottom:3px double #1C1A17}
+.ca-item:last-child{border-bottom:none}
+.ca-item b{font-family:'Playfair Display',serif;font-weight:800;font-size:20px;display:block;color:#1C1A17}
+.ca-item span{font-family:'Special Elite',monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:#8E3B2F}
+.ca-item p{margin:6px 0 0;font-size:15.5px;line-height:1.65;font-family:'Cormorant Garamond',serif}
+.ca-item p::first-letter{font-family:'Playfair Display',serif;font-weight:800;font-size:27px;line-height:1;color:#8E3B2F}
+.cs-item{background:#FFFDF6;border:1.6px dashed #7A1F1F;border-radius:8px;padding:16px 18px;margin-bottom:14px;box-shadow:0 8px 18px rgba(74,52,33,.10)}
+.cs-label{font-family:'Cinzel',serif;font-size:9.5px;letter-spacing:.24em;text-transform:uppercase;color:#7A1F1F;margin-bottom:6px}
+.cs-item b{font-family:'Playfair Display',serif;font-size:19px;display:block;color:#5A3A22}
+.cs-item span{font-style:italic;font-size:12.5px;opacity:.7;font-family:'Cormorant Garamond',serif}
+.cs-item p{margin:5px 0 0;font-size:14.5px;line-height:1.65;font-family:'Cormorant Garamond',serif}
+.kartu-rundown{text-align:left}
+.kartu-rundown h5{text-align:center}
+.rd-baris{display:flex;justify-content:space-between;align-items:baseline;gap:14px;border-bottom:1px solid rgba(30,36,48,.16);padding:8px 0}
+.rd-baris span{font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;opacity:.6}
+.rd-baris b{font-size:14px;text-align:right}
+.kt-kepala{display:flex;justify-content:space-between;gap:10px;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:#E8871E;border-bottom:2px dashed #B9C9D9;padding-bottom:10px;margin-bottom:12px}
+.galeri.mode-koran{display:block}
+.fig-koran{margin:0 0 14px}
+.fig-koran img{width:100%;height:210px;object-fit:cover;display:block}
+.fig-koran.utama img{height:250px}
+.fig-koran figcaption{font-family:'Special Elite',monospace;font-size:10.5px;opacity:.75;margin-top:6px;text-align:left}
+.dc-folio{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:14px 0 6px}
+.dc-f-item{border:1.6px solid #1E2430;background:#fff;padding:8px 10px;display:flex;align-items:center;gap:8px}
+.dc-f-chip{width:22px;height:22px;border:1px solid rgba(0,0,0,.2);display:block}
+.dc-f-label{font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.06em}
+.gaya-pendopo .hitung.mode-medali{gap:10px}
+.gaya-pendopo .hitung.mode-medali div{position:relative;width:74px;height:88px;min-width:0;background:transparent;border:none;border-radius:0;color:#EFE6D0;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:19px 0 0}
+.gaya-pendopo .hitung.mode-medali div::before{content:'';position:absolute;left:50%;top:9px;width:58px;height:58px;transform:translateX(-50%) rotate(45deg);background:linear-gradient(160deg,#175043,#0B2721);border:1.5px solid #C9A227;border-radius:50% 50% 10px 50%;z-index:0}
+.gaya-pendopo .hitung.mode-medali div::after{content:'';position:absolute;top:1px;left:50%;width:7px;height:7px;margin-left:-3.5px;background:#C9A227;transform:rotate(45deg);z-index:1}
+.gaya-pendopo .hitung.mode-medali b{position:relative;z-index:1;font-family:'Cinzel',serif;font-size:22px;color:#F3E9CF}
+.gaya-pendopo .hitung.mode-medali span{position:relative;z-index:1;font-size:9px;letter-spacing:.12em;color:#C9A227}
+/* ===== AKHIR STRUKTUR ISI ===== */
 </style></head>
 <body>
 <header class="site" id="kepalaSitus">
@@ -584,11 +647,11 @@ const U = id => 'https://images.unsplash.com/photo-' + id + '?q=80&w=900&auto=fo
 const TEMPLATES = [
  {id:'pusaka-jawa', nama:'Snapshot Abadi', tier:'Eksklusif', deskripsi:'Hitam sinematik ala jepretan timeless: foto layar penuh, marquee berjalan, bingkai polaroid, teks krem dengan aksen merah gelap dan amber.', thumb:'', gaya:'snapshot', bg:'#000000', aksen:'#B11117', teks:'#F8F4E8', judul:"'Philosopher',serif", isi:"'Philosopher',serif", foto:U('1519741497674-611481863552'), latarImg:'', orn:'', orn2:'', ornMode:'sampul', pembatas:'snapshot', galeriMode:'polaroid', hitungMode:'kotak', mempelaiUrutan:'wanita', galeriDefault:[U('1511285560929-80b456fea0bc'), U('1520854221256-17451cc331bf'), U('1465495976277-4387d4b0b4c6'), U('1469371670807-013ccf25f16a')], urutan:['ayat','mempelai','hitung','acara','galeri','cerita','dresscode','amplop','rsvp','turut']},
  {id:'krem-anggun', nama:'Biru Lembut', tier:'Basic', deskripsi:'Putih bersih biru dusty dan lavender: cat air hortensia di sudut sampul, lockup tanggal besar, nuansa lembut menenangkan.', thumb:'', gaya:'biru', bg:'#ffffff', aksen:'#4B6B99', teks:'#33475f', judul:"'Philosopher',serif", isi:"'Poppins',sans-serif", foto:U('1519741497674-611481863552'), latarImg:'', orn:'img-undangan/orn-biru.webp', orn2:'img-undangan/orn-biru.webp', ornMode:'sampul', pembatas:'biru', galeriMode:'grid', hitungMode:'panel', mempelaiUrutan:'wanita', galeriDefault:[U('1529636798458-92182e662485'), U('1522673607200-164d1b6ce486'), U('1469371670807-013ccf25f16a'), U('1465495976277-4387d4b0b4c6')], urutan:['ayat','mempelai','hitung','acara','cerita','galeri','dresscode','amplop','rsvp','turut']},
- {id:'surat-pusaka', nama:'Surat Pusaka', tier:'Eksklusif', deskripsi:'Undangan sebagai surat berharga: amplop batik bersegel lilin gunungan di atas kertas perkamen, isi kartu-kartu surat berwarna krem sogan dan emas tua.', thumb:'', gaya:'amplop', bg:'#F3E9D2', aksen:'#7A1F1F', teks:'#4A3421', judul:"'Playfair Display',serif", isi:"'Cormorant Garamond',serif", foto:U('1519741497674-611481863552'), latarImg:'', orn:'', orn2:'', ornMode:'sampul', pembatas:'segel', galeriMode:'polaroid', hitungMode:'kotak', mempelaiUrutan:'wanita', galeriDefault:[U('1511285560929-80b456fea0bc'), U('1520854221256-17451cc331bf'), U('1465495976277-4387d4b0b4c6'), U('1469371670807-013ccf25f16a')], urutan:['ayat','mempelai','hitung','acara','galeri','cerita','dresscode','amplop','rsvp','turut']},
+ {id:'surat-pusaka', nama:'Surat Pusaka', tier:'Eksklusif', deskripsi:'Undangan sebagai surat berharga: amplop batik bersegel lilin gunungan di atas kertas perkamen, isi kartu-kartu surat berwarna krem sogan dan emas tua.', thumb:'', gaya:'amplop', bg:'#F3E9D2', aksen:'#7A1F1F', teks:'#4A3421', judul:"'Playfair Display',serif", isi:"'Cormorant Garamond',serif", foto:U('1519741497674-611481863552'), latarImg:'', orn:'', orn2:'', ornMode:'sampul', pembatas:'segel', galeriMode:'polaroid', hitungMode:'kotak', mempelaiUrutan:'wanita', galeriDefault:[U('1511285560929-80b456fea0bc'), U('1520854221256-17451cc331bf'), U('1465495976277-4387d4b0b4c6'), U('1469371670807-013ccf25f16a')], urutan:['ayat','mempelai','acara','galeri','cerita','hitung','dresscode','amplop','rsvp','turut']},
  {id:'folio-nusantara', nama:'Folio Nusantara', tier:'Premium', deskripsi:'Editorial majalah premium: sampul tipografi besar tanpa foto, label monospace bernomor halaman, hitung mundur berupa kalender bulan dengan tanggal dilingkari, rundown dan dresscode tertata seperti dokumen folio.', thumb:'', gaya:'folio', bg:'#FAF7F0', aksen:'#5B7553', teks:'#1E2430', judul:"'Playfair Display',serif", isi:"'Poppins',sans-serif", foto:U('1529636798458-92182e662485'), latarImg:'', orn:'', orn2:'', ornMode:'sampul', pembatas:'folio', galeriMode:'editorial', hitungMode:'kalender', mempelaiUrutan:'wanita', galeriDefault:[U('1522673607200-164d1b6ce486'), U('1469371670807-013ccf25f16a'), U('1465495976277-4387d4b0b4c6'), U('1511285560929-80b456fea0bc')], urutan:['ayat','mempelai','hitung','acara','dresscode','galeri','cerita','amplop','rsvp','turut']},
- {id:'gerbang-pendopo', nama:'Gerbang Pendopo', tier:'Eksklusif', deskripsi:'Tamu memasuki pendopo: gerbang gunungan dua daun yang membuka saat undangan dibuka, hijau botol dan emas, foto mempelai dalam bingkai lengkung gebyok.', thumb:'', gaya:'pendopo', bg:'#0E2A26', aksen:'#C9A227', teks:'#EFE6D0', judul:"'Cinzel',serif", isi:"'Cormorant Garamond',serif", foto:U('1519741497674-611481863552'), latarImg:'', orn:'img-undangan/orn-gunungan.webp', orn2:'img-undangan/orn-gunungan.webp', ornMode:'sampul', pembatas:'luxury', galeriMode:'grid', hitungMode:'kotak', mempelaiUrutan:'wanita', galeriDefault:[U('1511285560929-80b456fea0bc'), U('1520854221256-17451cc331bf'), U('1465495976277-4387d4b0b4c6'), U('1469371670807-013ccf25f16a')], urutan:['ayat','mempelai','hitung','acara','galeri','cerita','dresscode','amplop','rsvp','turut']},
- {id:'tiket-perjalanan', nama:'Tiket Perjalanan', tier:'Premium', deskripsi:'Undangan sebagai boarding pass: kartu tiket lengkap dengan rute mempelai, barcode, dan garis perforasi; hitung mundur gaya papan keberangkatan amber; galeri strip perjalanan.', thumb:'', gaya:'tiket', bg:'#0F2B46', aksen:'#E8871E', teks:'#EAF1F8', judul:"'Montserrat',sans-serif", isi:"'Poppins',sans-serif", foto:U('1465495976277-4387d4b0b4c6'), latarImg:'', orn:'', orn2:'', ornMode:'sampul', pembatas:'perforasi', galeriMode:'strip', hitungMode:'kotak', mempelaiUrutan:'wanita', galeriDefault:[U('1469371670807-013ccf25f16a'), U('1511285560929-80b456fea0bc'), U('1520854221256-17451cc331bf'), U('1529636798458-92182e662485')], urutan:['ayat','mempelai','hitung','acara','galeri','cerita','dresscode','amplop','rsvp','turut']},
- {id:'kabar-gembira', nama:'Kabar Gembira', tier:'Basic', deskripsi:'Halaman depan koran hari bahagia: masthead Kabar Gembira, garis ganda khas surat kabar, foto hitam-putih berbingkai keterangan, hitung mundur blok tinta.', thumb:'', gaya:'koran', bg:'#F4EFE3', aksen:'#8E3B2F', teks:'#1C1A17', judul:"'Playfair Display',serif", isi:"'Cormorant Garamond',serif", foto:U('1529636798458-92182e662485'), latarImg:'', orn:'', orn2:'', ornMode:'sampul', pembatas:'koran', galeriMode:'grid', hitungMode:'kotak', mempelaiUrutan:'wanita', galeriDefault:[U('1522673607200-164d1b6ce486'), U('1511285560929-80b456fea0bc'), U('1465495976277-4387d4b0b4c6'), U('1469371670807-013ccf25f16a')], urutan:['ayat','mempelai','acara','hitung','galeri','cerita','dresscode','amplop','rsvp','turut']}
+ {id:'gerbang-pendopo', nama:'Gerbang Pendopo', tier:'Eksklusif', deskripsi:'Tamu memasuki pendopo: gerbang gunungan dua daun yang membuka saat undangan dibuka, hijau botol dan emas, foto mempelai dalam bingkai lengkung gebyok.', thumb:'', gaya:'pendopo', bg:'#0E2A26', aksen:'#C9A227', teks:'#EFE6D0', judul:"'Cinzel',serif", isi:"'Cormorant Garamond',serif", foto:U('1519741497674-611481863552'), latarImg:'', orn:'img-undangan/orn-gunungan.webp', orn2:'img-undangan/orn-gunungan.webp', ornMode:'sampul', pembatas:'luxury', galeriMode:'grid', hitungMode:'medali', mempelaiUrutan:'wanita', galeriDefault:[U('1511285560929-80b456fea0bc'), U('1520854221256-17451cc331bf'), U('1465495976277-4387d4b0b4c6'), U('1469371670807-013ccf25f16a')], urutan:['ayat','mempelai','hitung','acara','galeri','cerita','dresscode','amplop','rsvp','turut']},
+ {id:'tiket-perjalanan', nama:'Tiket Perjalanan', tier:'Premium', deskripsi:'Undangan sebagai boarding pass: kartu tiket lengkap dengan rute mempelai, barcode, dan garis perforasi; hitung mundur gaya papan keberangkatan amber; galeri strip perjalanan.', thumb:'', gaya:'tiket', bg:'#0F2B46', aksen:'#E8871E', teks:'#EAF1F8', judul:"'Montserrat',sans-serif", isi:"'Poppins',sans-serif", foto:U('1465495976277-4387d4b0b4c6'), latarImg:'', orn:'', orn2:'', ornMode:'sampul', pembatas:'perforasi', galeriMode:'strip', hitungMode:'kotak', mempelaiUrutan:'wanita', galeriDefault:[U('1469371670807-013ccf25f16a'), U('1511285560929-80b456fea0bc'), U('1520854221256-17451cc331bf'), U('1529636798458-92182e662485')], urutan:['ayat','mempelai','acara','hitung','galeri','cerita','dresscode','amplop','rsvp','turut']},
+ {id:'kabar-gembira', nama:'Kabar Gembira', tier:'Basic', deskripsi:'Halaman depan koran hari bahagia: masthead Kabar Gembira, garis ganda khas surat kabar, foto hitam-putih berbingkai keterangan, hitung mundur blok tinta.', thumb:'', gaya:'koran', bg:'#F4EFE3', aksen:'#8E3B2F', teks:'#1C1A17', judul:"'Playfair Display',serif", isi:"'Cormorant Garamond',serif", foto:U('1529636798458-92182e662485'), latarImg:'', orn:'', orn2:'', ornMode:'sampul', pembatas:'koran', galeriMode:'grid', hitungMode:'kotak', mempelaiUrutan:'wanita', galeriDefault:[U('1522673607200-164d1b6ce486'), U('1511285560929-80b456fea0bc'), U('1465495976277-4387d4b0b4c6'), U('1469371670807-013ccf25f16a')], urutan:['ayat','mempelai','cerita','acara','hitung','galeri','dresscode','amplop','rsvp','turut']}
 ];
 
 /* ================= STATE ================= */
@@ -763,6 +826,11 @@ function bukaPratinjau(){
   const a = document.querySelector('#pratinjau .musik-pratinjau'); if(a) a.play().catch(() => {});
   const el = document.querySelector('#pratinjau section.isi'); if(el) el.scrollIntoView({behavior: 'smooth'});
 }
+function bukaDariModal(){
+  const isi = $('#mpIsi'); if(!isi) return;
+  const tm = isi.querySelector('.tamu'); if(tm) tm.classList.add('terbuka');
+  const el = isi.querySelector('section.isi'); if(el) el.scrollIntoView({behavior: 'smooth'});
+}
 function toggleMusikPratinjau(btn){
   const a = document.querySelector('#pratinjau .musik-pratinjau');
   if(!a) return;
@@ -791,7 +859,7 @@ function pratinjauPenuh(id){
   S = dataContoh(t.id);
   try{
     $('#mpJudul').innerText = 'Preview — ' + t.nama;
-    $('#mpIsi').innerHTML = `<div class="tamu gaya-${t.gaya}" style="${temaStyle(t)}">${t.latarImg ? `<img class="latar-bg" src="${t.latarImg}" alt="">` : ''}${partikelHTML(t)}${sampulHTML(t, 'Nama Tamu', 'mini')}${isiHTML(t)}</div>`;
+    $('#mpIsi').innerHTML = `<div class="tamu gaya-${t.gaya}" style="${temaStyle(t)}">${t.latarImg ? `<img class="latar-bg" src="${t.latarImg}" alt="">` : ''}${partikelHTML(t)}${sampulHTML(t, 'Nama Tamu', 'modal')}${isiHTML(t)}</div>`;
     jalankanHitung($('#mpIsi')); pasangAnimasi($('#mpIsi'));
   } finally { S = simpan; }
   $('#modalPreview').hidden = false;
@@ -839,7 +907,7 @@ function partikelHTML(t){
 function sampulHTML(t, namaTamu, mode){
   const tglUtama = S.akad.tanggal || S.resepsi.tanggal;
   const fotoSampul = S.sampul || t.foto;
-  const tombolBuka = mode==='tamu' ? '<button class="btn-buka" onclick="bukaUndangan()">✉ Buka Undangan</button>' : (mode==='mini' ? '<div class="btn-buka">✉ Buka Undangan</div>' : '<button class="btn-buka" onclick="bukaPratinjau()">✉ Buka Undangan</button>');
+  const tombolBuka = mode==='tamu' ? '<button class="btn-buka" onclick="bukaUndangan()">✉ Buka Undangan</button>' : (mode==='mini' ? '<div class="btn-buka">✉ Buka Undangan</div>' : (mode==='modal' ? '<button class="btn-buka" onclick="bukaDariModal()">✉ Buka Undangan</button>' : '<button class="btn-buka" onclick="bukaPratinjau()">✉ Buka Undangan</button>'));
   const kepada = '<div class="kepada">Kepada Yth.<br>Bapak/Ibu/Saudara/i<b>' + esc(namaTamu || 'Tamu Undangan') + '</b></div>';
   const namaDua = esc(S.pria.panggil||'Mempelai') + ' &amp;<br>' + esc(S.wanita.panggil||'Mempelai');
   const tglTeks = esc(formatTgl(tglUtama) || 'Sabtu, 12 Desember 2026');
@@ -882,23 +950,37 @@ function isiHTML(t){
   const amplopAda = daftarRekening().length > 0;
   const petaEmbed = a => (a.tempat || a.alamat) ? `<iframe class="peta" loading="lazy" src="https://www.google.com/maps?q=${encodeURIComponent(((a.tempat||'') + ' ' + (a.alamat||'')).trim())}&output=embed" title="Peta lokasi"></iframe>` : '';
   const linkKalender = (j, a) => { if(!a.tanggal) return ''; const cocok = (a.jam||'').match(/\d{1,2}[.:]\d{2}/g) || []; const norm = x => x.replace('.', ':').padStart(5, '0'); const awal = cocok[0] ? norm(cocok[0]) : '08:00'; let selesai = cocok[1] ? norm(cocok[1]) : ''; if(!selesai){ const p = awal.split(':'); selesai = String((+p[0] + 2) % 24).padStart(2, '0') + ':' + p[1]; } const mk = jam => a.tanggal.replace(/-/g, '') + 'T' + jam.replace(':', '') + '00'; const url = 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=' + encodeURIComponent(j + ' — ' + namaPasangan()) + '&dates=' + mk(awal) + '/' + mk(selesai) + '&details=' + encodeURIComponent('Undangan pernikahan ' + namaPasangan()) + '&location=' + encodeURIComponent(((a.tempat||'') + ' ' + (a.alamat||'')).trim()); return `<div><a href="${url}" target="_blank" rel="noopener">📅 Simpan ke Kalender</a></div>`; };
-  const seksiCerita = () => { const list = (S.cerita || []).filter(c => (c.judul||'').trim() || (c.isi||'').trim()); if(!list.length) return ''; return `<section class="isi anim"><h4 class="judul-seksi">Cerita Cinta</h4><div class="cerita">${list.map(c => `<div class="cerita-item"><b>${esc(c.judul||'Kisah Kami')}</b>${(c.tanggal||'').trim() ? `<span>${esc(c.tanggal)}</span>` : ''}<p>${esc(c.isi||'')}</p></div>`).join('')}</div></section>`; };
-  const seksiDresscode = () => { const d = S.dresscode || {}; const warna = (d.warna || '').split(',').map(x => x.trim()).filter(Boolean); if(!warna.length && !(d.catatan||'').trim()) return ''; return `<section class="isi anim"><h4 class="judul-seksi">Dresscode</h4><p class="redup">Kami akan sangat senang bila tamu berkenan mengenakan warna berikut:</p><div class="dc-warna">${warna.map(w => `<span class="dc-bulat" style="background:${esc(w)}" title="${esc(w)}"></span>`).join('')}</div>${(d.catatan||'').trim() ? `<p class="redup">${esc(d.catatan)}</p>` : ''}</section>`; };
+  const seksiCerita = () => { const list = (S.cerita || []).filter(c => (c.judul||'').trim() || (c.isi||'').trim()); if(!list.length) return '';
+    if(t.gaya==='folio') return `<section class="isi anim"><h4 class="judul-seksi">Cerita Cinta</h4><div class="cerita-folio">${list.map((c, i) => `<div class="cf-item"><div class="cf-no">${String(i + 1).padStart(2, '0')}</div><div class="cf-isi"><b>${esc(c.judul||'Kisah Kami')}</b>${(c.tanggal||'').trim() ? `<span>${esc(c.tanggal)}</span>` : ''}<p>${esc(c.isi||'')}</p></div></div>`).join('')}</div></section>`;
+    if(t.gaya==='tiket') return `<section class="isi anim"><h4 class="judul-seksi">Cerita Cinta</h4><div class="cerita-rute">${list.map((c, i) => `<div class="cr-item"><b>${esc(c.judul||'Kisah Kami')}</b>${(c.tanggal||'').trim() ? `<span>Pemberhentian ${i + 1} · ${esc(c.tanggal)}</span>` : `<span>Pemberhentian ${i + 1}</span>`}<p>${esc(c.isi||'')}</p></div>`).join('')}</div></section>`;
+    if(t.gaya==='koran') return `<section class="isi anim"><h4 class="judul-seksi">Cerita Cinta</h4><div class="cerita-artikel">${list.map(c => `<article class="ca-item"><b>${esc(c.judul||'Kisah Kami')}</b>${(c.tanggal||'').trim() ? `<span>${esc(c.tanggal)}</span>` : ''}<p>${esc(c.isi||'')}</p></article>`).join('')}</div></section>`;
+    if(t.gaya==='amplop') return `<section class="isi anim"><h4 class="judul-seksi">Cerita Cinta</h4><div class="cerita-surat">${list.map((c, i) => `<div class="cs-item"><div class="cs-label">Surat ke-${i + 1}</div><b>${esc(c.judul||'Kisah Kami')}</b>${(c.tanggal||'').trim() ? `<span>${esc(c.tanggal)}</span>` : ''}<p>${esc(c.isi||'')}</p></div>`).join('')}</div></section>`;
+    return `<section class="isi anim"><h4 class="judul-seksi">Cerita Cinta</h4><div class="cerita">${list.map(c => `<div class="cerita-item"><b>${esc(c.judul||'Kisah Kami')}</b>${(c.tanggal||'').trim() ? `<span>${esc(c.tanggal)}</span>` : ''}<p>${esc(c.isi||'')}</p></div>`).join('')}</div></section>`; };
+  const seksiDresscode = () => { const d = S.dresscode || {}; const warna = (d.warna || '').split(',').map(x => x.trim()).filter(Boolean); if(!warna.length && !(d.catatan||'').trim()) return '';
+    if(t.gaya==='folio') return `<section class="isi anim"><h4 class="judul-seksi">Dresscode</h4><p class="redup">Kami akan sangat senang bila tamu berkenan mengenakan warna berikut:</p><div class="dc-folio">${warna.map(w => `<div class="dc-f-item"><span class="dc-f-chip" style="background:${esc(w)}"></span><span class="dc-f-label">${esc(w)}</span></div>`).join('')}</div>${(d.catatan||'').trim() ? `<p class="redup">${esc(d.catatan)}</p>` : ''}</section>`;
+    return `<section class="isi anim"><h4 class="judul-seksi">Dresscode</h4><p class="redup">Kami akan sangat senang bila tamu berkenan mengenakan warna berikut:</p><div class="dc-warna">${warna.map(w => `<span class="dc-bulat" style="background:${esc(w)}" title="${esc(w)}"></span>`).join('')}</div>${(d.catatan||'').trim() ? `<p class="redup">${esc(d.catatan)}</p>` : ''}</section>`; };
   const seksiTurut = () => { const list = (S.turut || '').split('\n').map(x => x.trim()).filter(Boolean); if(!list.length) return ''; return `<section class="isi anim"><h4 class="judul-seksi">Turut Mengundang</h4>${list.map(n => `<p class="turut-nama">${esc(n)}</p>`).join('')}</section>`; };
   const kartuAmplop = a => (a.nomor||'').trim() ? `<div class="amplop"><b>${esc(a.jenis||'Transfer')}</b><div class="nomor">${esc(a.nomor)}</div><div style="font-size:13px">a.n. ${esc(a.an||'Mempelai')}</div><div style="margin-top:10px"><button type="button" onclick="salinTeks('${esc(a.nomor)}')">Salin Nomor</button></div></div>` : '';
-  const kartuAcara = (j, a) => `<div class="kartu-acara"><h5>${j}</h5><p><b>${esc(formatTgl(a.tanggal)||'Tanggal menyusul')}</b></p><p>Pukul ${esc(a.jam||'--.--')} WIB</p><p>${esc(a.tempat||'Tempat menyusul')}</p><p style="opacity:.8">${esc(a.alamat||'')}</p>${petaEmbed(a)}${linkKalender(j, a)}${a.maps?`<a href="${esc(a.maps)}" target="_blank" rel="noopener">Lihat Lokasi</a>`:''}</div>`;
+  const kartuAcara = (j, a) => {
+    if(t.gaya==='folio') return `<div class="kartu-acara kartu-rundown"><h5>${j}</h5><div class="rd-baris"><span>Tanggal</span><b>${esc(formatTgl(a.tanggal)||'Tanggal menyusul')}</b></div><div class="rd-baris"><span>Pukul</span><b>${esc(a.jam||'--.--')} WIB</b></div><div class="rd-baris"><span>Tempat</span><b>${esc(a.tempat||'Tempat menyusul')}</b></div><p style="opacity:.8">${esc(a.alamat||'')}</p>${petaEmbed(a)}${linkKalender(j, a)}${a.maps?`<a href="${esc(a.maps)}" target="_blank" rel="noopener">Lihat Lokasi</a>`:''}</div>`;
+    if(t.gaya==='tiket') return `<div class="kartu-acara kartu-tiketstub"><div class="kt-kepala"><span>${j}</span><span>&#9992; Wedding Airlines</span></div><p><b>${esc(formatTgl(a.tanggal)||'Tanggal menyusul')}</b></p><p>Pukul ${esc(a.jam||'--.--')} WIB</p><p>${esc(a.tempat||'Tempat menyusul')}</p><p style="opacity:.8">${esc(a.alamat||'')}</p>${petaEmbed(a)}${linkKalender(j, a)}${a.maps?`<a href="${esc(a.maps)}" target="_blank" rel="noopener">Lihat Lokasi</a>`:''}</div>`;
+    return `<div class="kartu-acara"><h5>${j}</h5><p><b>${esc(formatTgl(a.tanggal)||'Tanggal menyusul')}</b></p><p>Pukul ${esc(a.jam||'--.--')} WIB</p><p>${esc(a.tempat||'Tempat menyusul')}</p><p style="opacity:.8">${esc(a.alamat||'')}</p>${petaEmbed(a)}${linkKalender(j, a)}${a.maps?`<a href="${esc(a.maps)}" target="_blank" rel="noopener">Lihat Lokasi</a>`:''}</div>`; };
   const bAyat = `<section class="isi anim seksi-ayat"><div class="ayat-arab" lang="ar" dir="rtl">\u0648\u064e\u0645\u0650\u0646\u0652 \u0622\u064a\u064e\u0627\u062a\u0650\u0647\u0650 \u0623\u064e\u0646\u0652 \u062e\u064e\u0644\u064e\u0642\u064e \u0644\u064e\u0643\u064f\u0645 \u0645\u0650\u0651\u0646\u0652 \u0623\u064e\u0646\u0641\u064f\u0633\u0650\u0643\u064f\u0645\u0652 \u0623\u064e\u0632\u0652\u0648\u064e\u0627\u062c\u064b\u0627 \u0644\u0650\u0651\u062a\u064e\u0633\u0652\u0643\u064f\u0646\u064f\u0648\u0627 \u0625\u0650\u0644\u064e\u064a\u0652\u0647\u064e\u0627 \u0648\u064e\u062c\u064e\u0639\u064e\u0644\u064e \u0628\u064e\u064a\u0652\u0646\u064e\u0643\u064f\u0645 \u0645\u064e\u0651\u0648\u064e\u062f\u064e\u0651\u0629\u064b \u0648\u064e\u0631\u064e\u062d\u0652\u0645\u064e\u0629\u064b \u06da \u0625\u0650\u0646\u064e\u0651 \u0641\u0650\u064a \u0630\u064e\u0670\u0644\u0650\u0643\u064e \u0644\u064e\u0622\u064a\u064e\u0627\u062a\u064d \u0644\u0650\u0651\u0642\u064e\u0648\u0652\u0645\u064d \u064a\u064e\u062a\u064e\u0641\u064e\u0643\u064e\u0651\u0631\u064f\u0648\u0646\u064e</div><p class="redup"><i>"Dan di antara tanda-tanda kebesaran-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, supaya kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang."</i></p><p class="redup"><b>QS. Ar-Rum: 21</b></p><div class="bismillah" lang="ar">\u0628\u0650\u0633\u0652\u0645\u0650 \u0627\u0644\u0644\u064e\u0651\u0647\u0650 \u0627\u0644\u0631\u064e\u0651\u062d\u0652\u0645\u064e\u0670\u0646\u0650 \u0627\u0644\u0631\u064e\u0651\u062d\u0650\u064a\u0645\u0650</div></section>`;
   const blokP = `${S.pria.foto?`<img class="foto-mempelai anim" src="${esc(S.pria.foto)}" alt="Mempelai pria">`:''}<div class="nama-mempelai">${esc(S.pria.nama||'Mempelai Pria')}</div><p class="redup">Putra dari ${esc(S.pria.ayah||'Bapak ...')} &amp; ${esc(S.pria.ibu||'Ibu ...')}</p>`;
   const blokW = `${S.wanita.foto?`<img class="foto-mempelai anim" src="${esc(S.wanita.foto)}" alt="Mempelai wanita">`:''}<div class="nama-mempelai">${esc(S.wanita.nama||'Mempelai Wanita')}</div><p class="redup">Putri dari ${esc(S.wanita.ayah||'Bapak ...')} &amp; ${esc(S.wanita.ibu||'Ibu ...')}</p>`;
   const amp = `<div style="font-family:var(--t-judul);font-size:30px;color:var(--t-aksen)">&amp;</div>`;
+  const pasangan = t.mempelaiUrutan==='wanita' ? [['Mempelai Wanita', blokW], ['Mempelai Pria', blokP]] : [['Mempelai Pria', blokP], ['Mempelai Wanita', blokW]];
+  const blokDuo = `<div class="mempelai-duo">${pasangan.map(p => `<div class="mp-kolom"><div class="mp-label">${p[0]}</div>${p[1]}</div>`).join('')}</div>`;
+  const blokKartu = pasangan.map((p, i) => `<div class="mp-kartu"><div class="mp-kartu-kepala"><span>Penumpang ${i + 1} / Passenger</span><span>${p[0]}</span></div>${p[1]}</div>`).join('');
+  const isiMempelai = (t.gaya==='folio' || t.gaya==='koran') ? blokDuo : (t.gaya==='tiket' ? blokKartu : (t.mempelaiUrutan==='wanita' ? blokW + amp + blokP : blokP + amp + blokW));
   const bMempelai = `
   <section class="isi anim"><p class="redup">Dengan memohon rahmat dan ridha Allah SWT, kami mengundang Bapak/Ibu/Saudara/i untuk menghadiri pernikahan kami:</p>
-    ${t.mempelaiUrutan==='wanita' ? blokW + amp + blokP : blokP + amp + blokW}
+    ${isiMempelai}
   </section>`;
   const buatKalender = () => { const iso = S.akad.tanggal || S.resepsi.tanggal; if(!iso) return ''; const d = new Date(iso + 'T12:00:00'); const y = d.getFullYear(), m = d.getMonth(), tglAktif = d.getDate(); const awal = (new Date(y, m, 1).getDay() + 6) % 7; const jumlah = new Date(y, m + 1, 0).getDate(); let sel = ''; for(let i = 0; i < awal; i++) sel += '<span class="k-sel k-kosong"></span>'; for(let n = 1; n <= jumlah; n++) sel += '<span class="k-sel' + (n === tglAktif ? ' k-aktif' : '') + '">' + n + '</span>'; return '<div class="kalender"><div class="k-judul">' + d.toLocaleDateString('id-ID', {month: 'long', year: 'numeric'}) + '</div><div class="k-grid"><span class="k-hari">S</span><span class="k-hari">S</span><span class="k-hari">R</span><span class="k-hari">K</span><span class="k-hari">J</span><span class="k-hari">S</span><span class="k-hari">M</span>' + sel + '</div></div>'; };
   const bHitung = `<section class="isi anim seksi-hitung"><h4 class="judul-seksi">${t.gaya==='pusaka'?'Menuju Hari Bahagia':'Menghitung Hari'}</h4>${t.hitungMode==='kalender' ? buatKalender() : ''}<div class="hitung mode-${t.hitungMode||'kotak'}" data-hitung><div><b>0</b><span>Hari</span></div><div><b>0</b><span>Jam</span></div><div><b>0</b><span>Menit</span></div><div><b>0</b><span>Detik</span></div></div></section>`;
   const bAcara = `<section class="isi anim seksi-acara"><h4 class="judul-seksi">${t.gaya==='pusaka'?'Save The Date':'Waktu &amp; Tempat'}</h4>${kartuAcara('Akad Nikah', S.akad)}${kartuAcara('Resepsi', S.resepsi)}</section>`;
-  const bGaleri = `<section class="isi anim"><h4 class="judul-seksi">Galeri</h4><div class="galeri mode-${t.galeriMode||'grid'}">${galeriList().slice(0,6).map(g=>`<img class="anim" loading="lazy" src="${esc(g)}" alt="Galeri" onerror="this.style.display='none'">`).join('')}</div></section>`;
+  const bGaleri = t.gaya==='koran' ? `<section class="isi anim"><h4 class="judul-seksi">Galeri</h4><div class="galeri mode-koran">${galeriList().slice(0,6).map((g, i) => `<figure class="fig-koran${i===0?' utama':''}"><img class="anim" loading="lazy" src="${esc(g)}" alt="Galeri" onerror="this.parentNode.style.display='none'"><figcaption>${i===0 ? 'Momen utama kedua mempelai.' : 'Dokumentasi kedua mempelai.'}</figcaption></figure>`).join('')}</div></section>` : `<section class="isi anim"><h4 class="judul-seksi">Galeri</h4><div class="galeri mode-${t.galeriMode||'grid'}">${galeriList().slice(0,6).map(g=>`<img class="anim" loading="lazy" src="${esc(g)}" alt="Galeri" onerror="this.style.display='none'">`).join('')}</div></section>`;
   const bAmplop = amplopAda ? `<section class="isi anim"><h4 class="judul-seksi">Amplop Digital</h4><p class="redup">Tanda kasih dapat dikirim melalui:</p>${daftarRekening().map(kartuAmplop).join('')}</section>` : '';
   const bRsvp = `<section class="isi anim"><h4 class="judul-seksi">RSVP &amp; Ucapan</h4>
     <div style="text-align:left;max-width:420px;margin:0 auto">
@@ -909,7 +991,7 @@ function isiHTML(t){
     </div></section>`;
   const bPenutup = `<footer><p class="redup">Merupakan suatu kehormatan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir. Atas kehadiran serta doa restunya, kami mengucapkan terima kasih.</p>
   <div class="nama-mempelai" style="margin-top:14px">${esc(namaPasangan())}</div></footer>`;
-  const gPusaka = t.gaya==='pusaka' ? '<img class="orn-gunungan gun-kiri" src="img-undangan/orn-gunungan.webp" alt=""><img class="orn-gunungan gun-kanan" src="img-undangan/orn-gunungan.webp" alt="">' : '';
+  const gPusaka = (t.gaya==='pusaka' || t.gaya==='pendopo') ? '<img class="orn-gunungan gun-kiri" src="img-undangan/orn-gunungan.webp" alt=""><img class="orn-gunungan gun-kanan" src="img-undangan/orn-gunungan.webp" alt="">' : '';
   const blok = { ayat: bAyat, mempelai: bMempelai.replace('<section class="isi anim">', '<section class="isi anim seksi-mempelai">' + gPusaka + (t.gaya==='pusaka' ? '<div class="bismillah" lang="ar">&#1576;&#1587;&#1605; &#1575;&#1604;&#1604;&#1607; &#1575;&#1604;&#1585;&#1581;&#1605;&#1606; &#1575;&#1604;&#1585;&#1581;&#1610;&#1605;</div>' : '')), hitung: bHitung, acara: bAcara, dresscode: seksiDresscode(), galeri: bGaleri, cerita: seksiCerita(), amplop: bAmplop, rsvp: bRsvp, turut: seksiTurut() };
 
   const urutan = (t.urutan && t.urutan.length) ? t.urutan : ['mempelai','hitung','acara','dresscode','galeri','cerita','amplop','rsvp','turut'];
@@ -1272,6 +1354,69 @@ function unduhPaket(){
 .gaya-koran.tk-mini .koran-foto{height:110px}
 .gaya-koran.tk-mini .koran-meta{font-size:7.5px}
 .gaya-koran.tk-mini .koran-ket{display:none}
+/* ===== STRUKTUR ISI PER KELUARGA ===== */
+.mempelai-duo{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:start}
+.mp-kolom .foto-mempelai{width:100%;height:190px;margin:8px auto 4px}
+.mp-label{font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;margin-bottom:8px}
+.gaya-folio .mp-label{font-family:'Space Mono',monospace;color:#5B7553;border-bottom:1.6px solid #1E2430;padding-bottom:7px}
+.gaya-folio .mp-kolom .nama-mempelai{font-size:23px}
+.gaya-koran .mempelai-duo{gap:0}
+.gaya-koran .mp-kolom{padding:0 13px}
+.gaya-koran .mp-kolom + .mp-kolom{border-left:1px solid #1C1A17}
+.gaya-koran .mp-label{font-family:'Special Elite',monospace;color:#8E3B2F;border-bottom:3px double #1C1A17;padding-bottom:7px}
+.gaya-koran .mp-kolom .nama-mempelai{font-size:24px}
+.mp-kartu{background:#fff;color:#14304D;border-radius:14px;padding:0 16px 18px;margin:0 auto 16px;max-width:430px;overflow:hidden;box-shadow:0 14px 30px rgba(3,14,26,.35)}
+.mp-kartu-kepala{display:flex;justify-content:space-between;background:#14304D;color:#fff;font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;padding:9px 16px;margin:0 -16px 14px}
+.gaya-tiket .mp-kartu .nama-mempelai{color:#14304D}
+.gaya-tiket .mp-kartu .foto-mempelai{border-color:#14304D}
+.gaya-amplop section.seksi-mempelai{background:#FBF5E4;border:1px solid #C9A24B;border-radius:12px;box-shadow:0 14px 30px rgba(74,52,33,.16);margin-top:26px;margin-bottom:26px}
+.cerita-folio,.cerita-rute,.cerita-artikel,.cerita-surat{max-width:440px;margin:16px auto 0;text-align:left}
+.cf-item{display:flex;gap:16px;padding:15px 0;border-bottom:1px solid rgba(30,36,48,.18)}
+.cf-item:last-child{border-bottom:none}
+.cf-no{font-family:'Space Mono',monospace;font-size:25px;font-weight:700;color:#5B7553;line-height:1}
+.cf-isi b{font-family:'Playfair Display',serif;font-size:19px;display:block;color:#1E2430}
+.cf-isi span{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;opacity:.6}
+.cf-isi p{margin:5px 0 0;font-size:14px;line-height:1.65;opacity:.88}
+.cr-item{position:relative;padding:0 0 20px 32px}
+.cr-item::before{content:'✈';position:absolute;left:0;top:1px;color:#E8871E;font-size:15px}
+.cr-item::after{content:'';position:absolute;left:7px;top:26px;bottom:2px;border-left:2px dashed #2E5A85}
+.cr-item:last-child::after{display:none}
+.cr-item b{font-family:'Montserrat',sans-serif;font-size:16.5px;display:block;color:#EAF1F8}
+.cr-item span{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#FFB347}
+.cr-item p{margin:5px 0 0;font-size:14px;line-height:1.65;opacity:.88}
+.ca-item{padding:15px 0;border-bottom:3px double #1C1A17}
+.ca-item:last-child{border-bottom:none}
+.ca-item b{font-family:'Playfair Display',serif;font-weight:800;font-size:20px;display:block;color:#1C1A17}
+.ca-item span{font-family:'Special Elite',monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:#8E3B2F}
+.ca-item p{margin:6px 0 0;font-size:15.5px;line-height:1.65;font-family:'Cormorant Garamond',serif}
+.ca-item p::first-letter{font-family:'Playfair Display',serif;font-weight:800;font-size:27px;line-height:1;color:#8E3B2F}
+.cs-item{background:#FFFDF6;border:1.6px dashed #7A1F1F;border-radius:8px;padding:16px 18px;margin-bottom:14px;box-shadow:0 8px 18px rgba(74,52,33,.10)}
+.cs-label{font-family:'Cinzel',serif;font-size:9.5px;letter-spacing:.24em;text-transform:uppercase;color:#7A1F1F;margin-bottom:6px}
+.cs-item b{font-family:'Playfair Display',serif;font-size:19px;display:block;color:#5A3A22}
+.cs-item span{font-style:italic;font-size:12.5px;opacity:.7;font-family:'Cormorant Garamond',serif}
+.cs-item p{margin:5px 0 0;font-size:14.5px;line-height:1.65;font-family:'Cormorant Garamond',serif}
+.kartu-rundown{text-align:left}
+.kartu-rundown h5{text-align:center}
+.rd-baris{display:flex;justify-content:space-between;align-items:baseline;gap:14px;border-bottom:1px solid rgba(30,36,48,.16);padding:8px 0}
+.rd-baris span{font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;opacity:.6}
+.rd-baris b{font-size:14px;text-align:right}
+.kt-kepala{display:flex;justify-content:space-between;gap:10px;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:#E8871E;border-bottom:2px dashed #B9C9D9;padding-bottom:10px;margin-bottom:12px}
+.galeri.mode-koran{display:block}
+.fig-koran{margin:0 0 14px}
+.fig-koran img{width:100%;height:210px;object-fit:cover;display:block}
+.fig-koran.utama img{height:250px}
+.fig-koran figcaption{font-family:'Special Elite',monospace;font-size:10.5px;opacity:.75;margin-top:6px;text-align:left}
+.dc-folio{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:14px 0 6px}
+.dc-f-item{border:1.6px solid #1E2430;background:#fff;padding:8px 10px;display:flex;align-items:center;gap:8px}
+.dc-f-chip{width:22px;height:22px;border:1px solid rgba(0,0,0,.2);display:block}
+.dc-f-label{font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.06em}
+.gaya-pendopo .hitung.mode-medali{gap:10px}
+.gaya-pendopo .hitung.mode-medali div{position:relative;width:74px;height:88px;min-width:0;background:transparent;border:none;border-radius:0;color:#EFE6D0;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:19px 0 0}
+.gaya-pendopo .hitung.mode-medali div::before{content:'';position:absolute;left:50%;top:9px;width:58px;height:58px;transform:translateX(-50%) rotate(45deg);background:linear-gradient(160deg,#175043,#0B2721);border:1.5px solid #C9A227;border-radius:50% 50% 10px 50%;z-index:0}
+.gaya-pendopo .hitung.mode-medali div::after{content:'';position:absolute;top:1px;left:50%;width:7px;height:7px;margin-left:-3.5px;background:#C9A227;transform:rotate(45deg);z-index:1}
+.gaya-pendopo .hitung.mode-medali b{position:relative;z-index:1;font-family:'Cinzel',serif;font-size:22px;color:#F3E9CF}
+.gaya-pendopo .hitung.mode-medali span{position:relative;z-index:1;font-size:9px;letter-spacing:.12em;color:#C9A227}
+/* ===== AKHIR STRUKTUR ISI ===== */
 </style></head><body>` +
   `<div class="tamu gaya-${t.gaya}" style="${temaStyle(t)};background:${t.bg};color:${t.teks};font-family:${t.isi}">` +
   (t.latarImg ? '<img class=\"latar-bg\" src=\"' + t.latarImg + '\" alt=\"\">' : '') + partikelHTML(t) + sampulHTML(t, '__NAMATAMU__', 'tamu') + '<div id="isiTerkunci" hidden>' + isiHTML(t) + '</div>' + `</div>` +
