@@ -202,6 +202,7 @@
   .slarrow:active { transform:translateY(-50%) scale(.9); }
   #petals { overflow:hidden; }
   .leafwrap { position:absolute; top:-7vh; animation-name:jatuh; animation-timing-function:linear; animation-iteration-count:infinite; will-change:transform; }
+  .leafwrap { opacity:.5; }
   .leafwrap img { display:block; animation-name:goyang; animation-timing-function:ease-in-out; animation-iteration-count:infinite; animation-direction:alternate; filter:drop-shadow(0 5px 5px rgba(34,48,43,.28)); }
   @keyframes goyang { from { transform:rotate(-26deg) translateX(-10px); } to { transform:rotate(22deg) translateX(10px); } }
   .cdcell { min-width:64px; backdrop-filter:blur(6px); }
@@ -823,17 +824,17 @@ tick(); setInterval(tick, 1000);
   var box = document.getElementById('petals');
   if (!box) return;
   var imgs = ['img-shop/daun1.png', 'img-shop/daun2.png'];
-  for (var i = 0; i < 12; i++) {
+  for (var i = 0; i < 4; i++) {
     var w = document.createElement('span');
     w.className = 'leafwrap';
-    var sz = 20 + Math.random() * 20;
+    var sz = 13 + Math.random() * 9;
     w.style.left = (Math.random() * 94) + '%';
-    w.style.animationDuration = (8 + Math.random() * 7) + 's';
-    w.style.animationDelay = (-Math.random() * 15) + 's';
+    w.style.animationDuration = (15 + Math.random() * 8) + 's';
+    w.style.animationDelay = (-Math.random() * 22) + 's';
     var im = document.createElement('img');
     im.src = imgs[i % 2]; im.alt = '';
     im.style.width = sz + 'px';
-    im.style.animationDuration = (1.6 + Math.random() * 1.6) + 's';
+    im.style.animationDuration = (2.6 + Math.random() * 2) + 's';
     w.appendChild(im);
     box.appendChild(w);
   }
