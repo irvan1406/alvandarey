@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>KeuanganKu — Laporan Keuangan Pribadi</title>
+<meta name="description" content="Catat uang masuk dan keluar, lengkap dengan foto struk, tempat beli, dan harga. Data tersimpan aman di perangkatmu sendiri.">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  :root { --p:#1E7A4F; --p2:#27A562; --red:#D64545; --ink:#22302B; --mut:#7A8A80; --gold:#B08D57; --bg:#F4F6F1; --card:#fff; --line:#E4E9DF; }
+  body { font-family:'Segoe UI',system-ui,-apple-system,sans-serif; background:var(--bg); color:var(--ink); min-height:100dvh; }
+  .wrap { max-width:540px; margin:0 auto; padding:0 14px 110px; }
+  header { background:linear-gradient(160deg,#14532D,#1E7A4F 60%,#27A562); color:#fff; margin:0 -14px; padding:22px 20px 20px; border-radius:0 0 26px 26px; box-shadow:0 14px 30px rgba(20,83,45,.28); }
+  header .ttl { font-size:13px; letter-spacing:2.5px; font-weight:700; opacity:.85; }
+  header .saldo { font-size:36px; font-weight:800; margin-top:6px; letter-spacing:.3px; }
+  header .saldo small { display:block; font-size:12px; font-weight:600; opacity:.8; letter-spacing:1px; margin-bottom:2px; }
+  .sumrow { display:flex; gap:10px; margin-top:16px; }
+  .sumbox { flex:1; background:rgba(255,255,255,.14); border:1px solid rgba(255,255,255,.25); border-radius:14px; padding:10px 12px; backdrop-filter:blur(4px); }
+  .sumbox span { display:block; font-size:10.5px; letter-spacing:1.2px; font-weight:700; opacity:.85; }
+  .sumbox b { display:block; font-size:16.5px; margin-top:3px; }
+  .toolbar { display:flex; gap:8px; margin-top:16px; flex-wrap:wrap; }
+  .toolbar input[type="month"], .toolbar input[type="search"] { border:1.5px solid var(--line); border-radius:11px; padding:10px 11px; font:inherit; font-size:13.5px; background:#fff; color:var(--ink); }
+  .toolbar input[type="month"] { flex:0 0 auto; }
+  .toolbar input[type="search"] { flex:1; min-width:130px; }
+  .seg { display:flex; background:#E9EEE3; border-radius:999px; padding:3px; margin-top:12px; }
+  .seg button { flex:1; border:none; background:transparent; padding:9px; border-radius:999px; font:inherit; font-size:13px; font-weight:700; color:var(--mut); cursor:pointer; }
+  .seg button.on { background:#fff; color:var(--ink); box-shadow:0 3px 8px rgba(34,48,43,.14); }
+  .catcard { background:var(--card); border:1px solid var(--line); border-radius:16px; padding:15px 16px; margin-top:14px; }
+  .catcard h3 { font-size:13px; letter-spacing:1px; color:var(--mut); margin-bottom:10px; }
+  .catrow { display:flex; align-items:center; gap:9px; margin-top:8px; font-size:13px; }
+  .catrow .cn { flex:0 0 108px; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .catrow .bar { flex:1; height:8px; background:#EDF1E8; border-radius:99px; overflow:hidden; }
+  .catrow .bar i { display:block; height:100%; background:linear-gradient(90deg,var(--p),var(--p2)); border-radius:99px; }
+  .catrow .cv { flex:0 0 auto; font-weight:700; color:var(--ink); }
+  .day { margin-top:18px; }
+  .day .dt { font-size:12px; font-weight:800; letter-spacing:1px; color:var(--mut); margin:0 2px 8px; }
+  .tx { background:var(--card); border:1px solid var(--line); border-radius:15px; padding:12px 13px; display:flex; gap:11px; align-items:flex-start; margin-top:8px; box-shadow:0 4px 12px rgba(34,48,43,.05); }
+  .tx .ic { flex:0 0 40px; width:40px; height:40px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:18px; font-weight:800; }
+  .tx.masuk .ic { background:#E5F4EA; color:var(--p); }
+  .tx.keluar .ic { background:#FBEAEA; color:var(--red); }
+  .tx .mid { flex:1; min-width:0; }
+  .tx .ket { font-weight:700; font-size:14.5px; }
+  .tx .meta { font-size:12px; color:var(--mut); margin-top:2px; line-height:1.5; }
+  .tx .meta .kat { color:var(--gold); font-weight:700; }
+  .tx .amt { text-align:right; flex:0 0 auto; }
+  .tx .amt b { font-size:15px; }
+  .tx.masuk .amt b { color:var(--p); } .tx.keluar .amt b { color:var(--red); }
+  .tx .acts { display:flex; gap:6px; justify-content:flex-end; margin-top:6px; }
+  .tx .acts button { border:1px solid var(--line); background:#fff; border-radius:8px; font-size:11px; font-weight:700; padding:5px 9px; cursor:pointer; color:var(--mut); }
+  .tx img.thumb { width:46px; height:46px; object-fit:cover; border-radius:10px; border:1px solid var(--line); cursor:pointer; flex:0 0 auto; }
+  .empty { text-align:center; color:var(--mut); padding:44px 20px; font-size:14px; line-height:1.7; }
+  .fab { position:fixed; left:50%; transform:translateX(-50%); bottom:18px; z-index:40; background:linear-gradient(92deg,var(--p),var(--p2)); color:#fff; border:none; border-radius:999px; padding:16px 26px; font:inherit; font-size:15.5px; font-weight:800; box-shadow:0 16px 34px rgba(30,122,79,.42); cursor:pointer; }
+  .fab:active { transform:translateX(-50%) scale(.96); }
+  /* form */
+  #formView { display:none; }
+  body.form #formView { display:block; } body.form #listView { display:none; } body.form .fab { display:none; }
+  .fcard { background:var(--card); border:1px solid var(--line); border-radius:18px; padding:18px 16px; margin-top:16px; }
+  .fcard h2 { font-size:19px; margin-bottom:14px; }
+  .jenis { display:flex; gap:9px; }
+  .jenis button { flex:1; border:2px solid var(--line); background:#fff; border-radius:13px; padding:13px; font:inherit; font-size:15px; font-weight:800; cursor:pointer; color:var(--mut); }
+  .jenis button.on-k { border-color:var(--red); color:var(--red); background:#FDF1F1; }
+  .jenis button.on-m { border-color:var(--p); color:var(--p); background:#EFF7F1; }
+  label.fl { display:block; font-size:12.5px; font-weight:700; color:var(--mut); margin:15px 0 6px; }
+  label.fl .ops { color:#B9C4BA; font-weight:600; }
+  input.fi, textarea.fi, select.fi { width:100%; border:1.5px solid var(--line); border-radius:11px; padding:12px; font:inherit; font-size:15px; background:#FFFDF8; color:var(--ink); }
+  input.fi.big { font-size:21px; font-weight:800; }
+  .chips { display:flex; flex-wrap:wrap; gap:7px; }
+  .chips button { border:1.5px solid var(--line); background:#fff; border-radius:999px; padding:8px 13px; font:inherit; font-size:12.5px; font-weight:700; color:var(--mut); cursor:pointer; }
+  .chips button.on { background:linear-gradient(92deg,var(--p),var(--p2)); color:#fff; border-color:transparent; }
+  .fotorow { display:flex; gap:10px; align-items:center; }
+  .fotorow img { width:64px; height:64px; object-fit:cover; border-radius:12px; border:1px solid var(--line); display:none; }
+  .btn-foto { border:1.5px dashed #B9C9B4; background:#F6FAF3; color:var(--p); border-radius:12px; padding:12px 14px; font:inherit; font-size:13.5px; font-weight:800; cursor:pointer; }
+  .btn-hapusfoto { display:none; border:none; background:none; color:var(--red); font:inherit; font-size:12.5px; font-weight:700; cursor:pointer; }
+  .frow { display:flex; gap:9px; margin-top:18px; }
+  .btn-save { flex:1; background:linear-gradient(92deg,var(--p),var(--p2)); color:#fff; border:none; border-radius:999px; padding:15px; font:inherit; font-size:15.5px; font-weight:800; cursor:pointer; }
+  .btn-batal { border:1.5px solid var(--line); background:#fff; border-radius:999px; padding:15px 20px; font:inherit; font-size:14.5px; font-weight:700; cursor:pointer; color:var(--mut); }
+  .util { display:flex; gap:8px; margin-top:16px; flex-wrap:wrap; }
+  .util button { flex:1; min-width:100px; border:1.5px solid var(--line); background:#fff; border-radius:12px; padding:11px 8px; font:inherit; font-size:12.5px; font-weight:700; color:var(--ink); cursor:pointer; }
+  .note { font-size:11.5px; color:var(--mut); line-height:1.6; margin-top:12px; text-align:center; }
+  /* lightbox + kunci */
+  #lightbox { position:fixed; inset:0; z-index:90; background:rgba(16,24,20,.92); display:none; align-items:center; justify-content:center; padding:18px; }
+  #lightbox.open { display:flex; } #lightbox img { max-width:100%; max-height:88dvh; border-radius:14px; }
+  #lock { position:fixed; inset:0; z-index:100; background:linear-gradient(160deg,#14532D,#1E7A4F); display:none; align-items:center; justify-content:center; padding:20px; }
+  #lock.open { display:flex; }
+  #lock .box { background:#fff; border-radius:20px; padding:24px 20px; max-width:320px; width:100%; text-align:center; }
+  #lock h2 { font-size:19px; margin-bottom:6px; } #lock p { font-size:13px; color:var(--mut); line-height:1.6; }
+  #lock input { width:100%; text-align:center; font-size:22px; letter-spacing:8px; border:1.5px solid var(--line); border-radius:12px; padding:12px; margin-top:14px; font-family:inherit; }
+  #lock button { width:100%; margin-top:12px; background:linear-gradient(92deg,var(--p),var(--p2)); color:#fff; border:none; border-radius:999px; padding:13px; font:inherit; font-weight:800; cursor:pointer; }
+  #toast { position:fixed; left:50%; bottom:92px; transform:translateX(-50%) translateY(20px); background:#22302B; color:#fff; padding:11px 18px; border-radius:999px; font-size:13.5px; font-weight:600; opacity:0; pointer-events:none; transition:.3s; z-index:95; max-width:88vw; text-align:center; }
+  #toast.show { opacity:1; transform:translateX(-50%); }
+</style>
+</head>
+<body>
+<div id="lock"><div class="box">
+  <h2>KeuanganKu Terkunci</h2>
+  <p>Masukkan PIN 4 angka untuk membuka laporan keuanganmu.</p>
+  <input type="password" id="pinInput" inputmode="numeric" maxlength="4" placeholder="••••">
+  <button id="pinBtn" type="button">Buka</button>
+  <p id="pinErr" style="color:#D64545;font-weight:700;margin-top:8px"></p>
+</div></div>
+
+<div class="wrap">
+  <header>
+    <div class="ttl">KEUANGANKU — LAPORAN PRIBADI</div>
+    <div class="saldo"><small>SALDO SAAT INI</small><span id="saldoVal">Rp0</span></div>
+    <div class="sumrow">
+      <div class="sumbox"><span>MASUK (BULAN INI)</span><b id="sumMasuk">Rp0</b></div>
+      <div class="sumbox"><span>KELUAR (BULAN INI)</span><b id="sumKeluar">Rp0</b></div>
+    </div>
+  </header>
+
+  <div id="listView">
+    <div class="toolbar">
+      <input type="month" id="fltBulan">
+      <input type="search" id="fltCari" placeholder="Cari: bensin, warung, gaji...">
+    </div>
+    <div class="seg" id="fltJenis">
+      <button class="on" data-j="semua" type="button">Semua</button>
+      <button data-j="masuk" type="button">Uang Masuk</button>
+      <button data-j="keluar" type="button">Uang Keluar</button>
+    </div>
+    <div class="catcard" id="catCard" style="display:none">
+      <h3>PENGELUARAN TERBESAR — <span id="catBulanLbl"></span></h3>
+      <div id="catList"></div>
+    </div>
+    <div id="listBox"></div>
+    <div class="util">
+      <button id="btnCsv" type="button">Ekspor CSV</button>
+      <button id="btnBackup" type="button">Backup Data</button>
+      <button id="btnImporLbl" type="button">Pulihkan</button>
+      <button id="btnPin" type="button">Atur PIN</button>
+      <input type="file" id="imporFile" accept="application/json" hidden>
+    </div>
+    <p class="note">Data tersimpan hanya di perangkat ini (tidak dikirim ke internet). Lakukan Backup Data berkala dan simpan file-nya di tempat aman — bila HP/browser dibersihkan, data bisa hilang.</p>
+  </div>
+
+  <div id="formView">
+    <form class="fcard" id="txForm">
+      <h2 id="formTitle">Tambah Transaksi</h2>
+      <div class="jenis">
+        <button type="button" id="jKeluar" class="on-k">− Uang Keluar</button>
+        <button type="button" id="jMasuk">+ Uang Masuk</button>
+      </div>
+      <label class="fl" for="fJumlah">Jumlah (Rp)</label>
+      <input class="fi big" id="fJumlah" type="text" inputmode="numeric" placeholder="0" required>
+      <label class="fl">Kategori</label>
+      <div class="chips" id="katChips"></div>
+      <label class="fl" for="fKet">Untuk apa / keterangan</label>
+      <input class="fi" id="fKet" type="text" maxlength="90" placeholder="cth: Bensin NMAX full tank" required>
+      <label class="fl" for="fTanggal">Tanggal</label>
+      <input class="fi" id="fTanggal" type="date" required>
+      <label class="fl" for="fTempat">Beli di mana <span class="ops">(opsional)</span></label>
+      <input class="fi" id="fTempat" type="text" maxlength="60" placeholder="cth: SPBU Krikilan / Indomaret / Pasar">
+      <label class="fl">Foto struk / barang <span class="ops">(opsional)</span></label>
+      <div class="fotorow">
+        <img id="fotoPrev" alt="Pratinjau foto">
+        <button class="btn-foto" id="btnFoto" type="button">Ambil / Pilih Foto</button>
+        <button class="btn-hapusfoto" id="btnHapusFoto" type="button">Hapus foto</button>
+        <input type="file" id="fotoFile" accept="image/*" hidden>
+      </div>
+      <div class="frow">
+        <button class="btn-batal" id="btnBatal" type="button">Batal</button>
+        <button class="btn-save" type="submit">Simpan</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<button class="fab" id="fabAdd" type="button">+ Tambah Transaksi</button>
+<div id="lightbox"><img id="lbImg" alt="Foto struk"></div>
+<div id="toast"></div>
+
+<script>
+const KEY = 'keuanganku_v1', PINKEY = 'keuanganku_pin';
+const rp = n => (n < 0 ? '−Rp' : 'Rp') + Math.abs(Math.round(n)).toLocaleString('id-ID');
+const $ = id => document.getElementById(id);
+let txs = [];
+try { txs = JSON.parse(localStorage.getItem(KEY) || '[]'); } catch (e) { txs = []; }
+let editId = null, formJenis = 'keluar', formKat = '', formFoto = null;
+
+const KAT_KELUAR = ['Makanan', 'Bensin & Transport', 'Belanja', 'Rumah Tangga', 'Kesehatan', 'Pendidikan', 'Hiburan', 'Tagihan', 'Lainnya'];
+const KAT_MASUK = ['Gaji', 'Usaha', 'Bonus', 'Hadiah', 'Lainnya'];
+const IKON = { 'Makanan': 'M', 'Bensin & Transport': 'B', 'Belanja': 'S', 'Rumah Tangga': 'R', 'Kesehatan': 'K', 'Pendidikan': 'P', 'Hiburan': 'H', 'Tagihan': 'T', 'Gaji': 'G', 'Usaha': 'U', 'Bonus': 'B', 'Hadiah': 'H', 'Lainnya': '•' };
+
+function save() { localStorage.setItem(KEY, JSON.stringify(txs)); }
+function toast(t) { const el = $('toast'); el.textContent = t; el.classList.add('show'); setTimeout(() => el.classList.remove('show'), 2400); }
+function bulanIni() { const d = new Date(); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0'); }
+function fmtTgl(iso) { return new Date(iso + 'T00:00:00').toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }); }
+
+function render() {
+  const bln = $('fltBulan').value || bulanIni();
+  const cari = ($('fltCari').value || '').toLowerCase();
+  const fj = document.querySelector('#fltJenis button.on').dataset.j;
+  let mIn = 0, mOut = 0, sIn = 0, sOut = 0;
+  txs.forEach(t => {
+    if (t.jenis === 'masuk') { sIn += t.jumlah; if (t.tanggal.startsWith(bln)) mIn += t.jumlah; }
+    else { sOut += t.jumlah; if (t.tanggal.startsWith(bln)) mOut += t.jumlah; }
+  });
+  $('saldoVal').textContent = rp(sIn - sOut);
+  $('sumMasuk').textContent = rp(mIn);
+  $('sumKeluar').textContent = rp(mOut);
+  /* kategori keluar terbesar bulan terpilih */
+  const per = {};
+  txs.filter(t => t.jenis === 'keluar' && t.tanggal.startsWith(bln)).forEach(t => { per[t.kategori] = (per[t.kategori] || 0) + t.jumlah; });
+  const urut = Object.entries(per).sort((a, b) => b[1] - a[1]).slice(0, 6);
+  if (urut.length) {
+    $('catCard').style.display = 'block';
+    $('catBulanLbl').textContent = new Date(bln + '-01T00:00:00').toLocaleDateString('id-ID', { month: 'long', year: 'numeric' }).toUpperCase();
+    const max = urut[0][1];
+    $('catList').innerHTML = urut.map(([k, v]) => '<div class="catrow"><span class="cn">' + k + '</span><span class="bar"><i style="width:' + Math.max(4, Math.round(v / max * 100)) + '%"></i></span><span class="cv">' + rp(v) + '</span></div>').join('');
+  } else $('catCard').style.display = 'none';
+  /* daftar */
+  const list = txs.filter(t => t.tanggal.startsWith(bln) && (fj === 'semua' || t.jenis === fj) && (!cari || (t.ket + ' ' + (t.tempat || '') + ' ' + t.kategori).toLowerCase().includes(cari)))
+    .sort((a, b) => b.tanggal.localeCompare(a.tanggal) || b.dibuat - a.dibuat);
+  if (!list.length) { $('listBox').innerHTML = '<div class="empty">Belum ada catatan pada periode ini.<br>Ketuk tombol <b>+ Tambah Transaksi</b> untuk mencatat uang masuk atau keluar pertamamu.</div>'; return; }
+  let html = '', lastDay = '';
+  list.forEach(t => {
+    if (t.tanggal !== lastDay) { lastDay = t.tanggal; html += '<div class="day"><div class="dt">' + fmtTgl(t.tanggal) + '</div>'; }
+    html += '<div class="tx ' + t.jenis + '"><div class="ic">' + (IKON[t.kategori] || '•') + '</div><div class="mid"><div class="ket">' + esc(t.ket) + '</div><div class="meta"><span class="kat">' + esc(t.kategori) + '</span>' + (t.tempat ? ' · ' + esc(t.tempat) : '') + '</div><div class="acts"><button data-ed="' + t.id + '" type="button">Ubah</button><button data-hp="' + t.id + '" type="button">Hapus</button></div></div>' +
+      (t.foto ? '<img class="thumb" data-foto="' + t.id + '" src="' + t.foto + '" alt="Foto struk">' : '') +
+      '<div class="amt"><b>' + (t.jenis === 'masuk' ? '+' : '−') + rp(t.jumlah) + '</b></div></div>';
+    if (list[list.indexOf(t) + 1] && list[list.indexOf(t) + 1].tanggal !== t.tanggal) html += '</div>';
+  });
+  html += '</div>';
+  $('listBox').innerHTML = html;
+  $('listBox').querySelectorAll('[data-ed]').forEach(b => b.addEventListener('click', () => openForm(b.dataset.ed)));
+  $('listBox').querySelectorAll('[data-hp]').forEach(b => b.addEventListener('click', () => {
+    if (confirm('Hapus catatan ini?')) { txs = txs.filter(x => String(x.id) !== b.dataset.hp); save(); render(); toast('Catatan dihapus.'); }
+  }));
+  $('listBox').querySelectorAll('[data-foto]').forEach(im => im.addEventListener('click', () => {
+    const t = txs.find(x => String(x.id) === im.dataset.foto);
+    if (t && t.foto) { $('lbImg').src = t.foto; $('lightbox').classList.add('open'); }
+  }));
+}
+function esc(s) { return String(s || '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
+
+/* ---------- formulir ---------- */
+function setJenis(j) {
+  formJenis = j;
+  $('jKeluar').className = j === 'keluar' ? 'on-k' : '';
+  $('jMasuk').className = j === 'masuk' ? 'on-m' : '';
+  const kats = j === 'keluar' ? KAT_KELUAR : KAT_MASUK;
+  if (!kats.includes(formKat)) formKat = kats[0];
+  $('katChips').innerHTML = kats.map(k => '<button type="button" data-k="' + k + '"' + (k === formKat ? ' class="on"' : '') + '>' + k + '</button>').join('');
+  $('katChips').querySelectorAll('button').forEach(b => b.addEventListener('click', () => { formKat = b.dataset.k; setJenis(formJenis); }));
+}
+function setFoto(url) {
+  formFoto = url;
+  $('fotoPrev').style.display = url ? 'block' : 'none';
+  if (url) $('fotoPrev').src = url;
+  $('btnHapusFoto').style.display = url ? 'block' : 'none';
+}
+function openForm(id) {
+  editId = id || null;
+  const t = id ? txs.find(x => String(x.id) === String(id)) : null;
+  $('formTitle').textContent = t ? 'Ubah Transaksi' : 'Tambah Transaksi';
+  setJenis(t ? t.jenis : 'keluar');
+  if (t) formKat = t.kategori;
+  setJenis(formJenis);
+  $('fJumlah').value = t ? t.jumlah.toLocaleString('id-ID') : '';
+  $('fKet').value = t ? t.ket : '';
+  $('fTanggal').value = t ? t.tanggal : new Date().toISOString().slice(0, 10);
+  $('fTempat').value = t ? (t.tempat || '') : '';
+  setFoto(t ? t.foto : null);
+  document.body.classList.add('form');
+  window.scrollTo(0, 0);
+}
+function closeForm() { document.body.classList.remove('form'); editId = null; }
+
+$('jKeluar').addEventListener('click', () => setJenis('keluar'));
+$('jMasuk').addEventListener('click', () => setJenis('masuk'));
+$('fabAdd').addEventListener('click', () => openForm(null));
+$('btnBatal').addEventListener('click', closeForm);
+$('fJumlah').addEventListener('input', e => {
+  const d = e.target.value.replace(/\D/g, '');
+  e.target.value = d ? Number(d).toLocaleString('id-ID') : '';
+});
+$('btnFoto').addEventListener('click', () => $('fotoFile').click());
+$('btnHapusFoto').addEventListener('click', () => setFoto(null));
+$('fotoFile').addEventListener('change', e => {
+  const f = e.target.files[0]; if (!f) return;
+  const img = new Image();
+  img.onload = () => {
+    URL.revokeObjectURL(img.src);
+    const sc = Math.min(1, 900 / Math.max(img.width, img.height));
+    const cv = document.createElement('canvas');
+    cv.width = Math.round(img.width * sc); cv.height = Math.round(img.height * sc);
+    cv.getContext('2d').drawImage(img, 0, 0, cv.width, cv.height);
+    setFoto(cv.toDataURL('image/jpeg', 0.82));
+    toast('Foto terlampir.');
+  };
+  img.onerror = () => toast('Format foto tidak didukung.');
+  img.src = URL.createObjectURL(f);
+  e.target.value = '';
+});
+$('txForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const jumlah = Number($('fJumlah').value.replace(/\D/g, ''));
+  if (!jumlah) { toast('Isi jumlahnya dulu ya.'); return; }
+  const data = { jenis: formJenis, jumlah, kategori: formKat, ket: $('fKet').value.trim(), tanggal: $('fTanggal').value, tempat: $('fTempat').value.trim(), foto: formFoto };
+  if (editId) { Object.assign(txs.find(x => String(x.id) === String(editId)), data); toast('Catatan diperbarui.'); }
+  else { txs.push(Object.assign({ id: Date.now(), dibuat: Date.now() }, data)); toast('Tersimpan.'); }
+  try { save(); } catch (err) { toast('Penyimpanan penuh — hapus beberapa foto lama atau backup dulu.'); return; }
+  closeForm(); render();
+});
+
+/* ---------- filter ---------- */
+$('fltBulan').value = bulanIni();
+$('fltBulan').addEventListener('change', render);
+$('fltCari').addEventListener('input', render);
+$('fltJenis').querySelectorAll('button').forEach(b => b.addEventListener('click', () => {
+  $('fltJenis').querySelectorAll('button').forEach(x => x.classList.remove('on'));
+  b.classList.add('on'); render();
+}));
+$('lightbox').addEventListener('click', () => $('lightbox').classList.remove('open'));
+
+/* ---------- ekspor / impor ---------- */
+function unduh(nama, isi, tipe) {
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([isi], { type: tipe }));
+  a.download = nama; a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+}
+$('btnCsv').addEventListener('click', () => {
+  const rows = [['Tanggal', 'Jenis', 'Kategori', 'Keterangan', 'Tempat', 'Jumlah']];
+  txs.slice().sort((a, b) => a.tanggal.localeCompare(b.tanggal)).forEach(t => rows.push([t.tanggal, t.jenis, t.kategori, t.ket, t.tempat || '', t.jumlah]));
+  unduh('keuanganku.csv', rows.map(r => r.map(c => '"' + String(c).replace(/"/g, '""') + '"').join(';')).join('\n'), 'text/csv');
+  toast('File CSV diunduh.');
+});
+$('btnBackup').addEventListener('click', () => { unduh('keuanganku-backup.json', JSON.stringify(txs), 'application/json'); toast('Backup diunduh — simpan baik-baik ya.'); });
+$('btnImporLbl').addEventListener('click', () => $('imporFile').click());
+$('imporFile').addEventListener('change', e => {
+  const f = e.target.files[0]; if (!f) return;
+  const rd = new FileReader();
+  rd.onload = () => {
+    try {
+      const data = JSON.parse(rd.result);
+      if (!Array.isArray(data)) throw new Error('format');
+      if (confirm('Pulihkan data dari backup? Data saat ini akan DIGANTI dengan isi file backup (' + data.length + ' catatan).')) { txs = data; save(); render(); toast('Data dipulihkan.'); }
+    } catch (err) { toast('File backup tidak valid.'); }
+  };
+  rd.readAsText(f); e.target.value = '';
+});
+
+/* ---------- PIN ---------- */
+async function hashPin(pin) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode('keuanganku:' + pin));
+  return [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, '0')).join('');
+}
+$('btnPin').addEventListener('click', async () => {
+  const ada = localStorage.getItem(PINKEY);
+  if (ada) {
+    const lama = prompt('Masukkan PIN lama (kosongkan dan OK untuk menghapus PIN):');
+    if (lama === null) return;
+    if (lama === '') { localStorage.removeItem(PINKEY); toast('PIN dihapus.'); return; }
+    if (await hashPin(lama) !== ada) { toast('PIN lama salah.'); return; }
+  }
+  const baru = prompt('Buat PIN baru 4 angka:');
+  if (!baru) return;
+  if (!/^\d{4}$/.test(baru)) { toast('PIN harus tepat 4 angka.'); return; }
+  localStorage.setItem(PINKEY, await hashPin(baru));
+  toast('PIN dipasang. Halaman akan terkunci setiap dibuka.');
+});
+(async () => {
+  const ada = localStorage.getItem(PINKEY);
+  if (ada) {
+    $('lock').classList.add('open');
+    $('pinBtn').addEventListener('click', async () => {
+      if (await hashPin($('pinInput').value) === ada) $('lock').classList.remove('open');
+      else { $('pinErr').textContent = 'PIN salah, coba lagi.'; $('pinInput').value = ''; }
+    });
+    $('pinInput').addEventListener('keydown', e => { if (e.key === 'Enter') $('pinBtn').click(); });
+  }
+})();
+
+render();
+</script>
+</body>
+</html>
