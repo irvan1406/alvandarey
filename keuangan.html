@@ -135,8 +135,10 @@
       <button id="btnBackup" type="button">Backup Data</button>
       <button id="btnImporLbl" type="button">Pulihkan</button>
       <button id="btnPin" type="button">Atur PIN</button>
+      <button id="btnSync" type="button">Sinkron Bot WA</button>
       <input type="file" id="imporFile" accept="application/json" hidden>
     </div>
+    <p class="note" id="syncState">Sinkron Bot WA: mati — ketuk "Sinkron Bot WA" untuk menghubungkan dengan bot WhatsApp.</p>
     <p class="note">Data tersimpan hanya di perangkat ini (tidak dikirim ke internet). Lakukan Backup Data berkala dan simpan file-nya di tempat aman — bila HP/browser dibersihkan, data bisa hilang.</p>
   </div>
 
@@ -188,6 +190,35 @@ const KAT_KELUAR = ['Makanan', 'Bensin & Transport', 'Belanja', 'Rumah Tangga', 
 const KAT_MASUK = ['Gaji', 'Usaha', 'Bonus', 'Hadiah', 'Lainnya'];
 const IKON = { 'Makanan': 'M', 'Bensin & Transport': 'B', 'Belanja': 'S', 'Rumah Tangga': 'R', 'Kesehatan': 'K', 'Pendidikan': 'P', 'Hiburan': 'H', 'Tagihan': 'T', 'Gaji': 'G', 'Usaha': 'U', 'Bonus': 'B', 'Hadiah': 'H', 'Lainnya': '•' };
 
+const SUPA_URL = 'https://kzcibfqzhdidlndxcfjo.supabase.co';
+const SUPA_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt6Y2liZnF6aGRpZGxuZHhjZmpvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTU1NzQ2NDUsImV4cCI6MjExMTE1MDY0NX0.QLupI9jY6h2B76lPrtncRN83A9STbF8BY5nB1HP5csQ';
+const KODEKEY = 'keuanganku_kode';
+const kodeSync = () => localStorage.getItem(KODEKEY) || '';
+function supaHead(extra) {
+  return Object.assign({ apikey: SUPA_ANON, Authorization: 'Bearer ' + SUPA_ANON, 'Content-Type': 'application/json', 'x-keuangan-kode': kodeSync() }, extra || {});
+}
+async function supaFetch(path, opts) {
+  const r = await fetch(SUPA_URL + '/rest/v1/' + path, Object.assign({ headers: supaHead(opts && opts.headers) }, opts || {}));
+  if (!r.ok) throw new Error('supabase ' + r.status);
+  const t = await r.text();
+  return t ? JSON.parse(t) : null;
+}
+function barisKeTx(b) { return { id: b.id, jenis: b.jenis, jumlah: Number(b.jumlah), kategori: b.kategori || 'Lainnya', ket: b.ket, tempat: b.tempat || '', tanggal: b.tanggal, foto: b.foto || null, dibuat: b.dibuat ? new Date(b.dibuat).getTime() : Date.now() }; }
+async function muatDariServer() {
+  const rows = await supaFetch('keuangan_tx?select=id,jenis,jumlah,kategori,ket,tempat,tanggal,foto,dibuat&order=tanggal.desc,dibuat.desc&limit=2000');
+  const lokalSaja = txs.filter(t => t.lokal);
+  txs = (rows || []).map(barisKeTx).concat(lokalSaja);
+  save(); render();
+}
+async function unggahLokal() {
+  const lokal = txs.filter(t => t.lokal);
+  for (const t of lokal) {
+    const row = await supaFetch('keuangan_tx', { method: 'POST', headers: { Prefer: 'return=representation' }, body: JSON.stringify({ jenis: t.jenis, jumlah: t.jumlah, kategori: t.kategori, ket: t.ket, tempat: t.tempat || null, tanggal: t.tanggal, foto: t.foto || null, kode: kodeSync() }) });
+    if (row && row[0]) { t.id = row[0].id; delete t.lokal; }
+  }
+  save();
+}
+
 function save() { localStorage.setItem(KEY, JSON.stringify(txs)); }
 function toast(t) { const el = $('toast'); el.textContent = t; el.classList.add('show'); setTimeout(() => el.classList.remove('show'), 2400); }
 function bulanIni() { const d = new Date(); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0'); }
@@ -231,8 +262,11 @@ function render() {
   html += '</div>';
   $('listBox').innerHTML = html;
   $('listBox').querySelectorAll('[data-ed]').forEach(b => b.addEventListener('click', () => openForm(b.dataset.ed)));
-  $('listBox').querySelectorAll('[data-hp]').forEach(b => b.addEventListener('click', () => {
-    if (confirm('Hapus catatan ini?')) { txs = txs.filter(x => String(x.id) !== b.dataset.hp); save(); render(); toast('Catatan dihapus.'); }
+  $('listBox').querySelectorAll('[data-hp]').forEach(b => b.addEventListener('click', async () => {
+    if (!confirm('Hapus catatan ini?')) return;
+    const t = txs.find(x => String(x.id) === b.dataset.hp);
+    txs = txs.filter(x => String(x.id) !== b.dataset.hp); save(); render(); toast('Catatan dihapus.');
+    if (kodeSync() && t && !t.lokal) { try { await supaFetch('keuangan_tx?id=eq.' + t.id, { method: 'DELETE' }); } catch (e) { toast('Sudah terhapus di HP, tapi gagal menghapus di server.'); } }
   }));
   $('listBox').querySelectorAll('[data-foto]').forEach(im => im.addEventListener('click', () => {
     const t = txs.find(x => String(x.id) === im.dataset.foto);
@@ -300,13 +334,30 @@ $('fotoFile').addEventListener('change', e => {
   img.src = URL.createObjectURL(f);
   e.target.value = '';
 });
-$('txForm').addEventListener('submit', e => {
+$('txForm').addEventListener('submit', async e => {
   e.preventDefault();
   const jumlah = Number($('fJumlah').value.replace(/\D/g, ''));
   if (!jumlah) { toast('Isi jumlahnya dulu ya.'); return; }
   const data = { jenis: formJenis, jumlah, kategori: formKat, ket: $('fKet').value.trim(), tanggal: $('fTanggal').value, tempat: $('fTempat').value.trim(), foto: formFoto };
-  if (editId) { Object.assign(txs.find(x => String(x.id) === String(editId)), data); toast('Catatan diperbarui.'); }
-  else { txs.push(Object.assign({ id: Date.now(), dibuat: Date.now() }, data)); toast('Tersimpan.'); }
+  if (kodeSync() && data.foto && data.foto.length > 500000) { toast('Foto terlalu besar untuk sinkron — pakai foto yang lebih kecil ya.'); return; }
+  if (editId) {
+    const t = txs.find(x => String(x.id) === String(editId));
+    Object.assign(t, data);
+    if (kodeSync() && !t.lokal) {
+      try { await supaFetch('keuangan_tx?id=eq.' + t.id, { method: 'PATCH', body: JSON.stringify({ jenis: data.jenis, jumlah: data.jumlah, kategori: data.kategori, ket: data.ket, tempat: data.tempat || null, tanggal: data.tanggal, foto: data.foto }) }); toast('Catatan diperbarui + tersinkron.'); }
+      catch (err) { toast('Diperbarui di HP, sinkron gagal (internet?).'); }
+    } else toast('Catatan diperbarui.');
+  } else {
+    const baru = Object.assign({ id: Date.now(), dibuat: Date.now(), lokal: true }, data);
+    txs.push(baru);
+    if (kodeSync()) {
+      try {
+        const row = await supaFetch('keuangan_tx', { method: 'POST', headers: { Prefer: 'return=representation' }, body: JSON.stringify({ jenis: data.jenis, jumlah: data.jumlah, kategori: data.kategori, ket: data.ket, tempat: data.tempat || null, tanggal: data.tanggal, foto: data.foto, kode: kodeSync() }) });
+        if (row && row[0]) { baru.id = row[0].id; delete baru.lokal; }
+        toast('Tersimpan + tersinkron ke bot WA.');
+      } catch (err) { toast('Tersimpan di HP — akan tersinkron saat internet kembali.'); }
+    } else toast('Tersimpan.');
+  }
   try { save(); } catch (err) { toast('Penyimpanan penuh — hapus beberapa foto lama atau backup dulu.'); return; }
   closeForm(); render();
 });
@@ -380,7 +431,32 @@ $('btnPin').addEventListener('click', async () => {
   }
 })();
 
+/* ---------- sinkron bot WA ---------- */
+function segarStatusSync() {
+  const el = $('syncState');
+  if (!el) return;
+  el.textContent = kodeSync() ? 'Sinkron Bot WA: AKTIF — catatan di sini dan di bot WA saling terhubung. Ketuk "Sinkron Bot WA" untuk menyegarkan.' : 'Sinkron Bot WA: mati — ketuk "Sinkron Bot WA" untuk menghubungkan dengan bot WhatsApp.';
+}
+$('btnSync').addEventListener('click', async () => {
+  if (!kodeSync()) {
+    const k = prompt('Masukkan KODE SINKRON dari Warda (kode yang sama dengan yang dipasang di bot WA):');
+    if (!k || !k.trim()) return;
+    localStorage.setItem(KODEKEY, k.trim());
+    segarStatusSync();
+    const adaLokal = txs.filter(t => t.lokal || typeof t.id === 'number').length;
+    if (txs.length && confirm('Ada ' + txs.length + ' catatan lokal di HP ini. Unggah semuanya ke server agar muncul juga di bot WA?')) {
+      txs.forEach(t => { if (!t.lokal) t.lokal = true; });
+      try { await unggahLokal(); toast('Catatan lokal terunggah ke server.'); } catch (e) { toast('Unggah gagal — cek internet lalu ketuk Sinkron lagi.'); }
+    }
+  }
+  try { await unggahLokal(); await muatDariServer(); toast('Sinkron selesai — data sama dengan bot WA.'); }
+  catch (e) { toast('Sinkron gagal — cek internet / kode sinkron.'); }
+  segarStatusSync(); render();
+});
+
+segarStatusSync();
 render();
+if (kodeSync()) { muatDariServer().catch(() => {}); }
 </script>
 </body>
 </html>
