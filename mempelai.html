@@ -161,6 +161,13 @@
         <div class="fsec">Musik Latar</div>
         <div class="fld"><label>Tautan file MP3</label><input id="f_music" type="url" placeholder="https://... .mp3"><div class="hint2">Musik mulai berbunyi saat tamu menekan "Buka Undangan", dan bisa dimatikan lewat tombol musik di undangan. Tempel tautan MP3 yang bisa diakses publik.</div></div>
 
+        <div class="fsec">Amplop Digital</div>
+        <div class="frow">
+          <div class="fld"><label>Bank / e-wallet</label><input id="f_rekBank" type="text"></div>
+          <div class="fld"><label>Nomor rekening</label><input id="f_rekNo" type="text" inputmode="numeric"></div>
+        </div>
+        <div class="fld"><label>Atas nama</label><input id="f_rekNama" type="text"></div>
+
         <div class="fsec">Foto &amp; Animasi</div>
         <div class="fld"><label>Foto utama — unggah dari HP</label><input id="f_heroFile" type="file" accept="image/*"><div class="hint2">Foto otomatis diperkecil agar undangan tetap ringan. Atau isi tautan foto di bawah.</div><img id="heroPrev" alt="Pratinjau foto utama"></div>
         <div class="fld"><label>Atau tautan foto utama</label><input id="f_heroUrl" type="url" placeholder="https://..."></div>
@@ -340,7 +347,7 @@ $('btnRefreshMod').addEventListener('click', loadMod);
     });
   });
   function HEAD() { return { apikey: CONFIG.sbKey, Authorization: 'Bearer ' + CONFIG.sbKey, 'Content-Type': 'application/json', 'x-tamu-kode': kode }; }
-  var DEF = { groomName: 'Raka', brideName: 'Sinta', groomFull: 'Raka Pratama, S.T.', brideFull: 'Sinta Maharani, S.E.', groomDad: 'H. Pratama', groomMom: 'Hj. Pratama', brideDad: 'H. Maharani', brideMom: 'Hj. Maharani', waNumber: '6281234567890', dateISO: '2027-02-14T08:00:00+07:00', akadTime: '08.00', resepsiTime: '11.00', venue: 'Gedung Serbaguna Melati', address: 'Jl. Raya Genteng No. 88, Banyuwangi', mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Gedung+Serbaguna+Melati+Banyuwangi', dresscode: 'Batik / pakaian rapi, nuansa krem & emas', musicUrl: '', heroImg: '', animCover: 'pudar', animSections: 'hidup' };
+  var DEF = { groomName: 'Raka', brideName: 'Sinta', groomFull: 'Raka Pratama, S.T.', brideFull: 'Sinta Maharani, S.E.', groomDad: 'H. Pratama', groomMom: 'Hj. Pratama', brideDad: 'H. Maharani', brideMom: 'Hj. Maharani', waNumber: '6281234567890', dateISO: '2027-02-14T08:00:00+07:00', akadTime: '08.00', resepsiTime: '11.00', venue: 'Gedung Serbaguna Melati', address: 'Jl. Raya Genteng No. 88, Banyuwangi', mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Gedung+Serbaguna+Melati+Banyuwangi', dresscode: 'Batik / pakaian rapi, nuansa krem & emas', rekBank: 'BCA', rekNo: '1234567890', rekNama: 'Raka Pratama', musicUrl: '', heroImg: '', animCover: 'pudar', animSections: 'hidup' };
   var cfgId = null, cfgLoaded = false, heroData = '';
   function V(id) { return document.getElementById(id).value.trim(); }
   function S(id, v) { document.getElementById(id).value = v == null ? '' : v; }
@@ -356,6 +363,7 @@ $('btnRefreshMod').addEventListener('click', loadMod);
     S('f_akad', kolon(c.akadTime)); S('f_resepsi', kolon(c.resepsiTime));
     S('f_venue', c.venue); S('f_address', c.address); S('f_maps', c.mapsUrl);
     S('f_dress', c.dresscode); S('f_music', c.musicUrl);
+    S('f_rekBank', c.rekBank); S('f_rekNo', c.rekNo); S('f_rekNama', c.rekNama);
     if (c.heroImg && c.heroImg.indexOf('data:') !== 0) S('f_heroUrl', c.heroImg);
     if (c.heroImg) { var hp = document.getElementById('heroPrev'); hp.src = c.heroImg; hp.style.display = 'block'; }
     S('f_animCover', c.animCover || 'pudar'); S('f_animSec', c.animSections || 'hidup');
@@ -400,7 +408,7 @@ $('btnRefreshMod').addEventListener('click', loadMod);
       dateLong: d.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }),
       akadTime: akad, resepsiTime: resp,
       venue: V('f_venue'), address: V('f_address'), mapsUrl: V('f_maps'),
-      dresscode: V('f_dress'), musicUrl: V('f_music'),
+      dresscode: V('f_dress'), musicUrl: V('f_music'), rekBank: V('f_rekBank'), rekNo: V('f_rekNo'), rekNama: V('f_rekNama'),
       heroImg: heroData || V('f_heroUrl'),
       animCover: V('f_animCover'), animSections: V('f_animSec')
     };
