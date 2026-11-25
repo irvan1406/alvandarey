@@ -477,5 +477,24 @@ tick(); setInterval(tick, 30000);
   load(); connect();
 })();
 </script>
+<script>
+/* Identitas tamu dari barcode pribadi: simpan kode, teruskan ke halaman doa, isi nama otomatis */
+(function () {
+  var k = new URLSearchParams(location.search).get('tamu');
+  if (k) localStorage.setItem('tamu_kode', k.trim().toUpperCase());
+  var kode = localStorage.getItem('tamu_kode');
+  if (!kode) return;
+  document.querySelectorAll('a[href="doa.html"]').forEach(function (a) { a.href = 'doa.html?tamu=' + encodeURIComponent(kode); });
+  fetch('https://kzcibfqzhdidlndxcfjo.supabase.co/rest/v1/rpc/cek_tamu', {
+    method: 'POST',
+    headers: { apikey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt6Y2liZnF6aGRpZGxuZHhjZmpvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTU1NzQ2NDUsImV4cCI6MjExMTE1MDY0NX0.QLupI9jY6h2B76lPrtncRN83A9STbF8BY5nB1HP5csQ', Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt6Y2liZnF6aGRpZGxuZHhjZmpvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTU1NzQ2NDUsImV4cCI6MjExMTE1MDY0NX0.QLupI9jY6h2B76lPrtncRN83A9STbF8BY5nB1HP5csQ', 'Content-Type': 'application/json' },
+    body: JSON.stringify({ p_kode: kode, p_acara: 'raka-sinta' })
+  }).then(function (r) { return r.json(); }).then(function (nama) {
+    if (typeof nama === 'string' && nama && !new URLSearchParams(location.search).get('to')) {
+      var g = document.getElementById('guestName'); if (g) g.textContent = nama;
+    }
+  }).catch(function () {});
+})();
+</script>
 </body>
 </html>
