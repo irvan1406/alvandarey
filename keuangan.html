@@ -254,7 +254,8 @@ function render() {
   let html = '', lastDay = '';
   list.forEach(t => {
     if (t.tanggal !== lastDay) { lastDay = t.tanggal; html += '<div class="day"><div class="dt">' + fmtTgl(t.tanggal) + '</div>'; }
-    html += '<div class="tx ' + t.jenis + '"><div class="ic">' + (IKON[t.kategori] || '•') + '</div><div class="mid"><div class="ket">' + esc(t.ket) + '</div><div class="meta"><span class="kat">' + esc(t.kategori) + '</span>' + (t.tempat ? ' · ' + esc(t.tempat) : '') + '</div><div class="acts"><button data-ed="' + t.id + '" type="button">Ubah</button><button data-hp="' + t.id + '" type="button">Hapus</button></div></div>' +
+    const jamTx = t.dibuat ? new Date(t.dibuat).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }).replace(':', '.') : '';
+    html += '<div class="tx ' + t.jenis + '"><div class="ic">' + (IKON[t.kategori] || '•') + '</div><div class="mid"><div class="ket">' + esc(t.ket) + '</div><div class="meta"><span class="kat">' + esc(t.kategori) + '</span>' + (t.tempat ? ' · ' + esc(t.tempat) : '') + (jamTx ? ' · ' + jamTx : '') + '</div><div class="acts"><button data-ed="' + t.id + '" type="button">Ubah</button><button data-hp="' + t.id + '" type="button">Hapus</button></div></div>' +
       (t.foto ? '<img class="thumb" data-foto="' + t.id + '" src="' + t.foto + '" alt="Foto struk">' : '') +
       '<div class="amt"><b>' + (t.jenis === 'masuk' ? '+' : '−') + rp(t.jumlah) + '</b></div></div>';
     if (list[list.indexOf(t) + 1] && list[list.indexOf(t) + 1].tanggal !== t.tanggal) html += '</div>';
