@@ -79,6 +79,23 @@
   .stk-img { width:158px; max-width:72vw; border-radius:4px; transform:rotate(-3deg); box-shadow:0 4px 12px rgba(0,0,0,.2); display:block; margin:2px auto 0; }
   .stk-tx { font-size:12.5px; font-weight:700; color:#2c7a38; margin-top:8px; }
   #rainLayer { position:fixed; inset:0; pointer-events:none; z-index:300; overflow:hidden; }
+  /* foto profil tamu */
+  #avaBar { display:none; margin-top:10px; align-items:center; gap:10px; background:rgba(255,255,255,.08); border:1px solid rgba(243,237,226,.28); border-radius:14px; padding:8px 10px; text-align:left; }
+  #avaBar .ab-tx { flex:1; min-width:0; }
+  #avaBar .ab-tx b { display:block; font-size:12.5px; color:#fff; }
+  #avaBar .ab-tx span { display:block; font-size:10.5px; color:#C9D6C6; line-height:1.45; margin-top:1px; }
+  #btnAva { background:linear-gradient(180deg,#D9BE8C,#B08D57); color:#22302B; border:none; border-radius:999px; padding:8px 13px; font:inherit; font-size:12px; font-weight:800; cursor:pointer; white-space:nowrap; }
+  .avslot { width:36px; height:36px; border-radius:50%; overflow:hidden; flex:0 0 auto; display:flex; align-items:center; justify-content:center; background:radial-gradient(circle at 35% 30%, #5E8C7A, #1E5B47); color:#F3EDE2; font-weight:800; font-size:13px; border:1.5px solid #D9BE8C; cursor:pointer; }
+  .avslot img { width:100%; height:100%; object-fit:cover; display:block; }
+  .msg .av.avslot { padding:0; }
+  .msgrow { display:flex; gap:8px; align-items:flex-end; margin-top:9px; }
+  .msgrow .bubble { margin-top:0; }
+  .msgrow.me { flex-direction:row-reverse; }
+  .chatava { width:30px; height:30px; font-size:11px; }
+  #lightbox { position:fixed; inset:0; z-index:600; background:rgba(24,32,28,.92); display:none; flex-direction:column; align-items:center; justify-content:center; gap:13px; padding:22px; }
+  #lightbox.open { display:flex; }
+  #lightbox img { max-width:86vw; max-height:72vh; border-radius:18px; border:3px solid #D9BE8C; box-shadow:0 24px 60px rgba(0,0,0,.5); }
+  #lbNama { color:#F3EDE2; font-family:'Playfair Display',Georgia,serif; font-size:19px; }
   /* pengumuman tabur uang untuk semua tamu */
   #taburBanner { position:fixed; top:14px; left:50%; transform:translateX(-50%) translateY(-170%); width:min(92vw,500px); z-index:400; display:flex; gap:11px; align-items:center; background:linear-gradient(135deg,#F7F1E3,#f7e3ac); border:1.5px solid #B08D57; border-radius:15px; padding:10px 13px; box-shadow:0 16px 34px rgba(34,48,43,.3); transition:transform .45s cubic-bezier(.2,.9,.3,1.15); }
   #taburBanner.show { transform:translateX(-50%) translateY(0); }
@@ -163,6 +180,7 @@
     <div class="sub">Pernikahan Raka &amp; Sinta · Sabtu, 14 Februari 2027<br>Gedung Serbaguna Melati, Banyuwangi</div>
     <div><span class="livepill off" id="livePill"><span class="dot"></span><span id="liveTxt">MENYAMBUNG...</span></span></div>
     <div id="guestChip">Masuk sebagai <b id="guestName"></b><button id="btnOut" type="button">Keluar</button></div>
+    <div id="avaBar"><span id="myAva" class="avslot"></span><div class="ab-tx"><b>Foto Profil</b><span>Tampil di samping doa &amp; chat-mu. Ketuk foto tamu untuk memperbesar.</span></div><button id="btnAva" type="button">Ganti Foto</button><input type="file" id="avaFile" accept="image/*" hidden></div>
     <div class="backlinks">
       <a href="undanganshop.html">← UndanganShop</a>
       <a href="undangannikah.html">← NikahSearch</a>
@@ -230,6 +248,7 @@
       </div>
     </div>
   </div>
+<div id="lightbox"><img id="lbImg" alt="Foto profil tamu"><div id="lbNama"></div></div>
 </div>
 <div id="toast"></div>
 
@@ -277,6 +296,8 @@ async function cekKode(kode) {
 function applyGuest() {
   $('guestName').textContent = guest.nama;
   $('guestChip').style.display = 'block';
+  $('avaBar').style.display = 'flex';
+  const ma = $('myAva'); ma.dataset.kode = guest.kode; ma.dataset.nama = guest.nama; avaFill(ma, guest.kode, guest.nama);
   $('fNama').value = guest.nama; $('fNama').readOnly = true;
   $('chatNama').value = guest.nama; $('chatNama').readOnly = true;
 }
@@ -288,6 +309,7 @@ async function enterWith(kode) {
   localStorage.setItem('tamu_kode', kode);
   applyGuest();
   cekTerverifikasi();
+  loadAvatars();
   $('gate').style.display = 'none';
   if (!appStarted) { appStarted = true; loadFeed(); connect(); }
   return true;
@@ -388,6 +410,62 @@ function attachActions(wrapEl, row, textEl, topEl) {
 
 /* ---------- render dinding ---------- */
 const feed = $('feed');
+/* ---------- foto profil tamu (jenis "profil") ---------- */
+const avatarMap = {};
+function avaFill(slot, kode, nama) {
+  if (!slot) return;
+  const url = kode ? avatarMap[kode] : null;
+  if (url) {
+    slot.innerHTML = '';
+    const im = document.createElement('img');
+    im.src = url; im.alt = nama || '';
+    im.addEventListener('click', ev => { ev.stopPropagation(); openLightbox(url, nama); });
+    slot.appendChild(im);
+  } else {
+    slot.textContent = initials(nama || '?');
+  }
+}
+function refreshAvatars() { document.querySelectorAll('.avslot').forEach(el => avaFill(el, el.dataset.kode, el.dataset.nama || '')); }
+async function loadAvatars() {
+  try {
+    const rows = await sbLoad(['profil'], 300, false);
+    rows.forEach(r => { if (r.kode && r.isi && r.isi.indexOf('data:image') === 0 && !avatarMap[r.kode]) avatarMap[r.kode] = r.isi; });
+    refreshAvatars();
+  } catch (e) {}
+}
+function openLightbox(url, nama) { $('lbImg').src = url; $('lbNama').textContent = nama || ''; $('lightbox').classList.add('open'); }
+$('lightbox').addEventListener('click', () => $('lightbox').classList.remove('open'));
+$('btnAva').addEventListener('click', () => $('avaFile').click());
+$('avaFile').addEventListener('change', e => {
+  const f = e.target.files[0]; if (!f || !guest) return;
+  const img = new Image();
+  img.onload = async () => {
+    const S = 256, cv = document.createElement('canvas'); cv.width = S; cv.height = S;
+    const sisi = Math.min(img.width, img.height);
+    cv.getContext('2d').drawImage(img, (img.width - sisi) / 2, (img.height - sisi) / 2, sisi, sisi, 0, 0, S, S);
+    let url = cv.toDataURL('image/jpeg', 0.85);
+    if (url.length > 90000) url = cv.toDataURL('image/jpeg', 0.7);
+    URL.revokeObjectURL(img.src);
+    try {
+      const rows = await sbSend(guest.nama.slice(0, 40), 'profil', url);
+      if (rows && rows[0]) onRow(rows[0]);
+      showToast('Foto profil tersimpan.');
+    } catch (err) { showToast('Gagal menyimpan foto. Coba lagi.'); }
+  };
+  img.src = URL.createObjectURL(f);
+  e.target.value = '';
+});
+function wrapBubble(b, row) {
+  const w = document.createElement('div');
+  w.className = 'msgrow' + (guest && row.kode && row.kode === guest.kode ? ' me' : '');
+  w.dataset.mid = b.dataset.mid; delete b.dataset.mid;
+  const av = document.createElement('span');
+  av.className = 'avslot chatava'; av.dataset.kode = row.kode || ''; av.dataset.nama = row.nama || '';
+  avaFill(av, row.kode, row.nama);
+  w.appendChild(av); w.appendChild(b);
+  return w;
+}
+
 function msgCard(row, isNew) {
   const d = document.createElement('div');
   d.className = 'msg' + (isNew ? ' new' : '');
@@ -395,7 +473,9 @@ function msgCard(row, isNew) {
   d.innerHTML = '<div class="top"><div class="av"></div><div class="nm"></div>' +
     '<span class="bdg ' + (row.jenis === 'ulasan' ? 'ulasan' : 'doa') + '">' + (row.jenis === 'ulasan' ? 'ULASAN' : 'DOA') + '</span>' +
     '<span class="tm">' + relTime(row.created_at) + '</span></div><p></p>';
-  d.querySelector('.av').textContent = initials(row.nama);
+  const avEl = d.querySelector('.av');
+  avEl.classList.add('avslot'); avEl.dataset.kode = row.kode || ''; avEl.dataset.nama = row.nama || '';
+  avaFill(avEl, row.kode, row.nama);
   d.querySelector('.nm').textContent = row.nama;
   d.querySelector('p').textContent = row.isi;
   attachActions(d, row, d.querySelector('p'), d.querySelector('.top'));
@@ -442,13 +522,13 @@ function bubble(row) {
     d.querySelector('.who').textContent = row.nama;
     d.addEventListener('click', taburUang);
     attachActions(d, row, d.querySelector('.stk-tx'), null);
-    return d;
+    return wrapBubble(d, row);
   }
   d.innerHTML = '<div class="who"></div><div class="tx"></div><div class="when">' + relTime(row.created_at) + '</div>';
   d.querySelector('.who').textContent = row.nama;
   d.querySelector('.tx').textContent = row.isi;
   attachActions(d, row, d.querySelector('.tx'), null);
-  return d;
+  return wrapBubble(d, row);
 }
 async function loadChat() {
   try {
@@ -490,6 +570,10 @@ function setLive(on) {
   $('liveTxt').textContent = on ? 'LIVE — TERHUBUNG' : 'MENYAMBUNG...';
 }
 function onRow(row) {
+  if (row.jenis === 'profil') {
+    if (row.kode && typeof row.isi === 'string' && row.isi.indexOf('data:image') === 0) { avatarMap[row.kode] = row.isi; refreshAvatars(); }
+    return;
+  }
   if (!row || row.acara !== CONFIG.acara) return;
   if (row.jenis === 'tabur') {
     if (guest && row.kode && row.kode === guest.kode) {
