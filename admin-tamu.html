@@ -239,7 +239,7 @@ $('btnSheet').addEventListener('click', async () => {
     const txt = await res.text();
     const json = JSON.parse(txt.substring(txt.indexOf('{'), txt.lastIndexOf('}') + 1));
     const guests = [];
-    const cell = (rw, idx) => { const c = rw && rw.c && rw.c[idx]; if (!c) return ''; const v = c.f != null ? c.f : c.v; return v == null ? '' : String(v).trim(); };
+    const cell = (rw, idx) => { const c = rw && rw.c && rw.c[idx]; if (!c) return ''; if (typeof c.v === 'number') return String(Math.round(c.v)); const v = c.f != null ? c.f : c.v; return v == null ? '' : String(v).trim(); };
     (json.table.rows || []).forEach(rw => {
       const nm = cell(rw, 0), no = cell(rw, 1);
       if (nm && nm.toLowerCase() !== 'nama') guests.push({ nama: nm.slice(0, 80), nomor: no.slice(0, 20) });
