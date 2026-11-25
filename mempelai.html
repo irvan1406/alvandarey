@@ -65,6 +65,7 @@
   .fsec { font-family:'Playfair Display',Georgia,serif; font-size:16.5px; color:#22302B; margin-top:20px; border-top:1px solid #EDEBE4; padding-top:15px; }
   #heroPrev { width:100%; border-radius:12px; margin-top:8px; display:none; }
   .savebtn { width:100%; margin-top:18px; background:linear-gradient(92deg,#1E5B47,#2E7D5F); color:#fff; border:none; border-radius:999px; padding:14px; font:inherit; font-size:15px; font-weight:800; cursor:pointer; }
+  .fld select { width:100%; border:1.5px solid #E1E5DA; border-radius:11px; padding:11px 12px; font:inherit; font-size:14px; background:#FFFDF8; }
 </style>
 </head>
 <body>
@@ -153,20 +154,43 @@
           <div class="fld"><label>Jam Akad Nikah</label><input id="f_akad" type="time"></div>
           <div class="fld"><label>Jam Resepsi</label><input id="f_resepsi" type="time"></div>
         </div>
-        <div class="fld"><label>Nama tempat / gedung</label><input id="f_venue" type="text"></div>
-        <div class="fld"><label>Alamat lengkap</label><textarea id="f_address" rows="2"></textarea></div>
-        <div class="fld"><label>Tautan Google Maps</label><input id="f_maps" type="url"><div class="hint2">Tempel tautan lokasi dari Google Maps — tombol "Lihat Lokasi" di undangan akan menuju ke sini.</div></div>
+        <div class="fld"><label>Nama tempat / gedung akad</label><input id="f_venue" type="text"></div>
+        <div class="fld"><label>Alamat lengkap akad</label><textarea id="f_address" rows="2"></textarea></div>
+        <div class="fld"><label>Tautan Google Maps akad</label><input id="f_maps" type="url"><div class="hint2">Tempel tautan lokasi dari Google Maps — tombol "Lihat Lokasi" di undangan akan menuju ke sini.</div></div>
+        <div class="fld"><label>Nama tempat resepsi (bila berbeda dari akad)</label><input id="f_venueR" type="text"></div>
+        <div class="fld"><label>Alamat resepsi</label><textarea id="f_addressR" rows="2"></textarea></div>
+        <div class="fld"><label>Tautan Google Maps resepsi</label><input id="f_mapsR" type="url"><div class="hint2">Bila diisi dan berbeda dari maps akad, tamu akan diminta memilih lokasi akad atau resepsi saat menekan tombol Maps.</div></div>
+        <div class="fld"><label>Zoom peta di undangan (10 = jauh, 19 = sangat dekat)</label><input id="f_mapsZoom" type="number" min="10" max="19" step="1"></div>
         <div class="fld"><label>Dresscode</label><input id="f_dress" type="text"></div>
 
         <div class="fsec">Musik Latar</div>
-        <div class="fld"><label>Tautan file MP3</label><input id="f_music" type="url" placeholder="https://... .mp3"><div class="hint2">Musik mulai berbunyi saat tamu menekan "Buka Undangan", dan bisa dimatikan lewat tombol musik di undangan. Tempel tautan MP3 yang bisa diakses publik.</div></div>
+        <div class="fld"><label>Tautan file MP3</label><input id="f_music" type="url" placeholder="https://... .mp3"><div class="hint2">Kosongkan untuk memakai lagu bawaan undangan (Canon in D — Pachelbel, biola). Atau tempel tautan MP3 publik untuk lagu sendiri. Musik mulai berbunyi saat tamu menekan "Buka Undangan".</div></div>
+
+        <div class="fsec">Warna Tema Undangan</div>
+        <div class="fld"><label>Pilih warna tema</label><select id="f_theme">
+          <option value="sage">Hijau Sage &amp; Emas (bawaan)</option>
+          <option value="rose">Rose / Merah Muda</option>
+          <option value="biru">Biru Dusty</option>
+          <option value="ungu">Ungu Lavender</option>
+          <option value="marun">Merah Marun</option>
+          <option value="cokelat">Cokelat Emas</option>
+        </select><div class="hint2">Warna utama undangan mengikuti pilihan ini; aksen emas tetap.</div></div>
 
         <div class="fsec">Amplop Digital</div>
+        <div class="hint2" style="margin-bottom:8px"><b>— Rekening Mempelai Pria —</b></div>
         <div class="frow">
-          <div class="fld"><label>Bank / e-wallet</label><input id="f_rekBank" type="text"></div>
+          <div class="fld"><label>Bank / e-wallet</label><input id="f_rekBank" type="text" list="bankList"></div>
           <div class="fld"><label>Nomor rekening</label><input id="f_rekNo" type="text" inputmode="numeric"></div>
         </div>
         <div class="fld"><label>Atas nama</label><input id="f_rekNama" type="text"></div>
+        <div class="hint2" style="margin:10px 0 8px"><b>— Rekening Mempelai Wanita —</b></div>
+        <div class="frow">
+          <div class="fld"><label>Bank / e-wallet</label><input id="f_rekBank2" type="text" list="bankList"></div>
+          <div class="fld"><label>Nomor rekening</label><input id="f_rekNo2" type="text" inputmode="numeric"></div>
+        </div>
+        <div class="fld"><label>Atas nama</label><input id="f_rekNama2" type="text"></div>
+        <datalist id="bankList"><option value="BCA"></option><option value="BRI"></option><option value="Mandiri"></option><option value="BNI"></option><option value="DANA"></option><option value="OVO"></option><option value="GoPay"></option><option value="ShopeePay"></option></datalist>
+        <div class="hint2">Pilih nama bank/e-wallet dari daftar agar logo resminya tampil otomatis di undangan.</div>
 
         <div class="fsec">Foto &amp; Animasi</div>
         <div class="fld"><label>Foto utama — unggah dari HP</label><input id="f_heroFile" type="file" accept="image/*"><div class="hint2">Foto otomatis diperkecil agar undangan tetap ringan. Atau isi tautan foto di bawah.</div><img id="heroPrev" alt="Pratinjau foto utama"></div>
@@ -347,7 +371,7 @@ $('btnRefreshMod').addEventListener('click', loadMod);
     });
   });
   function HEAD() { return { apikey: CONFIG.sbKey, Authorization: 'Bearer ' + CONFIG.sbKey, 'Content-Type': 'application/json', 'x-tamu-kode': kode }; }
-  var DEF = { groomName: 'Raka', brideName: 'Sinta', groomFull: 'Raka Pratama, S.T.', brideFull: 'Sinta Maharani, S.E.', groomDad: 'H. Pratama', groomMom: 'Hj. Pratama', brideDad: 'H. Maharani', brideMom: 'Hj. Maharani', waNumber: '6281234567890', dateISO: '2027-02-14T08:00:00+07:00', akadTime: '08.00', resepsiTime: '11.00', venue: 'Gedung Serbaguna Melati', address: 'Jl. Raya Genteng No. 88, Banyuwangi', mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Gedung+Serbaguna+Melati+Banyuwangi', dresscode: 'Batik / pakaian rapi, nuansa krem & emas', rekBank: 'BCA', rekNo: '1234567890', rekNama: 'Raka Pratama', musicUrl: '', heroImg: '', animCover: 'pudar', animSections: 'hidup' };
+  var DEF = { groomName: 'Raka', brideName: 'Sinta', groomFull: 'Raka Pratama, S.T.', brideFull: 'Sinta Maharani, S.E.', groomDad: 'H. Pratama', groomMom: 'Hj. Pratama', brideDad: 'H. Maharani', brideMom: 'Hj. Maharani', waNumber: '6281234567890', dateISO: '2027-02-14T08:00:00+07:00', akadTime: '08.00', resepsiTime: '11.00', venue: 'Gedung Serbaguna Melati', address: 'Jl. Raya Genteng No. 88, Banyuwangi', mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Gedung+Serbaguna+Melati+Banyuwangi', dresscode: 'Bebas sopan', venueR: 'Gedung Serbaguna Melati', addressR: 'Jl. Raya Genteng No. 88, Banyuwangi', mapsUrlR: 'https://www.google.com/maps/search/?api=1&query=Gedung+Serbaguna+Melati+Banyuwangi', mapsZoom: 15, theme: 'sage', rekBank: 'BCA', rekNo: '1234567890', rekNama: 'Raka Pratama', rekBank2: 'BRI', rekNo2: '0987654321', rekNama2: 'Sinta Maharani', musicUrl: '', heroImg: '', animCover: 'pudar', animSections: 'hidup' };
   var cfgId = null, cfgLoaded = false, heroData = '';
   function V(id) { return document.getElementById(id).value.trim(); }
   function S(id, v) { document.getElementById(id).value = v == null ? '' : v; }
@@ -364,6 +388,8 @@ $('btnRefreshMod').addEventListener('click', loadMod);
     S('f_venue', c.venue); S('f_address', c.address); S('f_maps', c.mapsUrl);
     S('f_dress', c.dresscode); S('f_music', c.musicUrl);
     S('f_rekBank', c.rekBank); S('f_rekNo', c.rekNo); S('f_rekNama', c.rekNama);
+    S('f_rekBank2', c.rekBank2); S('f_rekNo2', c.rekNo2); S('f_rekNama2', c.rekNama2);
+    S('f_venueR', c.venueR); S('f_addressR', c.addressR); S('f_mapsR', c.mapsUrlR); S('f_mapsZoom', c.mapsZoom); S('f_theme', c.theme);
     if (c.heroImg && c.heroImg.indexOf('data:') !== 0) S('f_heroUrl', c.heroImg);
     if (c.heroImg) { var hp = document.getElementById('heroPrev'); hp.src = c.heroImg; hp.style.display = 'block'; }
     S('f_animCover', c.animCover || 'pudar'); S('f_animSec', c.animSections || 'hidup');
@@ -409,6 +435,8 @@ $('btnRefreshMod').addEventListener('click', loadMod);
       akadTime: akad, resepsiTime: resp,
       venue: V('f_venue'), address: V('f_address'), mapsUrl: V('f_maps'),
       dresscode: V('f_dress'), musicUrl: V('f_music'), rekBank: V('f_rekBank'), rekNo: V('f_rekNo'), rekNama: V('f_rekNama'),
+      rekBank2: V('f_rekBank2'), rekNo2: V('f_rekNo2'), rekNama2: V('f_rekNama2'),
+      venueR: V('f_venueR'), addressR: V('f_addressR'), mapsUrlR: V('f_mapsR'), mapsZoom: parseInt(V('f_mapsZoom'), 10) || 15, theme: V('f_theme'),
       heroImg: heroData || V('f_heroUrl'),
       animCover: V('f_animCover'), animSections: V('f_animSec')
     };

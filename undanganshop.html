@@ -9,6 +9,12 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;0,900;1,500;1,600&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
+  :root { --p:#1E5B47; --p2:#2E7D5F; --pd:#16241E; --pd2:#2A3B33; }
+  body[data-theme="rose"] { --p:#9E3D54; --p2:#C05B7E; --pd:#2A1218; --pd2:#3D1E28; }
+  body[data-theme="biru"] { --p:#2C4A73; --p2:#4A7396; --pd:#101B2A; --pd2:#1D3049; }
+  body[data-theme="ungu"] { --p:#5B3A8E; --p2:#7D5BA6; --pd:#1D1430; --pd2:#2E2149; }
+  body[data-theme="marun"] { --p:#7A2230; --p2:#9E3D4E; --pd:#260D12; --pd2:#3D1620; }
+  body[data-theme="cokelat"] { --p:#7A5B23; --p2:#A8842F; --pd:#241B0C; --pd2:#3A2C12; }
   * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
   body { background:radial-gradient(1200px 700px at 50% -10%, #D8E4D8, #E9EDE6 60%, #DEE4DA); background-attachment:fixed; font-family:'Plus Jakarta Sans',-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; color:#22302B; }
   .phone { max-width:480px; margin:0 auto; background:#FBF7EE; min-height:100vh; position:relative; box-shadow:0 0 60px rgba(34,48,43,.30); overflow:hidden; }
@@ -20,7 +26,7 @@
   body.anim-on .sec { opacity:0; transform:translateY(24px); transition:opacity .8s ease, transform .8s ease; }
   body.anim-on .sec.vis { opacity:1; transform:none; }
   .kick { display:inline-block; font-size:10.5px; letter-spacing:3.5px; color:#fff; font-weight:800; background:linear-gradient(92deg,#B08D57,#D9A45B); padding:6px 14px; border-radius:999px; box-shadow:0 6px 14px rgba(176,141,87,.35); }
-  .kick.green { background:linear-gradient(92deg,#1E5B47,#2E7D5F); box-shadow:0 6px 14px rgba(30,91,71,.3); }
+  .kick.green { background:linear-gradient(92deg,var(--p),var(--p2)); box-shadow:0 6px 14px rgba(30,91,71,.3); }
   .kick.rose { background:linear-gradient(92deg,#C05B7E,#E58CA6); box-shadow:0 6px 14px rgba(192,91,126,.3); }
   .sec h2 { font-family:'Playfair Display',Georgia,serif; font-size:28px; font-weight:900; margin-top:12px; }
   .sec .sub { font-size:12.5px; color:#7A8A80; margin-top:6px; line-height:1.65; }
@@ -41,7 +47,7 @@
   .hero::after { content:''; position:absolute; inset:11px; border:1.5px solid rgba(217,190,140,.85); border-radius:16px; pointer-events:none; z-index:3; box-shadow:inset 0 0 0 1px rgba(24,32,28,.25); }
   .hero .cnr { position:absolute; width:11px; height:11px; background:linear-gradient(135deg,#F3E3B3,#B08D57); transform:rotate(45deg); z-index:4; box-shadow:0 2px 6px rgba(0,0,0,.4); }
   .hero .cnr.tl { top:6px; left:6px; } .hero .cnr.tr { top:6px; right:6px; } .hero .cnr.bl { bottom:6px; left:6px; } .hero .cnr.br { bottom:6px; right:6px; }
-  .hero .monobadge { position:absolute; top:24px; left:50%; transform:translateX(-50%); z-index:5; width:74px; height:74px; border-radius:50%; background:radial-gradient(circle at 35% 30%, #33503F, #16241E 75%); border:2px solid #D9BE8C; box-shadow:0 0 0 5px rgba(217,190,140,.25), 0 10px 22px rgba(0,0,0,.45); display:flex; flex-direction:column; align-items:center; justify-content:center; color:#F3E3B3; }
+  .hero .monobadge { position:absolute; top:24px; left:50%; transform:translateX(-50%); z-index:5; width:74px; height:74px; border-radius:50%; background:radial-gradient(circle at 35% 30%, #33503F, var(--pd) 75%); border:2px solid #D9BE8C; box-shadow:0 0 0 5px rgba(217,190,140,.25), 0 10px 22px rgba(0,0,0,.45); display:flex; flex-direction:column; align-items:center; justify-content:center; color:#F3E3B3; }
   .hero .monobadge .m { font-family:'Playfair Display',Georgia,serif; font-size:19px; letter-spacing:1px; line-height:1; }
   .hero .monobadge small { font-size:6.5px; letter-spacing:2.2px; color:#D9BE8C; margin-top:3px; }
   .hero .cap { position:absolute; left:0; right:0; bottom:0; padding:20px 18px 30px; text-align:center; color:#F3EDE2; z-index:2; }
@@ -53,14 +59,14 @@
   .hero .map { position:absolute; inset:0; display:none; background:#E9F0E4; z-index:1; }
   .hero .map .road { position:absolute; background:#fff; box-shadow:0 0 0 1px #D8E2D0; }
   .hero .map .pin { position:absolute; left:56%; top:40%; transform:translate(-50%,-100%); text-align:center; }
-  .hero .map .pin .dot { width:20px; height:20px; background:#1E5B47; border:3.5px solid #fff; border-radius:50% 50% 50% 0; transform:rotate(-45deg); margin:0 auto; box-shadow:0 3px 8px rgba(0,0,0,.35); }
+  .hero .map .pin .dot { width:20px; height:20px; background:var(--p); border:3.5px solid #fff; border-radius:50% 50% 50% 0; transform:rotate(-45deg); margin:0 auto; box-shadow:0 3px 8px rgba(0,0,0,.35); }
   .hero .map .pin .pl { background:#22302B; color:#EBD9A8; font-size:11px; padding:4px 9px; border-radius:6px; margin-top:6px; white-space:nowrap; }
   .hero .map .park { position:absolute; background:#CFE3C2; border-radius:8px; }
   .thumbs { display:flex; justify-content:center; gap:8px; background:linear-gradient(180deg,#FFFDF8,#F7F1E3); padding:13px 10px; border-bottom:1px solid #EFE3C2; flex-wrap:wrap; }
   .thumbs button { border:1.5px solid #E4DCC8; background:#fff; padding:9px 14px; font-size:12px; color:#7A8A80; cursor:pointer; font-family:inherit; border-radius:999px; font-weight:600; transition:.15s; }
-  .thumbs button.on { background:linear-gradient(92deg,#1E5B47,#2E7D5F); border-color:#1E5B47; color:#fff; font-weight:800; box-shadow:0 8px 16px rgba(30,91,71,.32); }
+  .thumbs button.on { background:linear-gradient(92deg,var(--p),var(--p2)); border-color:var(--p); color:#fff; font-weight:800; box-shadow:0 8px 16px rgba(30,91,71,.32); }
   /* pembuka */
-  .bismillah { font-size:26px; color:#1E5B47; line-height:1.9; text-shadow:0 2px 0 rgba(217,190,140,.35); }
+  .bismillah { font-size:26px; color:var(--p); line-height:1.9; text-shadow:0 2px 0 rgba(217,190,140,.35); }
   .salam { font-family:'Playfair Display',Georgia,serif; font-style:italic; font-size:17px; color:#22302B; margin-top:14px; }
   .lead { font-size:13.5px; color:#5E6E64; line-height:1.75; margin-top:11px; }
   .verse { margin-top:22px; position:relative; border:1.5px solid #D9BE8C; border-radius:14px; padding:22px 18px; background:linear-gradient(170deg,#FFFDF6,#FBF3DF); box-shadow:0 12px 26px rgba(176,141,87,.16); }
@@ -77,9 +83,9 @@
   .person .phbdg { position:absolute; bottom:2px; right:2px; z-index:2; background:linear-gradient(135deg,#F3E3B3,#D9A45B); color:#22302B; font-size:9px; font-weight:800; letter-spacing:1px; padding:5px 9px; border-radius:999px; box-shadow:0 6px 12px rgba(0,0,0,.25); border:1.5px solid #fff; }
   .person .fn { font-family:'Playfair Display',Georgia,serif; font-size:22px; font-weight:700; margin-top:16px; }
   .person .pr { font-size:12.5px; color:#7A8A80; margin-top:4px; line-height:1.65; }
-  .amp { width:52px; height:52px; margin:28px auto 0; border-radius:50%; background:radial-gradient(circle at 35% 30%, #33503F, #16241E 78%); border:2px solid #D9BE8C; color:#F3E3B3; font-family:'Playfair Display',Georgia,serif; font-style:italic; font-size:24px; display:flex; align-items:center; justify-content:center; box-shadow:0 10px 20px rgba(22,36,30,.35); }
+  .amp { width:52px; height:52px; margin:28px auto 0; border-radius:50%; background:radial-gradient(circle at 35% 30%, #33503F, var(--pd) 78%); border:2px solid #D9BE8C; color:#F3E3B3; font-family:'Playfair Display',Georgia,serif; font-style:italic; font-size:24px; display:flex; align-items:center; justify-content:center; box-shadow:0 10px 20px rgba(22,36,30,.35); }
   /* countdown gelap */
-  .sec.dark { background:linear-gradient(165deg,#2A3B33,#16241E 70%); color:#F3EDE2; overflow:hidden; }
+  .sec.dark { background:linear-gradient(165deg,var(--pd2),var(--pd) 70%); color:#F3EDE2; overflow:hidden; }
   .sec.dark::before { content:''; position:absolute; inset:0; background-image:radial-gradient(rgba(217,190,140,.14) 1.2px, transparent 1.3px); background-size:22px 22px; }
   .sec.dark > * { position:relative; }
   .sec.dark h2 { color:#fff; }
@@ -92,13 +98,13 @@
   .evcard { background:#fff; border:1px solid #EFE7D6; border-radius:20px; margin-top:20px; box-shadow:0 14px 30px rgba(34,48,43,.10); overflow:hidden; text-align:center; }
   .evcard .evhead { padding:13px; color:#fff; font-size:11px; letter-spacing:3px; font-weight:800; display:flex; align-items:center; justify-content:center; gap:9px; }
   .evcard.gold .evhead { background:linear-gradient(92deg,#B08D57,#D9A45B); }
-  .evcard.green .evhead { background:linear-gradient(92deg,#1E5B47,#2E7D5F); }
+  .evcard.green .evhead { background:linear-gradient(92deg,var(--p),var(--p2)); }
   .evcard .evbody { padding:20px 18px 22px; }
   .evcard .day { font-family:'Playfair Display',Georgia,serif; font-size:21px; font-weight:700; }
-  .evcard .time { display:inline-block; margin-top:8px; font-size:13px; font-weight:700; color:#1E5B47; background:#EFF6F1; border:1px solid #CBE0CF; padding:6px 13px; border-radius:999px; }
+  .evcard .time { display:inline-block; margin-top:8px; font-size:13px; font-weight:700; color:var(--p); background:#EFF6F1; border:1px solid #CBE0CF; padding:6px 13px; border-radius:999px; }
   .evcard .venue { font-family:'Playfair Display',Georgia,serif; font-size:17.5px; margin-top:14px; }
   .evcard .addr { font-size:12.5px; color:#7A8A80; margin-top:3px; line-height:1.6; }
-  .btn-line { display:inline-block; margin-top:20px; background:linear-gradient(92deg,#1E5B47,#2E7D5F); color:#fff; border-radius:999px; padding:14px 26px; font-size:13.5px; font-weight:800; text-decoration:none; box-shadow:0 12px 24px rgba(30,91,71,.32); }
+  .btn-line { display:inline-block; margin-top:20px; background:linear-gradient(92deg,var(--p),var(--p2)); color:#fff; border-radius:999px; padding:14px 26px; font-size:13.5px; font-weight:800; text-decoration:none; box-shadow:0 12px 24px rgba(30,91,71,.32); }
   .dressnote { margin:16px auto 0; max-width:330px; font-size:12.5px; color:#7A8A80; background:#FFF6E8; border:1px dashed #D9BE8C; border-radius:12px; padding:11px 13px; line-height:1.6; }
   .dressnote b { color:#8A6A33; }
   /* RSVP */
@@ -108,7 +114,7 @@
   .chip.on { border-color:#C05B7E; background:linear-gradient(92deg,#C05B7E,#E58CA6); color:#fff; font-weight:800; box-shadow:0 8px 16px rgba(192,91,126,.35); }
   .qtyrow { display:flex; align-items:center; justify-content:center; gap:15px; margin-top:20px; }
   .qty { display:flex; align-items:center; }
-  .qty button { width:38px; height:38px; border:1.5px solid #DCE3D6; background:#FBF7EE; font-size:18px; cursor:pointer; font-family:inherit; color:#1E5B47; font-weight:800; }
+  .qty button { width:38px; height:38px; border:1.5px solid #DCE3D6; background:#FBF7EE; font-size:18px; cursor:pointer; font-family:inherit; color:var(--p); font-weight:800; }
   .qty button:first-child { border-radius:50% 0 0 50%; }
   .qty button.last { border-radius:0 50% 50% 0; }
   .qty b { width:46px; text-align:center; font-size:16px; border-top:1.5px solid #DCE3D6; border-bottom:1.5px solid #DCE3D6; line-height:35px; background:#fff; }
@@ -132,25 +138,25 @@
   .lv-msg .t { display:flex; gap:7px; align-items:center; font-size:12.5px; }
   .lv-msg .t b { font-size:13px; }
   .lv-msg .bdg { font-size:9.5px; font-weight:800; letter-spacing:.5px; padding:2.5px 7px; border-radius:999px; background:#F7F1E3; color:#7A5B00; border:1px solid #D9BE8C; }
-  .lv-msg .bdg.u { background:#EAF4EC; color:#1E5B47; border-color:#9CC3A8; }
+  .lv-msg .bdg.u { background:#EAF4EC; color:var(--p); border-color:#9CC3A8; }
   .lv-msg .tm { margin-left:auto; color:#BDBDBD; font-size:11px; }
   .lv-msg p { font-size:13.5px; color:#5E6E64; line-height:1.55; margin-top:4px; overflow-wrap:anywhere; }
   .lv-qr { display:flex; gap:13px; align-items:center; margin-top:15px; background:linear-gradient(120deg,#F2F7F0,#FDF6E3); border:1.5px dashed #B08D57; border-radius:16px; padding:13px; text-align:left; }
   .lv-qr img { width:86px; height:86px; border-radius:8px; }
   .lv-qr .a { font-size:13.5px; font-weight:800; color:#22302B; }
   .lv-qr .b { font-size:12px; color:#7A8A80; line-height:1.55; margin-top:2px; }
-  .lv-qr a { display:inline-block; margin-top:8px; background:linear-gradient(92deg,#1E5B47,#2E7D5F); color:#fff; text-decoration:none; font-size:12.5px; font-weight:800; padding:9px 15px; border-radius:999px; box-shadow:0 8px 16px rgba(30,91,71,.3); }
+  .lv-qr a { display:inline-block; margin-top:8px; background:linear-gradient(92deg,var(--p),var(--p2)); color:#fff; text-decoration:none; font-size:12.5px; font-weight:800; padding:9px 15px; border-radius:999px; box-shadow:0 8px 16px rgba(30,91,71,.3); }
   /* penutup */
-  .sec.closing { background:linear-gradient(170deg,#2A3B33,#16241E); color:#EDE6D2; }
+  .sec.closing { background:linear-gradient(170deg,var(--pd2),var(--pd)); color:#EDE6D2; }
   .sec.closing .lead { color:#C9D4C6; }
   .sec.closing .salam { color:#fff; }
   .closing .names { font-family:'Playfair Display',Georgia,serif; font-weight:900; font-size:27px; margin-top:14px; background:linear-gradient(180deg,#FFF7DD,#F3E3B3 45%,#D9A45B); -webkit-background-clip:text; background-clip:text; color:transparent; }
-  .foot { text-align:center; color:#9AA79D; font-size:11px; padding:16px 16px 118px; line-height:1.7; background:#16241E; }
+  .foot { text-align:center; color:#9AA79D; font-size:11px; padding:16px 16px 118px; line-height:1.7; background:var(--pd); }
   /* bar bawah melayang */
   .bar { position:sticky; bottom:12px; z-index:40; display:flex; gap:9px; margin:0 12px; background:rgba(255,255,255,.94); backdrop-filter:blur(10px); border:1px solid #EDEBE4; border-radius:999px; box-shadow:0 14px 34px rgba(34,48,43,.22); padding:7px; }
   .bar a, .bar button { border:none; cursor:pointer; font-family:inherit; text-align:center; text-decoration:none; display:flex; align-items:center; justify-content:center; gap:7px; font-weight:700; border-radius:999px; }
-  .bar .chat { width:50px; height:50px; flex:0 0 auto; background:#EFF6F1; color:#1E5B47; }
-  .bar .buy { flex:1; background:linear-gradient(92deg,#1E5B47,#2E7D5F); color:#fff; font-size:14.5px; flex-direction:column; gap:0; padding:7px 4px; }
+  .bar .chat { width:50px; height:50px; flex:0 0 auto; background:#EFF6F1; color:var(--p); }
+  .bar .buy { flex:1; background:linear-gradient(92deg,var(--p),var(--p2)); color:#fff; font-size:14.5px; flex-direction:column; gap:0; padding:7px 4px; }
   .bar .buy small { font-weight:400; font-size:9.5px; opacity:.85; }
   /* sampul */
   #cover { position:fixed; inset:0; z-index:100; background:rgba(24,32,28,.74); display:flex; align-items:center; justify-content:center; padding:18px; backdrop-filter:blur(2px); transition:opacity .6s ease, transform .6s ease; }
@@ -172,13 +178,79 @@
   #cover .heroimg .nm { font-family:'Playfair Display',Georgia,serif; font-weight:900; font-size:25px; margin-top:3px; background:linear-gradient(180deg,#FFF7DD,#F3E3B3 45%,#D9A45B); -webkit-background-clip:text; background-clip:text; color:transparent; filter:drop-shadow(0 2px 8px rgba(0,0,0,.5)); }
   #cover .body { padding:19px 21px 23px; }
   #cover .body .to { font-size:13px; color:#7A8A80; }
-  #cover .body .guest { font-size:18px; font-weight:800; margin-top:3px; color:#1E5B47; }
+  #cover .body .guest { font-size:18px; font-weight:800; margin-top:3px; color:var(--p); }
   #cover .body .note { font-size:12.5px; color:#9AA79D; margin-top:9px; line-height:1.6; }
-  #cover .open { margin-top:16px; background:linear-gradient(92deg,#1E5B47,#2E7D5F); color:#fff; border:none; border-radius:999px; padding:14px 26px; font-size:15.5px; font-weight:800; cursor:pointer; width:100%; font-family:inherit; box-shadow:0 10px 22px rgba(30,91,71,.4); }
+  #cover .open { margin-top:16px; background:linear-gradient(92deg,var(--p),var(--p2)); color:#fff; border:none; border-radius:999px; padding:14px 26px; font-size:15.5px; font-weight:800; cursor:pointer; width:100%; font-family:inherit; box-shadow:0 10px 22px rgba(30,91,71,.4); }
   #toast { position:fixed; left:50%; bottom:92px; transform:translateX(-50%) translateY(20px); background:rgba(24,32,28,.94); color:#fff; font-size:13.5px; padding:12px 19px; border-radius:12px; opacity:0; pointer-events:none; transition:.25s; z-index:90; max-width:88vw; text-align:center; box-shadow:0 10px 26px rgba(0,0,0,.35); }
   #toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
-  #btnMusik { position:fixed; right:14px; bottom:88px; z-index:60; width:46px; height:46px; border-radius:50%; border:1.5px solid #D9BE8C; background:linear-gradient(180deg,#2A3B33,#1E5B47); color:#EBD9A8; display:none; align-items:center; justify-content:center; cursor:pointer; box-shadow:0 10px 22px rgba(34,48,43,.35); }
+  #btnMusik { position:fixed; right:14px; bottom:88px; z-index:60; width:46px; height:46px; border-radius:50%; border:1.5px solid #D9BE8C; background:linear-gradient(180deg,var(--pd2),var(--p)); color:#EBD9A8; display:none; align-items:center; justify-content:center; cursor:pointer; box-shadow:0 10px 22px rgba(34,48,43,.35); }
   #btnMusik.off { opacity:.45; }
+
+  /* === v5: slider, daun, peta, amplop, interaktif === */
+  .slider { position:absolute; inset:0; display:flex; overflow-x:auto; scroll-snap-type:x mandatory; scrollbar-width:none; }
+  .slider::-webkit-scrollbar { display:none; }
+  .slide { flex:0 0 100%; scroll-snap-align:start; }
+  .slide img { width:100%; height:100%; object-fit:cover; display:block; }
+  .slide img.act { animation:kenburns 6s ease-out both; }
+  @keyframes kenburns { from { transform:scale(1.09); } to { transform:scale(1); } }
+  .hero .shade, .hero .cap { pointer-events:none; }
+  .dots { position:absolute; left:0; right:0; bottom:12px; z-index:6; display:flex; gap:6px; justify-content:center; }
+  .dots button { width:8px; height:8px; border-radius:99px; border:none; background:rgba(255,255,255,.55); cursor:pointer; transition:.3s; padding:0; }
+  .dots button.on { width:22px; background:linear-gradient(92deg,#F3E3B3,#D9A45B); }
+  .slarrow { position:absolute; top:50%; transform:translateY(-50%); z-index:6; width:36px; height:36px; border-radius:50%; border:1px solid rgba(217,190,140,.6); background:rgba(22,36,30,.42); color:#F3E3B3; font-size:20px; line-height:1; cursor:pointer; backdrop-filter:blur(3px); }
+  .slarrow.prev { left:10px; } .slarrow.next { right:10px; }
+  .slarrow:active { transform:translateY(-50%) scale(.9); }
+  #petals { overflow:hidden; }
+  .leafwrap { position:absolute; top:-7vh; animation-name:jatuh; animation-timing-function:linear; animation-iteration-count:infinite; will-change:transform; }
+  .leafwrap img { display:block; animation-name:goyang; animation-timing-function:ease-in-out; animation-iteration-count:infinite; animation-direction:alternate; filter:drop-shadow(0 5px 5px rgba(34,48,43,.28)); }
+  @keyframes goyang { from { transform:rotate(-26deg) translateX(-10px); } to { transform:rotate(22deg) translateX(10px); } }
+  .cdcell { min-width:64px; backdrop-filter:blur(6px); }
+  .cdcell b { font-size:32px; }
+  .cdcell.pop b { animation:detikPop .45s ease; display:inline-block; }
+  @keyframes detikPop { 0% { transform:translateY(7px); opacity:.35; } 100% { transform:none; opacity:1; } }
+  .maptabs { display:flex; gap:8px; justify-content:center; margin-top:18px; }
+  .maptabs button { border:1.5px solid #DCE3D6; background:#fff; border-radius:999px; padding:10px 18px; font:inherit; font-size:13px; font-weight:700; color:#5E6E64; cursor:pointer; }
+  .maptabs button.on { background:linear-gradient(92deg,var(--p),var(--p2)); color:#fff; border-color:transparent; box-shadow:0 8px 16px rgba(34,48,43,.25); }
+  .mapframe { margin-top:14px; border-radius:18px; overflow:hidden; border:2px solid #D9BE8C; box-shadow:0 16px 32px rgba(34,48,43,.16); background:#E9F0E4; }
+  .mapframe iframe { width:100%; height:300px; border:0; display:block; }
+  .smodal2 { position:fixed; inset:0; z-index:110; background:rgba(24,32,28,.66); display:none; align-items:center; justify-content:center; padding:18px; }
+  .smodal2.open { display:flex; }
+  .mbox { background:#fff; border-radius:20px; max-width:380px; width:100%; padding:20px; text-align:center; box-shadow:0 24px 60px rgba(0,0,0,.45); animation:popIn2 .35s cubic-bezier(.2,.9,.3,1.15) both; }
+  @keyframes popIn2 { from { opacity:0; transform:scale(.92) translateY(14px); } to { opacity:1; transform:none; } }
+  .mbox h3 { font-family:'Playfair Display',Georgia,serif; font-size:19px; }
+  .mbox p { font-size:12.5px; color:#7A8A80; margin-top:5px; }
+  .mopt { display:block; text-align:left; margin-top:12px; border:1.5px solid #D9BE8C; background:#FFF9EA; border-radius:14px; padding:13px 15px; text-decoration:none; color:#22302B; }
+  .mopt.green { border-color:#9CC3A8; background:#EFF6F1; }
+  .mopt b { display:block; font-size:14.5px; }
+  .mopt span { font-size:12px; color:#7A8A80; }
+  .mclose { margin-top:14px; background:none; border:none; font:inherit; font-size:13.5px; font-weight:700; color:#7A8A80; cursor:pointer; padding:8px 16px; }
+  .rsvpsum { margin-top:17px; background:#F7F3E8; border:1px dashed #D9BE8C; border-radius:12px; padding:12px 13px; font-size:12.5px; color:#5E6E64; line-height:1.65; text-align:left; }
+  .btn-rsvp { display:block; margin-top:13px; background:linear-gradient(92deg,var(--p),var(--p2)); color:#fff; text-decoration:none; font-size:14.5px; font-weight:800; padding:14px; border-radius:999px; box-shadow:0 12px 24px rgba(34,48,43,.28); }
+  .ampsel { display:flex; gap:9px; justify-content:center; margin-top:18px; }
+  .ampsel button { flex:1; max-width:164px; border:1.5px solid #E4DCC8; background:#fff; border-radius:15px; padding:11px 8px; cursor:pointer; font-family:inherit; transition:.18s; }
+  .ampsel button .albl { display:block; font-size:9.5px; letter-spacing:2px; color:#9AA79D; font-weight:800; }
+  .ampsel button b { display:block; font-family:'Playfair Display',Georgia,serif; font-size:16.5px; margin-top:3px; color:#22302B; }
+  .ampsel button.on { border-color:#B08D57; background:linear-gradient(170deg,#FFF9EA,#F7EDD2); box-shadow:0 10px 20px rgba(176,141,87,.25); transform:translateY(-2px); }
+  .bank.swap { animation:popIn2 .45s ease both; }
+  .banktop { display:flex; justify-content:space-between; align-items:flex-start; }
+  .logobadge { background:#fff; border-radius:9px; padding:5px 9px; min-height:34px; display:flex; align-items:center; box-shadow:0 4px 10px rgba(0,0,0,.25); position:relative; z-index:2; }
+  .logobadge img { height:24px; max-width:110px; object-fit:contain; }
+  .logotxt { font-weight:800; font-size:14px; color:#1D4E89; letter-spacing:.3px; }
+  .logotxt.shopee { color:#EE4D2D; }
+  #toast { background:rgba(255,253,247,.97); color:#22302B; border:1.5px solid #D9BE8C; font-weight:600; border-radius:999px; box-shadow:0 12px 28px rgba(94,74,34,.3); padding:12px 20px; }
+  .bar { background:rgba(255,255,255,.86); border:1px solid rgba(217,190,140,.5); border-radius:24px; box-shadow:0 18px 40px rgba(34,48,43,.28); animation:barUp .8s .25s cubic-bezier(.2,.8,.3,1) both; }
+  @keyframes barUp { from { transform:translateY(90px); opacity:0; } to { transform:none; opacity:1; } }
+  .bar .buy { animation:glowPulse 2.8s ease-in-out infinite; }
+  @keyframes glowPulse { 0%,100% { box-shadow:0 0 0 0 rgba(217,164,91,0); } 50% { box-shadow:0 0 0 6px rgba(217,164,91,.18); } }
+  button { transition:transform .15s ease; }
+  .chip:active, .btn-salin:active, .btn-line:active, .btn-gold:active, .ampsel button:active, #btnOpen:active, .mopt:active { transform:scale(.96); }
+  body.anim-on .evcard, body.anim-on .person, body.anim-on .rsvpcard, body.anim-on .bank, body.anim-on .lv-qr, body.anim-on .verse, body.anim-on .mapframe { opacity:0; transform:translateY(26px) scale(.985); transition:opacity .7s ease, transform .7s cubic-bezier(.2,.7,.3,1); }
+  body.anim-on .evcard.vis, body.anim-on .person.vis, body.anim-on .rsvpcard.vis, body.anim-on .bank.vis, body.anim-on .lv-qr.vis, body.anim-on .verse.vis, body.anim-on .mapframe.vis { opacity:1; transform:none; }
+  .lv-msg { animation:msgIn .5s ease both; }
+  .lv-msg:nth-child(2) { animation-delay:.06s; } .lv-msg:nth-child(3) { animation-delay:.12s; } .lv-msg:nth-child(4) { animation-delay:.18s; } .lv-msg:nth-child(5) { animation-delay:.24s; }
+  @keyframes msgIn { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:none; } }
+  #btnMusik.playing svg { animation:putar 5s linear infinite; }
+  .orn i { animation:putar 14s linear infinite; }
 </style>
 </head>
 <body data-anim="pudar">
@@ -207,29 +279,21 @@
 <div class="phone">
 
   <div class="hero" id="produk">
-    <img id="heroImg" class="js-hero" src="img-shop/hero-raka-sinta.jpg" alt="Foto mempelai Raka dan Sinta">
-    <div class="shade" id="heroShade"></div>
-    <i class="cnr tl"></i><i class="cnr tr"></i><i class="cnr bl"></i><i class="cnr br"></i>
-    <div class="monobadge"><span class="m" id="heroMono">R &amp; S</span><small>THE WEDDING</small></div>
-    <div class="mode" id="heroMode">Foto Utama</div>
-    <div class="map" id="heroMap">
-      <div class="park" style="left:6%; top:10%; width:30%; height:24%"></div>
-      <div class="park" style="right:5%; bottom:12%; width:26%; height:20%"></div>
-      <div class="road" style="left:0; right:0; top:52%; height:15%"></div>
-      <div class="road" style="top:0; bottom:0; left:44%; width:11%"></div>
-      <div class="pin"><div class="dot"></div><div class="pl js-venue">Gedung Serbaguna Melati</div></div>
+    <div class="slider" id="slider">
+      <div class="slide"><img id="heroImg" class="js-hero" src="img-shop/hero-raka-sinta.jpg" alt="Foto mempelai Raka dan Sinta"></div>
+      <div class="slide"><img src="img-shop/akad.jpg" alt="Foto akad nikah"></div>
+      <div class="slide"><img src="img-shop/resepsi.jpg" alt="Foto resepsi"></div>
     </div>
-    <div class="cap" id="heroCap">
+    <div class="shade"></div>
+    <i class="cnr tl"></i><i class="cnr tr"></i><i class="cnr bl"></i><i class="cnr br"></i>
+    <button class="slarrow prev" id="slPrev" aria-label="Foto sebelumnya">&lsaquo;</button>
+    <button class="slarrow next" id="slNext" aria-label="Foto berikutnya">&rsaquo;</button>
+    <div class="cap">
       <div class="wo">THE WEDDING OF</div>
       <div class="nm" id="heroNames">Raka &amp; Sinta</div>
       <div><span class="dt js-date-short">SABTU · 14 · 02 · 2027</span></div>
     </div>
-  </div>
-  <div class="thumbs" id="thumbs">
-    <button class="on" data-m="utama">Foto Utama</button>
-    <button data-m="akad">Akad Nikah</button>
-    <button data-m="resepsi">Resepsi</button>
-    <button data-m="denah">Denah Lokasi</button>
+    <div class="dots" id="sliderDots"></div>
   </div>
 
   <section class="sec pat">
@@ -272,6 +336,7 @@
       <div class="cdcell"><b id="cdD">--</b><span>HARI</span></div>
       <div class="cdcell"><b id="cdH">--</b><span>JAM</span></div>
       <div class="cdcell"><b id="cdM">--</b><span>MENIT</span></div>
+      <div class="cdcell"><b id="cdS">--</b><span>DETIK</span></div>
     </div>
     <a class="btn-gold" id="btnCal" href="#" target="_blank" rel="noopener">Simpan Tanggalnya</a>
   </section>
@@ -300,19 +365,32 @@
       <div class="evbody">
         <div class="day js-date">Sabtu, 14 Februari 2027</div>
         <div><span class="time">Pukul <span id="specResepsi">11.00</span> WIB — selesai</span></div>
-        <div class="venue js-venue">Gedung Serbaguna Melati</div>
-        <div class="addr">Alamat sama dengan lokasi akad nikah</div>
+        <div class="venue" id="venueR">Gedung Serbaguna Melati</div>
+        <div class="addr" id="specAddressR">Jl. Raya Genteng No. 88, Banyuwangi</div>
       </div>
     </div>
-    <a class="btn-line" id="btnMaps" href="https://www.google.com/maps/search/?api=1&query=Gedung+Serbaguna+Melati+Banyuwangi" target="_blank" rel="noopener">Lihat Lokasi di Google Maps</a>
-    <div class="dressnote">Dresscode: <b id="specDress">Batik / pakaian rapi, nuansa krem &amp; emas</b> · Mohon hadir 30 menit sebelum acara dimulai</div>
+    <button class="btn-line" id="btnMaps" type="button">Lihat Lokasi di Google Maps</button>
+    <div class="dressnote">Dresscode: <b id="specDress">Bebas sopan</b> · Mohon hadir 30 menit sebelum acara dimulai</div>
+  </section>
+
+
+  <section class="sec patw">
+    <span class="kick green">DENAH LOKASI</span>
+    <h2>Peta Lokasi Acara</h2>
+    <div class="orn"><b></b><i></i><b></b></div>
+    <div class="maptabs">
+      <button class="on" id="mapTabAkad" type="button">Akad Nikah</button>
+      <button id="mapTabResepsi" type="button">Resepsi</button>
+    </div>
+    <div class="mapframe"><iframe id="mapFrame" title="Peta lokasi acara" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://maps.google.com/maps?q=Gedung%20Serbaguna%20Melati%20Jl.%20Raya%20Genteng%20No.%2088%20Banyuwangi&z=15&output=embed"></iframe></div>
+    <p class="sub">Gunakan tab untuk berpindah antara lokasi akad dan resepsi. Tombol "Lihat Lokasi di Google Maps" di kartu acara membuka aplikasi Maps untuk navigasi.</p>
   </section>
 
   <section class="sec patw">
     <span class="kick rose">RSVP</span>
     <h2>Konfirmasi Kehadiran</h2>
     <div class="rsvpcard">
-      <p class="sub" style="margin-top:0">Pilih sesi dan jumlah tamu yang hadir, lalu kirim melalui tombol RSVP di bagian bawah halaman.</p>
+      <p class="sub" style="margin-top:0">Pilih sesi dan jumlah tamu yang hadir — ringkasan konfirmasimu langsung tampil di bawah ini.</p>
       <div class="chips" id="variants" style="margin-top:15px">
         <button class="chip" data-v="Akad Nikah (08.00 WIB)">Akad Nikah · 08.00</button>
         <button class="chip" data-v="Resepsi (11.00 WIB)">Resepsi · 11.00</button>
@@ -324,6 +402,9 @@
           <button id="qMin" aria-label="Kurangi">−</button><b id="qVal">1</b><button id="qPlus" class="last" aria-label="Tambah">+</button>
         </div>
       </div>
+    
+      <div class="rsvpsum" id="rsvpSum"></div>
+      <a class="btn-rsvp" id="btnRsvp2" href="#" target="_blank" rel="noopener">Kirim Konfirmasi via WhatsApp</a>
     </div>
   </section>
 
@@ -331,8 +412,12 @@
     <span class="kick">AMPLOP DIGITAL</span>
     <h2>Tanda Kasih</h2>
     <p class="sub">Doa restu Bapak/Ibu/Saudara/i adalah hadiah terindah. Namun apabila berkenan memberikan tanda kasih, kami sediakan dengan hormat:</p>
-    <div class="bank">
-      <div class="chipic"></div>
+    <div class="ampsel">
+      <button class="on" id="ampPria" type="button"><span class="albl">Mempelai Pria</span><b id="ampNamaPria">Raka</b></button>
+      <button id="ampWanita" type="button"><span class="albl">Mempelai Wanita</span><b id="ampNamaWanita">Sinta</b></button>
+    </div>
+    <div class="bank" id="bankCard">
+      <div class="banktop"><div class="chipic"></div><span class="logobadge"><img id="rekLogo" alt="Logo bank / e-wallet" style="display:none"><span id="rekLogoTxt"></span></span></div>
       <div class="bk" id="rekBank">BCA</div>
       <div class="no" id="rekNo">1234567890</div>
       <div class="an">a.n. <span id="rekNama">Raka Pratama</span></div>
@@ -367,7 +452,7 @@
 
   <div class="bar">
     <a class="chat" id="btnChat" href="#" target="_blank" rel="noopener" aria-label="Chat mempelai via WhatsApp">
-      <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#1E5B47" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-8.5 8.4c-1.5 0-3-.4-4.2-1.1L3 20l1.3-5.1A8.4 8.4 0 1 1 21 11.5z"/></svg>
+      <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-8.5 8.4c-1.5 0-3-.4-4.2-1.1L3 20l1.3-5.1A8.4 8.4 0 1 1 21 11.5z"/></svg>
     </a>
     <a class="buy" id="btnBuy" href="#" target="_blank" rel="noopener">RSVP · Konfirmasi Kehadiran<small>via WhatsApp</small></a>
   </div>
@@ -376,8 +461,17 @@
 <button id="btnMusik" aria-label="Musik latar">
   <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
 </button>
-<audio id="musikAudio" loop preload="none"></audio>
+<audio id="musikAudio" loop preload="none" src="https://archive.org/download/PachelbelCanonInDMajorViolineXquisiteVersion/Pachelbel%20Canon%20in%20D%20major%20-%20Violin%20(eXquisite%20version).mp3"></audio>
 
+<div id="mapModal" class="smodal2">
+  <div class="mbox">
+    <h3>Pilih Lokasi</h3>
+    <p>Tujuan Google Maps yang ingin dibuka:</p>
+    <a class="mopt" id="mapGoAkad" href="https://www.google.com/maps/search/?api=1&query=Gedung+Serbaguna+Melati+Banyuwangi" target="_blank" rel="noopener"><b>Lokasi Akad Nikah</b><span id="mapNamaAkad">Gedung Serbaguna Melati</span></a>
+    <a class="mopt green" id="mapGoResepsi" href="https://www.google.com/maps/search/?api=1&query=Gedung+Serbaguna+Melati+Banyuwangi" target="_blank" rel="noopener"><b>Lokasi Resepsi</b><span id="mapNamaResepsi">Gedung Serbaguna Melati</span></a>
+    <button class="mclose" id="mapClose" type="button">Batal</button>
+  </div>
+</div>
 <div id="toast"></div>
 
 <script>
@@ -403,54 +497,59 @@ function showToast(msg) {
   toast.textContent = msg; toast.classList.add('show');
   clearTimeout(toastT); toastT = setTimeout(() => toast.classList.remove('show'), 2600);
 }
+function waMsg() {
+  return 'Halo ' + CONFIG.groom + ' & ' + CONFIG.bride + ', saya ' + guest + '. Konfirmasi kehadiran (RSVP): HADIR pada sesi ' + variant + ', jumlah ' + qty + ' orang, untuk pernikahan ' + CONFIG.dateLong + '. Terima kasih undangannya!';
+}
 function buyHref() {
-  const msg = 'Halo ' + CONFIG.groom + ' & ' + CONFIG.bride + ', saya ' + guest + '. Konfirmasi kehadiran (RSVP): HADIR pada sesi ' + variant + ', jumlah ' + qty + ' orang, untuk pernikahan ' + CONFIG.dateLong + '. Terima kasih undangannya!';
-  return 'https://wa.me/' + CONFIG.waNumber + '?text=' + encodeURIComponent(msg);
+  return 'https://wa.me/' + CONFIG.waNumber + '?text=' + encodeURIComponent(waMsg());
 }
 function syncBuy() {
-  document.getElementById('btnBuy').href = buyHref();
+  const href = buyHref();
+  document.getElementById('btnBuy').href = href;
+  const b2 = document.getElementById('btnRsvp2'); if (b2) b2.href = href;
+  const sum = document.getElementById('rsvpSum'); if (sum) sum.textContent = waMsg();
   document.getElementById('btnChat').href = 'https://wa.me/' + CONFIG.waNumber + '?text=' + encodeURIComponent('Halo ' + CONFIG.groom + ' & ' + CONFIG.bride + ', saya ' + guest + '. Saya mau bertanya tentang undangannya.');
 }
 syncBuy();
 
-/* galeri hero */
-const heroImg = document.getElementById('heroImg'), heroMap = document.getElementById('heroMap'),
-      heroCap = document.getElementById('heroCap'), heroMode = document.getElementById('heroMode'),
-      heroShade = document.getElementById('heroShade');
-const MODES = {
-  utama:   { label: 'Foto Utama', pos: '50% 50%', filter: 'none', cap: true },
-  akad:    { label: 'Akad Nikah · 08.00 WIB', pos: '50% 22%', filter: 'saturate(1.08)', cap: true },
-  resepsi: { label: 'Resepsi · 11.00 WIB', pos: '50% 78%', filter: 'brightness(1.05) saturate(1.12)', cap: true },
-  denah:   { label: 'Denah Lokasi', pos: '50% 50%', filter: 'none', cap: false }
-};
-document.getElementById('thumbs').addEventListener('click', e => {
-  const b = e.target.closest('button'); if (!b) return;
-  document.querySelectorAll('#thumbs button').forEach(x => x.classList.remove('on'));
-  b.classList.add('on');
-  const m = MODES[b.dataset.m];
-  heroMode.textContent = m.label;
-  if (b.dataset.m === 'denah') {
-    heroImg.style.opacity = '0'; heroShade.style.opacity = '0'; heroCap.style.display = 'none'; heroMap.style.display = 'block';
-  } else {
-    heroMap.style.display = 'none'; heroImg.style.opacity = '1'; heroShade.style.opacity = '1'; heroCap.style.display = 'block';
-    heroImg.style.objectPosition = m.pos; heroImg.style.filter = m.filter;
-  }
-});
-
-/* voucher */
-document.querySelectorAll('.vch button').forEach(btn => btn.addEventListener('click', () => {
-  const box = btn.closest('.vch'); if (box.classList.contains('done')) return;
-  box.classList.add('done'); btn.textContent = 'Tersimpan ✓';
-  showToast('Voucher "' + box.querySelector('.a').textContent + '" berhasil diklaim untuk ' + guest + '.');
-}));
-
-/* varian & jumlah */
-document.getElementById('variants').addEventListener('click', e => {
-  const b = e.target.closest('.chip'); if (!b) return;
-  document.querySelectorAll('#variants .chip').forEach(c => c.classList.remove('on'));
-  b.classList.add('on'); variant = b.dataset.v; syncBuy();
+/* galeri slider geser + putar otomatis */
+const slider = document.getElementById('slider');
+const dotsBox = document.getElementById('sliderDots');
+const slideN = slider.children.length;
+let slideIdx = 0, lastInteract = 0;
+function markSlide() {
+  dotsBox.querySelectorAll('button').forEach((d, j) => d.classList.toggle('on', j === slideIdx));
+  slider.querySelectorAll('.slide img').forEach((im, j) => im.classList.toggle('act', j === slideIdx));
+}
+function goSlide(i) {
+  slideIdx = Math.max(0, Math.min(slideN - 1, i));
+  slider.scrollTo({ left: slideIdx * slider.clientWidth, behavior: 'smooth' });
+  markSlide();
+}
+for (let i = 0; i < slideN; i++) {
+  const d = document.createElement('button');
+  d.type = 'button';
+  d.setAttribute('aria-label', 'Foto ' + (i + 1));
+  if (i === 0) d.className = 'on';
+  d.addEventListener('click', () => { lastInteract = Date.now(); goSlide(i); });
+  dotsBox.appendChild(d);
+}
+let scrollT;
+slider.addEventListener('scroll', () => {
+  clearTimeout(scrollT);
+  scrollT = setTimeout(() => { slideIdx = Math.round(slider.scrollLeft / slider.clientWidth); lastInteract = Date.now(); markSlide(); }, 90);
+}, { passive: true });
+document.getElementById('slPrev').addEventListener('click', () => { lastInteract = Date.now(); goSlide(slideIdx - 1); });
+document.getElementById('slNext').addEventListener('click', () => { lastInteract = Date.now(); goSlide(slideIdx + 1); });
+markSlide();
+setInterval(() => { if (Date.now() - lastInteract > 6000 && !document.hidden) goSlide((slideIdx + 1) % slideN); }, 4200);
+document.querySelectorAll('#sessRow .chip').forEach(ch => ch.addEventListener('click', () => {
+  document.querySelectorAll('#sessRow .chip').forEach(x => x.classList.remove('on'));
+  ch.classList.add('on');
+  variant = ch.dataset.v;
+  syncBuy();
   showToast('Sesi dipilih: ' + variant);
-});
+}));
 document.getElementById('qPlus').addEventListener('click', () => { if (qty < 5) { qty++; document.getElementById('qVal').textContent = qty; syncBuy(); } });
 document.getElementById('qMin').addEventListener('click', () => { if (qty > 1) { qty--; document.getElementById('qVal').textContent = qty; syncBuy(); } });
 document.getElementById('btnOpen').addEventListener('click', () => {
@@ -458,20 +557,34 @@ document.getElementById('btnOpen').addEventListener('click', () => {
   cv.classList.add('bye');
   setTimeout(() => { cv.style.display = 'none'; }, 640);
   const au = document.getElementById('musikAudio');
-  if (au && au.getAttribute('src')) { au.play().catch(() => {}); document.getElementById('btnMusik').style.display = 'flex'; }
-  showToast('Selamat datang, ' + guest + '! Silakan lihat-lihat dulu.');
+  if (au && au.getAttribute('src')) { au.play().catch(() => {}); const mb2 = document.getElementById('btnMusik'); mb2.style.display = 'flex'; mb2.classList.add('playing'); }
 });
 
 /* hitung mundur flash sale -> hari acara */
 function tick() {
   let ms = new Date(CONFIG.dateISO) - new Date();
   if (ms < 0) ms = 0;
-  const d = Math.floor(ms / 86400000), h = Math.floor(ms / 3600000) % 24, m = Math.floor(ms / 60000) % 60;
+  const d = Math.floor(ms / 86400000), h = Math.floor(ms / 3600000) % 24, m = Math.floor(ms / 60000) % 60, sec = Math.floor(ms / 1000) % 60;
   document.getElementById('cdD').textContent = d;
   document.getElementById('cdH').textContent = String(h).padStart(2, '0');
   document.getElementById('cdM').textContent = String(m).padStart(2, '0');
+  const elS = document.getElementById('cdS');
+  const sv = String(sec).padStart(2, '0');
+  if (elS.textContent !== sv) {
+    elS.textContent = sv;
+    const cell = elS.closest('.cdcell');
+    cell.classList.remove('pop'); void cell.offsetWidth; cell.classList.add('pop');
+  }
 }
-tick(); setInterval(tick, 30000);
+tick(); setInterval(tick, 1000);
+
+/* animasi masuk/keluar saat digulir — bawaan aktif */
+(function () {
+  document.body.classList.add('anim-on');
+  const io = new IntersectionObserver(es => { es.forEach(e => { e.target.classList.toggle('vis', e.isIntersecting); }); }, { threshold: 0.06 });
+  document.querySelectorAll('.sec, .evcard, .person, .rsvpcard, .bank, .lv-qr, .verse, .mapframe').forEach(el => io.observe(el));
+  window.__rio = io;
+})();
 </script>
 <script>
 /* ===== Dinding Doa Live (Supabase) — seksi baca-saja, menulisnya di live-8x2k9m4q.html ===== */
@@ -554,8 +667,8 @@ tick(); setInterval(tick, 30000);
   var au = document.getElementById('musikAudio'), mb = document.getElementById('btnMusik');
   mb.addEventListener('click', function () {
     if (!au.getAttribute('src')) return;
-    if (au.paused) { au.play().catch(function () {}); mb.classList.remove('off'); }
-    else { au.pause(); mb.classList.add('off'); }
+    if (au.paused) { au.play().catch(function () {}); mb.classList.remove('off'); mb.classList.add('playing'); }
+    else { au.pause(); mb.classList.add('off'); mb.classList.remove('playing'); }
   });
   var bs = document.getElementById('btnSalin');
   if (bs) bs.addEventListener('click', function () {
@@ -610,25 +723,92 @@ tick(); setInterval(tick, 30000);
     }
     TA('js-venue', c.venue);
     T('specAddress', c.address); T('kadoAddr', c.address);
-    if (c.mapsUrl) { var bm = document.getElementById('btnMaps'); if (bm) bm.href = c.mapsUrl; }
     T('specDress', c.dresscode);
     T('rekBank', c.rekBank); T('rekNo', c.rekNo); T('rekNama', c.rekNama);
+    if (c.theme) document.body.dataset.theme = c.theme;
+    T('venueR', c.venueR); T('specAddressR', c.addressR);
+    T('mapNamaAkad', c.venue); T('mapNamaResepsi', c.venueR);
+    if (c.mapsUrl) { var ga = document.getElementById('mapGoAkad'); if (ga) ga.href = c.mapsUrl; }
+    if (c.mapsUrlR || c.mapsUrl) { var gr = document.getElementById('mapGoResepsi'); if (gr) gr.href = c.mapsUrlR || c.mapsUrl; }
+    if (c.venue || c.address) MAPQ.akad = ((c.venue || '') + ' ' + (c.address || '')).trim() || MAPQ.akad;
+    if (c.venueR || c.addressR) MAPQ.resepsi = ((c.venueR || '') + ' ' + (c.addressR || '')).trim() || MAPQ.resepsi;
+    if (c.mapsZoom) { var zp = parseInt(c.mapsZoom, 10); if (zp >= 10 && zp <= 19) mapZoom = zp; }
+    drawMap();
+    AMP.pria = { bank: c.rekBank || AMP.pria.bank, no: c.rekNo || AMP.pria.no, nama: c.rekNama || AMP.pria.nama };
+    AMP.wanita = { bank: c.rekBank2 || AMP.wanita.bank, no: c.rekNo2 || AMP.wanita.no, nama: c.rekNama2 || AMP.wanita.nama };
+    T('ampNamaPria', gn); T('ampNamaWanita', bn);
+    setAmp(ampCur);
     if (c.heroImg) document.querySelectorAll('.js-hero').forEach(function (el) { el.src = c.heroImg; });
     if (c.musicUrl) {
       au.src = c.musicUrl;
       if (document.getElementById('cover').style.display === 'none') mb.style.display = 'flex';
     }
     if (c.animCover) document.body.dataset.anim = c.animCover;
-    if (c.animSections === 'hidup') {
-      document.body.classList.add('anim-on');
-      var io = new IntersectionObserver(function (es) {
-        es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('vis'); io.unobserve(e.target); } });
-      }, { threshold: 0.05 });
-      document.querySelectorAll('.sec').forEach(function (el) { io.observe(el); });
+    if (c.animSections === 'mati') {
+      document.body.classList.remove('anim-on');
+      if (window.__rio) window.__rio.disconnect();
     }
     document.getElementById('btnCal').href = calHref();
     syncBuy(); tick();
   }
+  /* amplop dua mempelai + logo bank/e-wallet asli */
+  var AMP = {
+    pria: { bank: 'BCA', no: '1234567890', nama: 'Raka Pratama' },
+    wanita: { bank: 'BRI', no: '0987654321', nama: 'Sinta Maharani' }
+  };
+  var ampCur = 'pria';
+  function logoFor(bank) {
+    var b = (bank || '').toLowerCase();
+    if (b.indexOf('bca') >= 0) return 'img-shop/logos/bca.png';
+    if (b.indexOf('bri') >= 0 || b.indexOf('rakyat') >= 0) return 'img-shop/logos/bri.svg';
+    if (b.indexOf('mandiri') >= 0) return 'img-shop/logos/mandiri.svg';
+    if (b.indexOf('bni') >= 0 || b.indexOf('negara') >= 0) return 'img-shop/logos/bni.svg';
+    if (b.indexOf('dana') >= 0) return 'img-shop/logos/dana.svg';
+    if (b.indexOf('ovo') >= 0) return 'img-shop/logos/ovo.svg';
+    if (b.indexOf('gopay') >= 0 || b.indexOf('go-pay') >= 0) return 'img-shop/logos/gopay.svg';
+    return '';
+  }
+  function setAmp(who) {
+    ampCur = who;
+    var d = AMP[who];
+    T('rekBank', d.bank); T('rekNo', d.no); T('rekNama', d.nama);
+    var lg = document.getElementById('rekLogo'), tx = document.getElementById('rekLogoTxt');
+    var src = logoFor(d.bank);
+    if (src) { lg.src = src; lg.style.display = 'block'; tx.style.display = 'none'; }
+    else { lg.style.display = 'none'; tx.style.display = 'block'; tx.textContent = d.bank; tx.className = 'logotxt' + ((d.bank || '').toLowerCase().indexOf('shopee') >= 0 ? ' shopee' : ''); }
+    document.getElementById('ampPria').classList.toggle('on', who === 'pria');
+    document.getElementById('ampWanita').classList.toggle('on', who === 'wanita');
+    var card = document.getElementById('bankCard');
+    card.classList.remove('swap'); void card.offsetWidth; card.classList.add('swap');
+  }
+  document.getElementById('ampPria').addEventListener('click', function () { setAmp('pria'); });
+  document.getElementById('ampWanita').addEventListener('click', function () { setAmp('wanita'); });
+  setAmp('pria');
+  /* peta tersemat + pemilih lokasi akad/resepsi */
+  var MAPQ = { akad: 'Gedung Serbaguna Melati Jl. Raya Genteng No. 88 Banyuwangi', resepsi: 'Gedung Serbaguna Melati Jl. Raya Genteng No. 88 Banyuwangi' };
+  var mapZoom = 15, mapTab = 'akad';
+  function drawMap() {
+    var f = document.getElementById('mapFrame');
+    if (f) f.src = 'https://maps.google.com/maps?q=' + encodeURIComponent(MAPQ[mapTab]) + '&z=' + mapZoom + '&output=embed';
+  }
+  function setMapTab(t) {
+    mapTab = t;
+    document.getElementById('mapTabAkad').classList.toggle('on', t === 'akad');
+    document.getElementById('mapTabResepsi').classList.toggle('on', t === 'resepsi');
+    drawMap();
+  }
+  document.getElementById('mapTabAkad').addEventListener('click', function () { setMapTab('akad'); });
+  document.getElementById('mapTabResepsi').addEventListener('click', function () { setMapTab('resepsi'); });
+  var mModal = document.getElementById('mapModal');
+  document.getElementById('btnMaps').addEventListener('click', function () {
+    var a = document.getElementById('mapGoAkad').href, r = document.getElementById('mapGoResepsi').href;
+    if (a && r && a !== r) mModal.classList.add('open');
+    else window.open(a || r, '_blank');
+  });
+  document.getElementById('mapClose').addEventListener('click', function () { mModal.classList.remove('open'); });
+  mModal.addEventListener('click', function (e) { if (e.target === mModal) mModal.classList.remove('open'); });
+  document.querySelectorAll('.mopt').forEach(function (el) { el.addEventListener('click', function () { mModal.classList.remove('open'); }); });
+
   fetch(SB + '/rest/v1/pesan?acara=eq.' + ACARA + '&jenis=eq.konfig&select=isi&order=created_at.desc&limit=1',
     { headers: { apikey: KEY, Authorization: 'Bearer ' + KEY } })
     .then(function (r) { return r.json(); })
@@ -638,21 +818,24 @@ tick(); setInterval(tick, 30000);
 </script>
 
 <script>
-/* Kelopak bunga jatuh — nuansa pesta */
+/* Daun asli berguguran — nuansa taman */
 (function () {
   var box = document.getElementById('petals');
   if (!box) return;
-  var colors = ['#F2A9BF', '#E58CA6', '#D9BE8C', '#B9CDBD', '#F3E3B3'];
-  for (var i = 0; i < 16; i++) {
-    var s = document.createElement('span');
-    s.className = 'petal';
-    var sz = 7 + Math.random() * 8;
-    s.style.width = sz + 'px'; s.style.height = sz + 'px';
-    s.style.left = (Math.random() * 96) + '%';
-    s.style.background = colors[i % colors.length];
-    s.style.animationDuration = (7 + Math.random() * 7) + 's';
-    s.style.animationDelay = (-Math.random() * 14) + 's';
-    box.appendChild(s);
+  var imgs = ['img-shop/daun1.png', 'img-shop/daun2.png'];
+  for (var i = 0; i < 12; i++) {
+    var w = document.createElement('span');
+    w.className = 'leafwrap';
+    var sz = 20 + Math.random() * 20;
+    w.style.left = (Math.random() * 94) + '%';
+    w.style.animationDuration = (8 + Math.random() * 7) + 's';
+    w.style.animationDelay = (-Math.random() * 15) + 's';
+    var im = document.createElement('img');
+    im.src = imgs[i % 2]; im.alt = '';
+    im.style.width = sz + 'px';
+    im.style.animationDuration = (1.6 + Math.random() * 1.6) + 's';
+    w.appendChild(im);
+    box.appendChild(w);
   }
 })();
 </script>

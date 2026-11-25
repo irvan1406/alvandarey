@@ -155,6 +155,41 @@
   .editbox { width:100%; margin-top:8px; border:1.5px solid #B08D57; border-radius:9px; padding:9px 11px; font:inherit; font-size:14.5px; }
   .edited { font-size:10.5px; color:#A9B4AB; font-style:italic; }
   input[readonly] { background:#faf6ec; color:#7a5b00; font-weight:700; }
+
+  /* header foto pengantin + ikon */
+  header { background:#22302B; }
+  #hdrFoto { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:50% 30%; }
+  .hshade { position:absolute; inset:0; background:linear-gradient(180deg, rgba(22,36,30,.52), rgba(22,36,30,.78) 70%, rgba(22,36,30,.92)); }
+  .hmain { position:relative; z-index:1; }
+  header .mono, header h1 { text-shadow:0 2px 10px rgba(0,0,0,.5); }
+  .hrow { position:absolute; top:10px; right:12px; z-index:3; display:flex; gap:8px; }
+  .iconbtn { position:relative; width:40px; height:40px; border-radius:50%; border:1px solid rgba(217,190,140,.55); background:rgba(22,36,30,.45); color:#F3EDE2; display:flex; align-items:center; justify-content:center; cursor:pointer; backdrop-filter:blur(3px); }
+  .iconbtn:active { transform:scale(.93); }
+  .iconbtn .ndot { position:absolute; top:1px; right:1px; width:9px; height:9px; border-radius:50%; background:#9be15d; border:1.5px solid #22302B; display:none; }
+  .iconbtn.on .ndot { display:block; }
+  .iconbtn.blocked .ndot { display:block; background:#F27059; }
+  .iconbtn .bslash { display:none; }
+  .iconbtn.blocked .bslash { display:block; }
+  .iconbtn.on { color:#EBD9A8; border-color:#D9BE8C; }
+  /* modal pengaturan */
+  .smodal { position:fixed; inset:0; z-index:120; background:rgba(24,32,28,.66); display:none; align-items:center; justify-content:center; padding:18px; }
+  .smodal.open { display:flex; }
+  .scard { background:#fff; border-radius:20px; max-width:400px; width:100%; padding:20px; box-shadow:0 24px 60px rgba(0,0,0,.45); animation:popIn .35s cubic-bezier(.2,.9,.3,1.15) both; text-align:left; }
+  @keyframes popIn { from { opacity:0; transform:scale(.92) translateY(14px); } to { opacity:1; transform:none; } }
+  .scard h3 { font-family:'Playfair Display',Georgia,serif; font-size:19px; margin-bottom:12px; }
+  .scard #avaBar { margin-top:0; background:#F7F3E8; border-color:#E7DFC8; }
+  .scard #avaBar .ab-tx b { color:#22302B; }
+  .scard #avaBar .ab-tx span { color:#7A8A80; }
+  .scard .slabel { display:block; font-size:12.5px; font-weight:700; color:#5E6E64; margin:15px 0 6px; }
+  .scard #chatNama { width:100%; border:1.5px solid #E1E5DA; border-radius:11px; padding:11px 12px; font:inherit; font-size:14px; background:#FFFDF8; }
+  .scard .srow { display:flex; justify-content:space-between; align-items:center; margin-top:15px; font-size:13.5px; color:#5E6E64; }
+  .scard .srow b { color:#22302B; }
+  .scard .shint { font-size:11.5px; color:#9AA79D; margin-top:5px; line-height:1.55; }
+  .scard .slink { display:inline-block; margin-top:15px; font-size:13px; font-weight:700; color:#1E5B47; text-decoration:none; }
+  .scard .sclose { display:block; width:100%; margin-top:15px; background:linear-gradient(92deg,#1E5B47,#2E7D5F); color:#fff; border:none; border-radius:999px; padding:13px; font:inherit; font-size:14.5px; font-weight:800; cursor:pointer; }
+  /* tabur uang ikon saja */
+  .chatbar .stkbtn { width:48px; height:48px; flex:0 0 auto; border-radius:50%; padding:0; justify-content:center; }
+  .chatbar .stkbtn .mini { font-size:11px; padding:3px 6px; border-radius:5px; }
 </style>
 </head>
 <body>
@@ -175,15 +210,23 @@
 
 <div class="wrap">
   <header>
-    <div class="mono">R <i>&amp;</i> S</div>
-    <h1>Dinding Doa &amp; Chat Live</h1>
-    <div class="sub">Pernikahan Raka &amp; Sinta · Sabtu, 14 Februari 2027<br>Gedung Serbaguna Melati, Banyuwangi</div>
-    <div><span class="livepill off" id="livePill"><span class="dot"></span><span id="liveTxt">MENYAMBUNG...</span></span></div>
-    <div id="guestChip">Masuk sebagai <b id="guestName"></b><button id="btnOut" type="button">Keluar</button></div>
-    <div id="avaBar"><span id="myAva" class="avslot"></span><div class="ab-tx"><b>Foto Profil</b><span>Tampil di samping doa &amp; chat-mu. Ketuk foto tamu untuk memperbesar.</span></div><button id="btnAva" type="button">Ganti Foto</button><input type="file" id="avaFile" accept="image/*" hidden></div>
-    <div class="backlinks">
-      <a href="undanganshop.html">← UndanganShop</a>
-      <a href="undangannikah.html">← NikahSearch</a>
+    <img id="hdrFoto" src="img-shop/hero-raka-sinta.jpg" alt="Foto pengantin">
+    <div class="hshade"></div>
+    <div class="hrow">
+      <button class="iconbtn" id="btnNotif" type="button" aria-label="Notifikasi chat" title="Notifikasi chat">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 8-3 8h18s-3-1-3-8"/><path d="M13.7 20a2 2 0 0 1-3.4 0"/><line class="bslash" x1="3.5" y1="3.5" x2="20.5" y2="20.5" stroke="#F2A0A0" stroke-width="2.4"/></svg>
+        <span class="ndot"></span>
+      </button>
+      <button class="iconbtn" id="btnSetelan" type="button" aria-label="Pengaturan" title="Pengaturan">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
+      </button>
+    </div>
+    <div class="hmain">
+      <div class="mono">R <i>&amp;</i> S</div>
+      <h1>Dinding Doa &amp; Chat Live</h1>
+      <div class="sub">Pernikahan <span id="hdrNames">Raka &amp; Sinta</span> · <span id="hdrInfo">Sabtu, 14 Februari 2027 · Gedung Serbaguna Melati, Banyuwangi</span></div>
+      <div><span class="livepill off" id="livePill"><span class="dot"></span><span id="liveTxt">MENYAMBUNG...</span></span></div>
+      <div id="guestChip">Masuk sebagai <b id="guestName"></b><button id="btnOut" type="button">Keluar</button></div>
     </div>
   </header>
 
@@ -213,10 +256,9 @@
 
     <!-- ===== TAB CHAT ===== -->
     <section id="tabChat">
-      <div class="namebar"><span>Nama di chat:</span><input type="text" id="chatNama" maxlength="40" placeholder="Nama kamu"><button class="notifbtn" id="btnNotif" type="button">Aktifkan Notifikasi</button></div>
       <div id="chatList"><div class="empty">Memuat chat...</div></div>
       <form class="chatbar" id="chatForm">
-        <button type="button" class="stkbtn" id="btnStiker" title="Tabur Uang — khusus yang sudah memberi amplop; dikonfirmasi mempelai"><span class="mini">Rp</span>Tabur Uang</button>
+        <button type="button" class="stkbtn" id="btnStiker" aria-label="Tabur Uang" title="Tabur Uang — khusus yang sudah memberi amplop; dikonfirmasi mempelai"><span class="mini">Rp</span></button>
         <input type="text" id="chatInput" maxlength="300" placeholder="Tulis pesan untuk semua tamu..." autocomplete="off">
         <button id="btnChat" type="submit">Kirim</button>
       </form>
@@ -234,6 +276,19 @@
   <div class="foot">Dinding Doa &amp; Chat Live — fitur UndanganKu (alvandarey.my.id).<br>Pesan tampil publik untuk semua pengunjung; jaga kata-kata baik ya.</div>
 </div>
 
+
+<div id="setModal" class="smodal">
+  <div class="scard">
+    <h3>Pengaturan</h3>
+    <div id="avaBar"><span id="myAva" class="avslot"></span><div class="ab-tx"><b>Foto Profil</b><span>Tampil di samping doa &amp; chat-mu. Ketuk foto tamu untuk memperbesar.</span></div><button id="btnAva" type="button">Ganti Foto</button><input type="file" id="avaFile" accept="image/*" hidden></div>
+    <label class="slabel" for="chatNama">Nama di chat</label>
+    <input type="text" id="chatNama" maxlength="40" placeholder="Nama kamu">
+    <div class="srow"><span>Notifikasi chat</span><b id="notifState">Nonaktif</b></div>
+    <p class="shint">Aktifkan atau matikan notifikasi lewat ikon lonceng di kanan atas halaman.</p>
+    <a class="slink" href="undanganshop.html">&larr; Kembali ke Undangan</a>
+    <button type="button" class="sclose" id="btnSetClose">Tutup</button>
+  </div>
+</div>
 <div id="rainLayer"></div>
 <div id="taburBanner"><img src="img-shop/uang-100000.jpg" alt=""><div class="tb-tx"><b id="tbNama">Tamu</b><span>Tabur Uang — sudah memberikan amplop untuk mempelai. Terima kasih!</span></div></div>
 <div id="taburModal" class="tmodal">
@@ -452,6 +507,7 @@ $('avaFile').addEventListener('change', e => {
       showToast('Foto profil tersimpan.');
     } catch (err) { showToast('Gagal menyimpan foto. Coba lagi.'); }
   };
+  img.onerror = () => { showToast('Format foto tidak didukung. Coba foto lain.'); };
   img.src = URL.createObjectURL(f);
   e.target.value = '';
 });
@@ -545,13 +601,16 @@ function scrollChat() { chatList.scrollTop = chatList.scrollHeight; }
 const btnNotif = $('btnNotif');
 function updNotifBtn() {
   if (!('Notification' in window)) { btnNotif.style.display = 'none'; return; }
-  if (Notification.permission === 'granted') { btnNotif.textContent = 'Notifikasi Aktif'; btnNotif.disabled = true; }
-  else if (Notification.permission === 'denied') { btnNotif.textContent = 'Notifikasi Diblokir'; btnNotif.disabled = true; }
+  const st = $('notifState');
+  if (Notification.permission === 'granted') { btnNotif.classList.add('on'); btnNotif.classList.remove('blocked'); if (st) st.textContent = 'Aktif'; }
+  else if (Notification.permission === 'denied') { btnNotif.classList.add('blocked'); btnNotif.classList.remove('on'); if (st) st.textContent = 'Diblokir browser'; }
+  else { btnNotif.classList.remove('on', 'blocked'); if (st) st.textContent = 'Nonaktif'; }
 }
 btnNotif.addEventListener('click', async () => {
   try { await Notification.requestPermission(); } catch (e) {}
   updNotifBtn();
   if (Notification.permission === 'granted') showToast('Notifikasi chat aktif. Kamu akan diberi tahu bila ada chat baru.');
+  else if (Notification.permission === 'denied') showToast('Notifikasi diblokir. Aktifkan lewat Pengaturan Situs di browser kamu.');
 });
 updNotifBtn();
 function notifyChat(row) {
@@ -764,6 +823,24 @@ $('chatForm').addEventListener('submit', async e => {
       $('gateErr').textContent = 'Kode pada tautan/barcode ini tidak ditemukan. Ketik kodemu secara manual di bawah.';
     }
   }
+})();
+</script>
+
+<script>
+/* Pengaturan (ikon roda) + foto header dari Panel Mempelai */
+$('btnSetelan').addEventListener('click', () => $('setModal').classList.add('open'));
+$('btnSetClose').addEventListener('click', () => $('setModal').classList.remove('open'));
+$('setModal').addEventListener('click', e => { if (e.target === $('setModal')) $('setModal').classList.remove('open'); });
+(async () => {
+  try {
+    const rows = await sbLoad(['konfig'], 1, false);
+    if (rows && rows[0]) {
+      const c = JSON.parse(rows[0].isi);
+      if (c.heroImg) $('hdrFoto').src = c.heroImg;
+      if (c.groomName && c.brideName) $('hdrNames').textContent = c.groomName + ' & ' + c.brideName;
+      if (c.dateLong || c.venue) $('hdrInfo').textContent = (c.dateLong || 'Sabtu, 14 Februari 2027') + ' · ' + (c.venue || 'Gedung Serbaguna Melati, Banyuwangi');
+    }
+  } catch (e) {}
 })();
 </script>
 </body>
