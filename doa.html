@@ -81,6 +81,8 @@
   .namebar { display:flex; gap:8px; align-items:center; margin-bottom:10px; }
   .namebar span { font-size:12.5px; color:#8a7a9e; font-weight:600; white-space:nowrap; }
   .namebar input { flex:1; }
+  .notifbtn { border:1.5px solid #d4af37; background:#fdf6e0; color:#7a5b00; border-radius:999px; font:inherit; font-size:12px; font-weight:700; padding:9px 13px; cursor:pointer; white-space:nowrap; }
+  .notifbtn:disabled { opacity:.65; cursor:default; }
   /* qr */
   .qrcard { margin:16px 14px 6px; background:#fff; border:1px solid #eee7f5; border-radius:16px; padding:16px; display:flex; gap:15px; align-items:center; }
   .qrcard img { width:104px; height:104px; border-radius:10px; border:1px solid #eee7f5; }
@@ -164,14 +166,14 @@
         <label for="fIsi">Isi doa / ulasan</label>
         <textarea id="fIsi" rows="3" maxlength="400" placeholder="Tulis doa terbaikmu untuk kedua mempelai..." required></textarea>
         <div class="count"><span id="isiCount">0</span>/400</div>
-        <button class="send" id="btnSend" type="submit">Kirim — Tampil Live Sekarang</button>
+        <button class="send" id="btnSend" type="submit">Kirim</button>
       </form>
       <div class="feed" id="feed"><div class="empty">Memuat doa &amp; ulasan...</div></div>
     </section>
 
     <!-- ===== TAB CHAT ===== -->
     <section id="tabChat">
-      <div class="namebar"><span>Nama di chat:</span><input type="text" id="chatNama" maxlength="40" placeholder="Nama kamu"></div>
+      <div class="namebar"><span>Nama di chat:</span><input type="text" id="chatNama" maxlength="40" placeholder="Nama kamu"><button class="notifbtn" id="btnNotif" type="button">Aktifkan Notifikasi</button></div>
       <div id="chatList"><div class="empty">Memuat chat...</div></div>
       <form class="chatbar" id="chatForm">
         <button type="button" class="stkbtn" id="btnStiker" title="Kirim stiker Tabur Uang — hujan uang di layar semua tamu"><span class="mini">Rp</span>Tabur Uang</button>
@@ -421,6 +423,28 @@ async function loadChat() {
 }
 function scrollChat() { chatList.scrollTop = chatList.scrollHeight; }
 
+/* ---------- notifikasi chat ---------- */
+const btnNotif = $('btnNotif');
+function updNotifBtn() {
+  if (!('Notification' in window)) { btnNotif.style.display = 'none'; return; }
+  if (Notification.permission === 'granted') { btnNotif.textContent = 'Notifikasi Aktif'; btnNotif.disabled = true; }
+  else if (Notification.permission === 'denied') { btnNotif.textContent = 'Notifikasi Diblokir'; btnNotif.disabled = true; }
+}
+btnNotif.addEventListener('click', async () => {
+  try { await Notification.requestPermission(); } catch (e) {}
+  updNotifBtn();
+  if (Notification.permission === 'granted') showToast('Notifikasi chat aktif. Kamu akan diberi tahu bila ada chat baru.');
+});
+updNotifBtn();
+function notifyChat(row) {
+  if (!('Notification' in window) || Notification.permission !== 'granted' || !document.hidden) return;
+  if (guest && row.kode && row.kode === guest.kode) return;
+  try {
+    const body = row.jenis === 'stiker' ? (row.nama + ' menabur uang di chat! Buka untuk ikut menabur.') : (row.nama + ': ' + String(row.isi || '').slice(0, 90));
+    new Notification('Chat Grup Tamu Undangan', { body: body, tag: 'chat-tamu', icon: 'img-shop/qr-doa.png' });
+  } catch (e) {}
+}
+
 /* ---------- realtime (websocket Supabase) ---------- */
 let ws = null, hb = null, refN = 0, reconnectMs = 1500;
 function setLive(on) {
@@ -433,6 +457,7 @@ function onRow(row) {
   if (seen.has(row.id)) return;
   seen.add(row.id);
   if (row.jenis === 'chat' || row.jenis === 'stiker') {
+    notifyChat(row);
     if (row.jenis === 'stiker') taburUang();
     if (chatLoaded) {
       const em = chatList.querySelector('.empty'); if (em) em.remove();
@@ -522,7 +547,7 @@ $('doaForm').addEventListener('submit', async e => {
     $('fIsi').value = ''; $('isiCount').textContent = '0';
     showToast('Terkirim! Pesanmu tampil live untuk semua tamu.');
   } catch (err) { showToast('Gagal mengirim. Periksa koneksi lalu coba lagi.'); }
-  btn.disabled = false; btn.textContent = 'Kirim — Tampil Live Sekarang';
+  btn.disabled = false; btn.textContent = 'Kirim';
 });
 
 /* ---------- stiker tabur uang ---------- */

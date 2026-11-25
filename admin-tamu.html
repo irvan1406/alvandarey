@@ -87,7 +87,7 @@
 
   <div class="panel">
     <h2>3 · Barcode per Tamu</h2>
-    <p class="hint">Barcode ini adalah "akun" tamu: saat di-scan, tamu langsung masuk ke halaman doa &amp; chat dengan namanya sendiri — tanpa mengetik nama. Unduh PNG-nya untuk dicetak / ditempel, atau kirim lewat WhatsApp (pesan berisi tautan pribadi tamu).</p>
+    <p class="hint">Barcode ini adalah "akun" tamu: saat di-scan, tamu membuka undangan digital dengan namanya sendiri tercantum di sampul — dari sana ia bisa menulis doa &amp; ulasan serta ikut chat grup, tanpa mengetik nama. Unduh PNG-nya untuk dicetak / ditempel, atau kirim lewat WhatsApp (pesan rapi berisi tautan pribadi tamu).</p>
     <div class="rowflex">
       <button class="btn" id="btnPrint">Cetak Semua Barcode</button>
       <button class="btn" id="btnCopyTsv">Salin Tabel Hasil (untuk Sheet)</button>
@@ -131,7 +131,7 @@ function genKode() {
   for (let i = 0; i < 8; i++) s += A[Math.floor(Math.random() * A.length)];
   return s;
 }
-function linkFor(kode) { return CONFIG.base + 'doa.html?tamu=' + kode; }
+function linkFor(kode) { return CONFIG.base + 'undanganshop.html?tamu=' + kode; }
 function normWA(v) {
   let d = String(v == null ? '' : v).replace(/\D/g, '');
   if (!d) return '';
@@ -186,7 +186,27 @@ function renderCards() {
     bDl.addEventListener('click', () => downloadCard(r));
     const bWa = document.createElement('button'); bWa.className = 'btn wa'; bWa.textContent = 'Kirim WA';
     bWa.addEventListener('click', () => {
-      const msg = 'Halo ' + r.nama + ', kamu diundang ke pernikahan Raka & Sinta (Sabtu, 14 Februari 2027, Gedung Serbaguna Melati, Banyuwangi). Ini barcode pribadimu — scan atau buka tautan ini untuk masuk ke halaman doa & chat tamu, namamu sudah terisi otomatis: ' + linkFor(r.kode);
+      const msg = [
+        '*Undangan Pernikahan Raka & Sinta*',
+        '',
+        'Halo *' + r.nama + '*,',
+        'Kamu diundang ke pernikahan kami:',
+        'Sabtu, 14 Februari 2027',
+        'Gedung Serbaguna Melati, Banyuwangi',
+        '',
+        'Buka undangan digitalmu di sini — namamu sudah tercantum di sampulnya:',
+        linkFor(r.kode),
+        '',
+        'Tautan itu adalah *barcode pribadimu*. Lewat undangan tersebut kamu juga bisa:',
+        '• Menulis *doa & ulasan* untuk kedua mempelai',
+        '• *Chat langsung* dengan tamu undangan lainnya',
+        '• Mengaktifkan *notifikasi chat* supaya tidak ketinggalan obrolan',
+        '',
+        'Simpan tautan ini baik-baik dan jangan dibagikan ke orang lain ya — satu barcode hanya untuk satu tamu.',
+        '',
+        'Terima kasih, sampai jumpa di hari bahagia!',
+        '— Raka & Sinta'
+      ].join('\n');
       const num = normWA(r.nomor);
       window.open('https://wa.me/' + num + '?text=' + encodeURIComponent(msg), '_blank');
       if (!num) showToast('Nomor WA ' + r.nama + ' belum diisi — pilih kontaknya manual di WhatsApp ya.');
