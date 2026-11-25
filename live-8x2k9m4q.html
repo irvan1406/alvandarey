@@ -76,6 +76,24 @@
   .stk-img { width:158px; max-width:72vw; border-radius:4px; transform:rotate(-3deg); box-shadow:0 4px 12px rgba(0,0,0,.2); display:block; margin:2px auto 0; }
   .stk-tx { font-size:12.5px; font-weight:700; color:#2c7a38; margin-top:8px; }
   #rainLayer { position:fixed; inset:0; pointer-events:none; z-index:300; overflow:hidden; }
+  /* pengumuman tabur uang untuk semua tamu */
+  #taburBanner { position:fixed; top:14px; left:50%; transform:translateX(-50%) translateY(-170%); width:min(92vw,500px); z-index:400; display:flex; gap:11px; align-items:center; background:linear-gradient(135deg,#fdf6e0,#f7e3ac); border:1.5px solid #d4af37; border-radius:15px; padding:10px 13px; box-shadow:0 16px 34px rgba(43,23,64,.3); transition:transform .45s cubic-bezier(.2,.9,.3,1.15); }
+  #taburBanner.show { transform:translateX(-50%) translateY(0); }
+  #taburBanner img { width:74px; border-radius:4px; box-shadow:0 3px 8px rgba(0,0,0,.25); flex:0 0 auto; }
+  #taburBanner .tb-tx b { display:block; font-size:15px; color:#2b1740; }
+  #taburBanner .tb-tx span { font-size:12.5px; color:#7a5b00; line-height:1.45; display:block; margin-top:1px; }
+  /* modal tabur uang */
+  .tmodal { position:fixed; inset:0; z-index:500; background:rgba(24,10,36,.62); display:none; align-items:center; justify-content:center; padding:18px; backdrop-filter:blur(2px); }
+  .tmodal.open { display:flex; }
+  .tcard { background:#fff; border-radius:19px; max-width:400px; width:100%; overflow:hidden; box-shadow:0 26px 60px rgba(0,0,0,.5); animation:pop .3s; }
+  .tcard .thead { width:100%; height:118px; object-fit:cover; display:block; }
+  .tcard .tbody2 { padding:17px 19px 19px; }
+  .tcard h3 { font-family:Georgia,serif; font-size:19px; color:#2b1740; }
+  .tcard p { font-size:13.5px; color:#5c4a70; line-height:1.65; margin-top:8px; }
+  .trow { display:flex; gap:9px; margin-top:16px; }
+  .tbtn { flex:1; border:none; border-radius:11px; padding:13px; font:inherit; font-size:14.5px; font-weight:800; cursor:pointer; }
+  .tbtn.ghost { background:#f3eef9; color:#5b2a6e; }
+  .tbtn.gold { background:linear-gradient(180deg,#f3d27a,#d4af37); color:#2b1740; box-shadow:0 8px 18px rgba(212,175,55,.4); }
   .bill { position:absolute; top:-90px; width:106px; height:auto; border-radius:3px; box-shadow:0 3px 9px rgba(0,0,0,.28); animation-name:billfall; animation-timing-function:linear; animation-fill-mode:forwards; }
   @keyframes billfall { to { transform:translateY(118vh) translateX(var(--sway,0px)) rotate(var(--rot,20deg)); } }
   .namebar { display:flex; gap:8px; align-items:center; margin-bottom:10px; background:#fff; border:1px solid #eee7f5; border-radius:13px; padding:7px 8px 7px 12px; box-shadow:0 3px 10px rgba(43,23,64,.05); }
@@ -196,6 +214,20 @@
 </div>
 
 <div id="rainLayer"></div>
+<div id="taburBanner"><img src="img-shop/uang-100000.jpg" alt=""><div class="tb-tx"><b id="tbNama">Tamu</b><span>Tabur Uang — sudah memberikan amplop untuk mempelai. Terima kasih!</span></div></div>
+<div id="taburModal" class="tmodal">
+  <div class="tcard">
+    <img class="thead" src="img-shop/uang-100000.jpg" alt="Uang kertas rupiah">
+    <div class="tbody2">
+      <h3 id="tmTitle">Tabur Uang</h3>
+      <p id="tmText"></p>
+      <div class="trow">
+        <button type="button" class="tbtn ghost" id="tmBatal">Batal</button>
+        <button type="button" class="tbtn gold" id="tmOk">Kirim Permintaan</button>
+      </div>
+    </div>
+  </div>
+</div>
 <div id="toast"></div>
 
 <script>
@@ -252,6 +284,7 @@ async function enterWith(kode) {
   guest = { kode: kode, nama: nama };
   localStorage.setItem('tamu_kode', kode);
   applyGuest();
+  cekTerverifikasi();
   $('gate').style.display = 'none';
   if (!appStarted) { appStarted = true; loadFeed(); connect(); }
   return true;
@@ -442,7 +475,7 @@ function notifyChat(row) {
   if (!('Notification' in window) || Notification.permission !== 'granted' || !document.hidden) return;
   if (guest && row.kode && row.kode === guest.kode) return;
   try {
-    const body = row.jenis === 'stiker' ? (row.nama + ' menabur uang — amplopnya sudah dikonfirmasi mempelai!') : (row.nama + ': ' + String(row.isi || '').slice(0, 90));
+    const body = row.jenis === 'stiker' ? (row.nama + ' Tabur Uang — sudah memberikan amplop untuk mempelai!') : (row.nama + ': ' + String(row.isi || '').slice(0, 90));
     new Notification('Chat Grup Tamu Undangan', { body: body, tag: 'chat-tamu', icon: 'img-shop/qr-doa.png' });
   } catch (e) {}
 }
@@ -457,7 +490,7 @@ function onRow(row) {
   if (!row || row.acara !== CONFIG.acara) return;
   if (row.jenis === 'tabur') {
     if (guest && row.kode && row.kode === guest.kode) {
-      if (row.isi === 'ok') showToast('Tabur Uangmu sudah dikonfirmasi mempelai. Terima kasih sudah memberi amplop!');
+      if (row.isi === 'ok') { guestVerified = true; showToast('Tabur Uangmu sudah dikonfirmasi mempelai. Terima kasih sudah memberi amplop!'); }
       else if (row.isi === 'tolak') showToast('Permintaan Tabur Uang belum dikonfirmasi mempelai.');
     }
     return;
@@ -467,7 +500,7 @@ function onRow(row) {
   seen.add(row.id);
   if (row.jenis === 'chat' || row.jenis === 'stiker') {
     notifyChat(row);
-    if (row.jenis === 'stiker') taburUang();
+    if (row.jenis === 'stiker') { taburUang(); announceTabur(row.nama); }
     if (chatLoaded) {
       const em = chatList.querySelector('.empty'); if (em) em.remove();
       chatList.appendChild(bubble(row)); scrollChat();
@@ -559,19 +592,59 @@ $('doaForm').addEventListener('submit', async e => {
   btn.disabled = false; btn.textContent = 'Kirim';
 });
 
-/* ---------- tabur uang: tamu meminta, mempelai mengonfirmasi ---------- */
+/* ---------- tabur uang: sekali dikonfirmasi mempelai, seterusnya bebas ---------- */
+let guestVerified = false;
 let lastStiker = 0;
+async function cekTerverifikasi() {
+  if (!guest) return;
+  try {
+    const url = CONFIG.sbUrl + '/rest/v1/pesan?acara=eq.' + encodeURIComponent(CONFIG.acara) +
+      '&jenis=eq.tabur&isi=eq.ok&kode=eq.' + encodeURIComponent(guest.kode) + '&select=id&limit=1';
+    const r = await fetch(url, { headers: { apikey: CONFIG.sbKey, Authorization: 'Bearer ' + CONFIG.sbKey } });
+    if (r.ok) { const rows = await r.json(); if (rows.length) guestVerified = true; }
+  } catch (e) {}
+}
+let tmResolve = null;
+function taburModal(mode) {
+  return new Promise(res => {
+    tmResolve = res;
+    $('tmTitle').textContent = mode === 'langsung' ? 'Tabur Uang — Kamu Sudah Terkonfirmasi' : 'Tabur Uang';
+    $('tmText').innerHTML = mode === 'langsung'
+      ? 'Amplopmu <b>sudah diterima mempelai</b> — terima kasih! Kamu boleh Tabur Uang berkali-kali. Sekali tabur, hujan uang tampil di layar semua tamu dan semua tamu mendapat pengumuman.'
+      : 'Tabur Uang adalah tanda kamu <b>SUDAH memberi amplop</b> untuk mempelai — lewat transfer atau langsung di lokasi.<br><br>Permintaanmu dikonfirmasi oleh mempelai. Begitu amplop dinyatakan diterima, hujan uang tampil di layar semua tamu — dan setelah itu kamu bisa menabur berkali-kali tanpa konfirmasi lagi.';
+    $('tmOk').textContent = mode === 'langsung' ? 'Tabur Sekarang' : 'Kirim Permintaan';
+    $('taburModal').classList.add('open');
+  });
+}
+function tutupModal(v) { $('taburModal').classList.remove('open'); if (tmResolve) { tmResolve(v); tmResolve = null; } }
+$('tmBatal').addEventListener('click', () => tutupModal(false));
+$('tmOk').addEventListener('click', () => tutupModal(true));
+$('taburModal').addEventListener('click', e => { if (e.target === $('taburModal')) tutupModal(false); });
+let tbTimer = null;
+function announceTabur(nama) {
+  $('tbNama').textContent = nama;
+  $('taburBanner').classList.add('show');
+  clearTimeout(tbTimer);
+  tbTimer = setTimeout(() => $('taburBanner').classList.remove('show'), 5600);
+}
 $('btnStiker').addEventListener('click', async () => {
   if (!guest) return;
-  if (Date.now() - lastStiker < 10000) { showToast('Permintaanmu barusan sudah terkirim — tunggu sebentar ya.'); return; }
-  const setuju = confirm('Tabur Uang adalah tanda kamu SUDAH memberi amplop untuk mempelai — lewat transfer atau langsung di lokasi.\n\nPermintaanmu dikonfirmasi oleh mempelai. Begitu amplop dinyatakan diterima, hujan uang tampil di layar semua tamu.\n\nKirim permintaan Tabur Uang?');
+  if (Date.now() - lastStiker < 10000) { showToast('Sabar sebentar ya — tabur uangnya jeda dulu beberapa detik.'); return; }
+  const langsung = guestVerified;
+  const setuju = await taburModal(langsung ? 'langsung' : 'minta');
   if (!setuju) return;
   const btn = $('btnStiker'); btn.disabled = true;
   try {
-    await sbSend(guest.nama.slice(0, 40), 'tabur', 'pending');
-    lastStiker = Date.now();
-    showToast('Permintaan Tabur Uang terkirim — menunggu konfirmasi mempelai.');
-  } catch (err) { showToast('Gagal mengirim permintaan. Coba lagi.'); }
+    if (langsung) {
+      const rows = await sbSend(guest.nama.slice(0, 40), 'stiker', 'uang');
+      lastStiker = Date.now();
+      if (rows && rows[0]) onRow(rows[0]);
+    } else {
+      await sbSend(guest.nama.slice(0, 40), 'tabur', 'pending');
+      lastStiker = Date.now();
+      showToast('Permintaan Tabur Uang terkirim — menunggu konfirmasi mempelai.');
+    }
+  } catch (err) { showToast('Gagal. Periksa koneksi lalu coba lagi.'); }
   btn.disabled = false;
 });
 
