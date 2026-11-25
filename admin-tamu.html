@@ -87,7 +87,7 @@
 
   <div class="panel">
     <h2>3 · Barcode per Tamu</h2>
-    <p class="hint">Barcode ini adalah "akun" tamu: saat di-scan, tamu membuka undangan digital dengan namanya sendiri tercantum di sampul — dari sana ia bisa menulis doa &amp; ulasan serta ikut chat grup, tanpa mengetik nama. Unduh PNG-nya untuk dicetak / ditempel, atau kirim lewat WhatsApp (pesan rapi berisi tautan pribadi tamu).</p>
+    <p class="hint">Barcode ini adalah "akun" tamu: saat di-scan, tamu langsung masuk ke halaman doa &amp; chat dengan namanya sendiri — tanpa mengetik nama. Berbeda dengan tautan di pesan WhatsApp (tombol Kirim WA) yang membuka undangan digital dengan nama tamu di sampulnya. Unduh PNG barcode-nya untuk dicetak / ditempel, atau kirim lewat WhatsApp.</p>
     <div class="rowflex">
       <button class="btn" id="btnPrint">Cetak Semua Barcode</button>
       <button class="btn" id="btnCopyTsv">Salin Tabel Hasil (untuk Sheet)</button>
@@ -132,6 +132,7 @@ function genKode() {
   return s;
 }
 function linkFor(kode) { return CONFIG.base + 'undanganshop.html?tamu=' + kode; }
+function chatLinkFor(kode) { return CONFIG.base + 'live-8x2k9m4q.html?tamu=' + kode; }
 function normWA(v) {
   let d = String(v == null ? '' : v).replace(/\D/g, '');
   if (!d) return '';
@@ -177,10 +178,10 @@ function renderCards() {
   saved.forEach(r => {
     const card = document.createElement('div'); card.className = 'gcard';
     const cv = document.createElement('canvas');
-    drawQR(cv, linkFor(r.kode), 400);
+    drawQR(cv, chatLinkFor(r.kode), 400);
     const nm = document.createElement('div'); nm.className = 'nm'; nm.textContent = r.nama;
     const kd = document.createElement('div'); kd.className = 'kd'; kd.textContent = 'Kode: ' + r.kode;
-    const lk = document.createElement('div'); lk.className = 'lk'; lk.textContent = linkFor(r.kode);
+    const lk = document.createElement('div'); lk.className = 'lk'; lk.textContent = chatLinkFor(r.kode);
     const row = document.createElement('div'); row.className = 'rowflex';
     const bDl = document.createElement('button'); bDl.className = 'btn'; bDl.textContent = 'Unduh PNG';
     bDl.addEventListener('click', () => downloadCard(r));
@@ -224,7 +225,7 @@ function downloadCard(r) {
   x.fillStyle = '#2b1740'; x.textAlign = 'center';
   x.font = 'italic 34px Georgia, serif'; x.fillText('Undangan Pernikahan', 360, 84);
   x.font = '44px Georgia, serif'; x.fillText('Raka & Sinta', 360, 136);
-  const qrCv = document.createElement('canvas'); const size = drawQR(qrCv, linkFor(r.kode), 520);
+  const qrCv = document.createElement('canvas'); const size = drawQR(qrCv, chatLinkFor(r.kode), 520);
   x.drawImage(qrCv, (720 - size) / 2, 168);
   x.font = 'bold 40px -apple-system, Segoe UI, Roboto, sans-serif'; x.fillStyle = '#241631';
   x.fillText(r.nama.slice(0, 30), 360, 168 + size + 62);
@@ -295,7 +296,7 @@ $('btnSave').addEventListener('click', async () => {
 $('btnCopyTsv').addEventListener('click', async () => {
   const saved = rows.filter(r => r.saved && r.kode);
   if (!saved.length) { showToast('Belum ada tamu tersimpan.'); return; }
-  const tsv = saved.map(r => [r.nama, normWA(r.nomor) || (r.nomor || ''), r.kode, linkFor(r.kode)].join('\t')).join('\n');
+  const tsv = saved.map(r => [r.nama, normWA(r.nomor) || (r.nomor || ''), r.kode, chatLinkFor(r.kode)].join('\t')).join('\n');
   try { await navigator.clipboard.writeText(tsv); showToast('Tabel hasil tersalin! Tempel ke Sheet mulai sel A2.'); }
   catch (e) { showToast('Gagal menyalin otomatis — salin manual dari kartu barcode.'); }
 });
