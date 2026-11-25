@@ -253,6 +253,92 @@
   #btnMusik.playing svg { animation:putar 5s linear infinite; }
   .orn i { animation:putar 14s linear infinite; }
 </style>
+<style>
+
+/* UNDANGANKU — visual refinement v2 */
+:root{--p:#24483b;--p2:#416b58;--pd:#172b24;--pd2:#203a30;--ink:#26342d;--muted:#78847c;--line:#e8e5dc;--ivory:#faf8f2;--gold:#b69a68}
+html{scroll-behavior:smooth}
+body{background:#e9ece7;color:var(--ink);font-family:'Plus Jakarta Sans',sans-serif}
+.phone{max-width:560px;background:var(--ivory);box-shadow:0 18px 70px rgba(25,43,34,.16)}
+.pat,.patw{background-color:var(--ivory);background-image:linear-gradient(rgba(255,255,255,.35),rgba(255,255,255,.35));}
+.sec{padding:58px 28px}
+.sec h2{font-size:clamp(27px,7vw,34px);font-weight:700;letter-spacing:-.7px;color:#26372e}
+.sec .sub{font-size:13.5px;color:#78847c;line-height:1.8}
+.kick{background:#b49a6c;box-shadow:none;letter-spacing:2.6px;padding:7px 15px}
+.kick.green,.kick.rose{background:var(--p);box-shadow:none}
+.orn{margin:18px auto 5px}.orn:before,.orn:after{height:1px;background:#c8b58f}.orn i{box-shadow:none}
+.hero{aspect-ratio:4/4.65;background:#24392f}
+.hero:after{inset:14px;border:1px solid rgba(239,224,190,.7);border-radius:3px;box-shadow:none}
+.hero .cnr{display:none}
+.hero .shade{background:linear-gradient(180deg,rgba(16,31,24,.08) 5%,rgba(16,31,24,.05) 38%,rgba(16,31,24,.78) 100%)}
+.hero .cap{padding:25px 22px 42px}
+.hero .cap .wo{font-size:10px;letter-spacing:4px}
+.hero .cap .nm{font-size:clamp(34px,9vw,45px);font-weight:500;color:#fff;background:none;filter:none;text-shadow:0 3px 18px #14251c}
+.hero .cap .dt{background:#f0e6cf;color:#34463b;box-shadow:none;animation:none;letter-spacing:1.7px;border-radius:3px;padding:9px 16px}
+.hero .monobadge{width:62px;height:62px;top:30px;border:1px solid #d7c39b;box-shadow:none;background:rgba(25,48,37,.72)}
+.hero .mode{display:none}
+.slarrow{background:rgba(20,38,29,.45);border-color:rgba(255,255,255,.4)}
+.dots button.on{background:#f0e1bd}
+.verse{background:#fff;border:1px solid var(--line);border-radius:4px;box-shadow:none;padding:24px 20px}
+.verse:before,.verse:after{display:none}
+.verse p{color:#56665b;line-height:1.9}
+.verse .src{background:#f1eadb;color:#75613d;box-shadow:none}
+.person .phwrap:before{border:1px solid #c8b58f;animation:none}
+.person .ph{border:3px solid #fff;box-shadow:0 8px 28px rgba(30,48,38,.14)}
+.person .phbdg{background:#f1eadb;color:#4c5a50;border:1px solid #fff;box-shadow:none}
+.person .fn{font-size:25px;color:#34473a}
+.gold-text{background:none;color:#34473a}
+.person .pr{color:#78847c}
+.sec.dark{background:linear-gradient(145deg,#1b3429,#263f33);color:#fff}
+.sec.dark h2{color:#fff}
+.sec.dark .kick{background:rgba(255,255,255,.12);border:1px solid rgba(226,210,175,.35)}
+.cdcell{background:rgba(255,255,255,.08);border:1px solid rgba(236,225,201,.22);border-radius:4px;padding:14px 8px}
+.cdcell b{color:#f1e5ca}
+.btn-gold{background:#e9ddc1;color:#34483a;box-shadow:none;border-radius:3px}
+.evcard{border:1px solid var(--line);border-radius:5px;box-shadow:none;overflow:hidden;background:#fff}
+.evhead{background:#294a3b!important;letter-spacing:2px}
+.evbody{background:#fff}
+.btn-line{border:1px solid #385b48;color:#385b48;border-radius:3px;background:transparent;box-shadow:none}
+.dressnote{color:#7b877e}
+.maptabs button{border-radius:3px;box-shadow:none}
+.maptabs button.on{background:#294a3b;box-shadow:none}
+.mapframe{border:1px solid var(--line);border-radius:5px;box-shadow:none}
+.rsvpcard{background:#fff;border:1px solid var(--line);border-radius:5px;padding:22px 18px;box-shadow:0 12px 35px rgba(33,50,39,.055)}
+.chips{display:grid;grid-template-columns:1fr;gap:8px}
+.chips .chip{width:100%;border:1px solid #e4e5dc;background:#fafaf7;border-radius:4px;padding:13px 14px;color:#536258;font-weight:600;box-shadow:none}
+.chips .chip.on{background:#294a3b;border-color:#294a3b;color:#fff}
+.qty{border:1px solid var(--line);border-radius:4px;overflow:hidden}
+.qty button{background:#f5f4ef;color:#294a3b}
+.rsvpsum{background:#f7f6f0;border:1px solid #e9e5d8;border-radius:4px;color:#68766c}
+.btn-rsvp{background:#294a3b;border-radius:4px;box-shadow:none;letter-spacing:.1px;padding:15px}
+.ampsel button{border:1px solid var(--line);border-radius:4px;box-shadow:none}
+.ampsel button.on{background:#f4f0e6;border-color:#b69a68;box-shadow:none;transform:none}
+.ampsel button .albl{letter-spacing:1.7px}
+.bank{border-radius:7px;box-shadow:0 18px 34px rgba(28,37,27,.18);background:linear-gradient(135deg,#526347,#263b2d)!important;border:1px solid rgba(218,198,151,.55)}
+.bank:before,.bank:after{opacity:.14}
+.btn-salin{background:#efe5cc;color:#34483a;border-radius:3px;box-shadow:none}
+.kado{background:#fff;border:1px solid var(--line);border-radius:4px;padding:16px;color:#718076}
+.lv-qr{background:#fff;border:1px solid var(--line);border-radius:5px}
+.lv-qr a{background:#294a3b;box-shadow:none;border-radius:3px}
+.lv-msg{border:1px solid var(--line);border-radius:4px;box-shadow:none}
+.bar{border-radius:5px;box-shadow:0 8px 28px rgba(22,40,29,.16);border-color:#e5e3da}
+.bar .chat{border-radius:4px}
+.bar .buy{background:#294a3b;border-radius:4px}
+#btnMusik{width:42px;height:42px;border:1px solid #d7c39b;background:#294a3b;box-shadow:0 6px 18px rgba(20,35,26,.2)}
+#petals{opacity:.18}
+#cover{background:rgba(18,31,24,.76);backdrop-filter:blur(8px)}
+#cover .box{border-radius:5px;box-shadow:0 25px 80px rgba(0,0,0,.32)}
+#cover .heroimg{height:240px}
+#cover .heroimg:after{inset:12px;border-radius:2px}
+#cover .heroimg .nm{background:none;color:#fff;filter:none;font-weight:500;text-shadow:0 2px 16px #17251c}
+#cover .open{background:#294a3b;border-radius:3px;box-shadow:none}
+button,a{transition:background-color .2s ease,border-color .2s ease,transform .2s ease,box-shadow .2s ease}
+button:focus-visible,a:focus-visible{outline:3px solid rgba(182,154,104,.55);outline-offset:3px}
+@media(min-width:700px){.phone{margin:28px auto;border-radius:10px;overflow:hidden}.sec{padding:64px 42px}.hero{aspect-ratio:4/4.25}}
+@media(max-width:380px){.sec{padding:44px 19px}.hero .cap .nm{font-size:31px}.qtyrow{gap:10px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+
+</style>
 </head>
 <body data-anim="pudar">
 
