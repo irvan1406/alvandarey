@@ -62,7 +62,7 @@
     <h2>1 · Isi Daftar Tamu</h2>
     <p class="hint">Ketik nama satu per satu di tabel, tempel banyak nama sekaligus, atau impor dari Google Sheets (edit daftarnya di sana kayak Excel, lalu ambil ke sini).</p>
     <div style="margin-top:11px">
-      <textarea id="pasteBox" rows="3" placeholder="Tempel daftar nama di sini — satu nama per baris (bisa hasil salinan dari Excel / Google Sheets)"></textarea>
+      <textarea id="pasteBox" rows="3" placeholder="Tempel daftar tamu di sini — satu tamu per baris. Boleh sekalian nomornya: Nama;08xxxxxxxxxx (atau salin dua kolom langsung dari Excel / Google Sheets)"></textarea>
       <div class="rowflex">
         <button class="btn" id="btnPaste">Tambahkan dari Tempelan</button>
         <button class="btn" id="btnAdd">+ Tambah Baris Kosong</button>
@@ -73,10 +73,10 @@
       <div class="rowflex">
         <button class="btn" id="btnSheet">Impor Nama dari Google Sheets</button>
       </div>
-      <p class="hint">Syarat impor: Sheet dibagikan "Siapa saja yang memiliki link dapat melihat", nama tamu di kolom pertama mulai baris ke-2 (baris pertama judul kolom "Nama").</p>
+      <p class="hint">Format Sheet (baris 1 = judul kolom): <b>A Nama · B Nomor WhatsApp · C Kode · D Tautan Barcode</b>. Isi nama + nomor WA mulai baris ke-2; kolom Kode &amp; Tautan diisi belakangan dari tombol "Salin Tabel Hasil" di bawah. Syarat: Sheet dibagikan "Siapa saja yang memiliki link dapat melihat". Penting: atur kolom B sebagai teks (Format → Angka → Teks biasa) atau awali nomor dengan 62, supaya angka 0 di depan tidak hilang.</p>
     </div>
     <table>
-      <thead><tr><th>No</th><th>Nama Tamu</th><th>Kode Barcode</th><th>Status</th><th></th></tr></thead>
+      <thead><tr><th>No</th><th>Nama Tamu</th><th>Nomor WhatsApp</th><th>Kode Barcode</th><th>Status</th><th></th></tr></thead>
       <tbody id="tbody"></tbody>
     </table>
     <div class="rowflex">
@@ -90,8 +90,10 @@
     <p class="hint">Barcode ini adalah "akun" tamu: saat di-scan, tamu langsung masuk ke halaman doa &amp; chat dengan namanya sendiri — tanpa mengetik nama. Unduh PNG-nya untuk dicetak / ditempel, atau kirim lewat WhatsApp (pesan berisi tautan pribadi tamu).</p>
     <div class="rowflex">
       <button class="btn" id="btnPrint">Cetak Semua Barcode</button>
+      <button class="btn" id="btnCopyTsv">Salin Tabel Hasil (untuk Sheet)</button>
       <button class="btn danger" id="btnWipe">Hapus Daftar di Browser Ini</button>
     </div>
+    <p class="hint">"Salin Tabel Hasil" menyalin Nama + Nomor WA + Kode + Tautan semua tamu tersimpan — tempelkan ke Google Sheet mulai sel A2 supaya kolom Kode &amp; Tautan Barcode di Sheet ikut terisi.</p>
     <div class="cards" id="cards"><p class="hint" id="cardsEmpty">Belum ada tamu tersimpan. Isi daftar di atas lalu klik "Simpan Semua &amp; Buat Barcode".</p></div>
   </div>
 </div>
@@ -130,18 +132,29 @@ function genKode() {
   return s;
 }
 function linkFor(kode) { return CONFIG.base + 'doa.html?tamu=' + kode; }
+function normWA(v) {
+  let d = String(v == null ? '' : v).replace(/\D/g, '');
+  if (!d) return '';
+  if (d.startsWith('0')) d = '62' + d.slice(1);
+  else if (d.startsWith('8')) d = '62' + d;
+  return d;
+}
 
 function renderTable() {
   const tb = $('tbody'); tb.innerHTML = '';
   rows.forEach((r, i) => {
     const tr = document.createElement('tr');
-    tr.innerHTML = '<td class="no">' + (i + 1) + '</td><td></td><td class="kode">' + (r.kode || '—') + '</td>' +
+    tr.innerHTML = '<td class="no">' + (i + 1) + '</td><td></td><td></td><td class="kode">' + (r.kode || '—') + '</td>' +
       '<td class="st">' + (r.saved ? '<span class="ok">Tersimpan</span>' : '<span class="belum">Belum</span>') + '</td>' +
       '<td class="act"><button class="iconbtn" title="Hapus baris">×</button></td>';
     const inp = document.createElement('input');
     inp.type = 'text'; inp.value = r.nama; inp.placeholder = 'Nama tamu'; inp.maxLength = 80;
     inp.addEventListener('input', () => { rows[i].nama = inp.value; persist(); });
     tr.children[1].appendChild(inp);
+    const inpW = document.createElement('input');
+    inpW.type = 'text'; inpW.value = r.nomor || ''; inpW.placeholder = '08xxxx / 628xxxx'; inpW.maxLength = 20; inpW.inputMode = 'tel';
+    inpW.addEventListener('input', () => { rows[i].nomor = inpW.value; persist(); });
+    tr.children[2].appendChild(inpW);
     tr.querySelector('.iconbtn').addEventListener('click', () => { rows.splice(i, 1); persist(); renderAll(); });
     tb.appendChild(tr);
   });
@@ -174,7 +187,9 @@ function renderCards() {
     const bWa = document.createElement('button'); bWa.className = 'btn wa'; bWa.textContent = 'Kirim WA';
     bWa.addEventListener('click', () => {
       const msg = 'Halo ' + r.nama + ', kamu diundang ke pernikahan Raka & Sinta (Sabtu, 14 Februari 2027, Gedung Serbaguna Melati, Banyuwangi). Ini barcode pribadimu — scan atau buka tautan ini untuk masuk ke halaman doa & chat tamu, namamu sudah terisi otomatis: ' + linkFor(r.kode);
-      window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
+      const num = normWA(r.nomor);
+      window.open('https://wa.me/' + num + '?text=' + encodeURIComponent(msg), '_blank');
+      if (!num) showToast('Nomor WA ' + r.nama + ' belum diisi — pilih kontaknya manual di WhatsApp ya.');
     });
     row.appendChild(bDl); row.appendChild(bWa);
     card.appendChild(cv); card.appendChild(nm); card.appendChild(kd); card.appendChild(lk); card.appendChild(row);
@@ -204,11 +219,16 @@ function renderAll() { renderTable(); renderCards(); }
 
 $('btnAdd').addEventListener('click', () => { rows.push({ nama: '', kode: '', saved: false }); persist(); renderTable(); });
 $('btnPaste').addEventListener('click', () => {
-  const names = $('pasteBox').value.split(/\n/).map(s => s.trim()).filter(Boolean);
-  if (!names.length) { showToast('Tempelan masih kosong.'); return; }
-  names.forEach(n => rows.push({ nama: n.slice(0, 80), kode: '', saved: false }));
+  const lines = $('pasteBox').value.split(/\n/).map(s => s.trim()).filter(Boolean);
+  if (!lines.length) { showToast('Tempelan masih kosong.'); return; }
+  lines.forEach(ln => {
+    const parts = ln.split(/\t|;/).map(s => s.trim());
+    let nama = parts[0] || '', nomor = parts[1] || '';
+    if (!nomor && /,\s*\+?\d/.test(ln)) { const p2 = ln.split(/,\s*(?=\+?\d)/); nama = p2[0].trim(); nomor = (p2[1] || '').trim(); }
+    if (nama) rows.push({ nama: nama.slice(0, 80), nomor: nomor.slice(0, 20), kode: '', saved: false });
+  });
   $('pasteBox').value = ''; persist(); renderAll();
-  showToast(names.length + ' nama ditambahkan.');
+  showToast(lines.length + ' tamu ditambahkan.');
 });
 $('btnSheet').addEventListener('click', async () => {
   const m = $('sheetUrl').value.match(/\/d\/([a-zA-Z0-9\-_]+)/);
@@ -218,13 +238,14 @@ $('btnSheet').addEventListener('click', async () => {
     const res = await fetch('https://docs.google.com/spreadsheets/d/' + m[1] + '/gviz/tq?tqx=out:json');
     const txt = await res.text();
     const json = JSON.parse(txt.substring(txt.indexOf('{'), txt.lastIndexOf('}') + 1));
-    const names = [];
+    const guests = [];
+    const cell = (rw, idx) => { const c = rw && rw.c && rw.c[idx]; if (!c) return ''; const v = c.f != null ? c.f : c.v; return v == null ? '' : String(v).trim(); };
     (json.table.rows || []).forEach(rw => {
-      const v = rw && rw.c && rw.c[0] ? (rw.c[0].f != null ? rw.c[0].f : rw.c[0].v) : null;
-      if (v != null && String(v).trim() && String(v).trim().toLowerCase() !== 'nama') names.push(String(v).trim().slice(0, 80));
+      const nm = cell(rw, 0), no = cell(rw, 1);
+      if (nm && nm.toLowerCase() !== 'nama') guests.push({ nama: nm.slice(0, 80), nomor: no.slice(0, 20) });
     });
-    if (!names.length) { showToast('Tidak ada nama terbaca. Pastikan nama di kolom pertama mulai baris ke-2.'); }
-    else { names.forEach(n => rows.push({ nama: n, kode: '', saved: false })); persist(); renderAll(); showToast(names.length + ' nama terimpor dari Google Sheets.'); }
+    if (!guests.length) { showToast('Tidak ada nama terbaca. Pastikan nama di kolom A mulai baris ke-2.'); }
+    else { guests.forEach(g => rows.push({ nama: g.nama, nomor: g.nomor, kode: '', saved: false })); persist(); renderAll(); showToast(guests.length + ' tamu terimpor dari Google Sheets (nama + nomor WA).'); }
   } catch (e) { showToast('Gagal mengambil Sheet. Pastikan Sheet dibagikan "siapa saja yang memiliki link".'); }
   btn.disabled = false; btn.textContent = 'Impor Nama dari Google Sheets';
 });
@@ -250,6 +271,13 @@ $('btnSave').addEventListener('click', async () => {
   }
   btn.disabled = false; btn.textContent = '2 · Simpan Semua & Buat Barcode';
   showToast(fail ? ('Tersimpan ' + ok + ', gagal ' + fail + '. Coba simpan lagi.') : ('Berhasil! ' + ok + ' barcode tamu dibuat.'));
+});
+$('btnCopyTsv').addEventListener('click', async () => {
+  const saved = rows.filter(r => r.saved && r.kode);
+  if (!saved.length) { showToast('Belum ada tamu tersimpan.'); return; }
+  const tsv = saved.map(r => [r.nama, normWA(r.nomor) || (r.nomor || ''), r.kode, linkFor(r.kode)].join('\t')).join('\n');
+  try { await navigator.clipboard.writeText(tsv); showToast('Tabel hasil tersalin! Tempel ke Sheet mulai sel A2.'); }
+  catch (e) { showToast('Gagal menyalin otomatis — salin manual dari kartu barcode.'); }
 });
 $('btnPrint').addEventListener('click', () => window.print());
 $('btnWipe').addEventListener('click', () => {
