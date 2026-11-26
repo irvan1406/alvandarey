@@ -71,7 +71,7 @@
 <body>
 <div class="wrap">
   <header>
-    <div class="mono">R <i>&amp;</i> S</div>
+    <div class="mono" id="panelMono">R <i>&amp;</i> S</div>
     <h1>Panel Mempelai</h1>
     <div class="sub">Ruang kendali kedua mempelai: konfirmasi Tabur Uang<br>dan moderasi dinding doa &amp; chat tamu.</div>
   </header>
@@ -493,8 +493,16 @@ $('btnRefreshMod').addEventListener('click', loadMod);
   function S(id, v) { document.getElementById(id).value = v == null ? '' : v; }
   function titik(t) { return t ? t.replace(':', '.') : ''; }
   function kolon(t) { return t ? t.replace('.', ':') : ''; }
+  function setMono(g, b) {
+    var el = document.getElementById('panelMono'); if (!el) return;
+    var gi = (String(g || '').trim().charAt(0) || 'R').toUpperCase();
+    var bi = (String(b || '').trim().charAt(0) || 'S').toUpperCase();
+    el.innerHTML = gi + ' <i>&amp;</i> ' + bi;
+    document.title = 'Panel Mempelai — ' + (String(g || '').trim() || 'Raka') + ' & ' + (String(b || '').trim() || 'Sinta') + ' | UndanganKu';
+  }
   function fill(c) {
     S('f_groom', c.groomName); S('f_bride', c.brideName);
+    setMono(c.groomName, c.brideName);
     S('f_groomFull', c.groomFull); S('f_brideFull', c.brideFull);
     S('f_groomDad', c.groomDad); S('f_groomMom', c.groomMom);
     S('f_brideDad', c.brideDad); S('f_brideMom', c.brideMom);
@@ -714,6 +722,9 @@ $('btnRefreshMod').addEventListener('click', loadMod);
       document.getElementById('cfgStatus').textContent = 'Gagal menyimpan. Periksa koneksi lalu coba lagi.';
     }
     btn.disabled = false; btn.textContent = 'Simpan Pengaturan';
+  });
+  ['f_groom', 'f_bride'].forEach(function (id) {
+    document.getElementById(id).addEventListener('input', function () { setMono(V('f_groom'), V('f_bride')); });
   });
   if (kode) loadCfg();
 })();
