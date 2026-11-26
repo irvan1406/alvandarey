@@ -110,10 +110,17 @@
       </div>
       <div class="mpage" id="pg-tabur">
       <section class="card">
-        <h2>Konfirmasi Tabur Uang</h2>
-        <p class="hint">Tamu yang sudah memberi amplop — lewat transfer atau langsung di lokasi — meminta Tabur Uang dari chat. <b>Konfirmasi hanya bila amplopnya benar sudah kamu terima.</b> Setelah dikonfirmasi, hujan uang tampil di layar semua tamu dan stikernya bertanda sudah diterima mempelai. Tamu yang sudah dikonfirmasi seterusnya bisa Tabur Uang berkali-kali tanpa perlu konfirmasi lagi.</p>
-        <div id="taburList"><div class="empty">Memuat...</div></div>
-        <div class="rowflex"><button class="btn" id="btnRefreshTabur" type="button">Muat Ulang</button></div>
+        <h2>Tabur Uang</h2>
+        <p class="hint">Tombol Tabur Uang di chat <b>terkunci untuk semua tamu</b> — tamu tidak bisa menabur, bahkan tidak bisa meminta. Begitu amplop seorang tamu benar kamu terima (transfer atau langsung di lokasi), <b>aktifkan tamu itu di daftar bawah ini</b>: tombolnya langsung terbuka dan ia bisa menabur berkali-kali tanpa konfirmasi lagi. Cabut kapan pun bila perlu.</p>
+        <div id="taburList"></div>
+        <div class="fsec" style="margin-top:18px">Tamu yang Bisa Diaktifkan</div>
+        <div id="aktifList"><div class="empty">Memuat...</div></div>
+        <div class="frow" style="margin-top:10px">
+          <div class="fld"><label>Nama tamu (manual)</label><input id="aktNama" type="text" placeholder="Nama sesuai barcode tamu"></div>
+          <div class="fld"><label>Kode tamu</label><input id="aktKode" type="text" placeholder="cth: IRVANVIP1" style="text-transform:uppercase"></div>
+        </div>
+        <div class="rowflex"><button class="btn" id="btnAktManual" type="button">Aktifkan Tamu Ini</button><button class="btn" id="btnRefreshTabur" type="button">Muat Ulang</button></div>
+        <p class="hint2">Daftar di atas berisi tamu yang pernah menulis doa/chat. Tamu yang belum pernah menulis apa pun aktifkan lewat isian manual — kodenya ada di Admin Tamu / barcode tamu itu.</p>
       </section>
 
       </div>
@@ -199,6 +206,23 @@
           <div class="fld"><label>Animasi bagian halaman</label><select id="f_animSec"><option value="hidup">Hidup (muncul saat digulir)</option><option value="mati">Mati</option></select></div>
         </div>
 
+        <div class="fsec">Galeri Foto (Slider Sampul)</div>
+        <div class="fld"><label>Foto-foto galeri undangan</label>
+          <div id="galList" style="display:flex;flex-wrap:wrap;gap:8px;margin:6px 0"></div>
+          <input id="f_galFile" type="file" accept="image/*" multiple>
+          <div class="hint2">Foto di sini <b>menggantikan seluruh foto slider</b> di sampul undangan (tamu bisa menggesernya). Bila kosong, undangan memakai 3 foto bawaan. Tiap foto otomatis diperkecil. Hapus semua untuk kembali ke bawaan. Perubahan galeri langsung tampil, tanpa perlu menekan Simpan Pengaturan.</div>
+        </div>
+
+        <div class="fsec">Fitur Undangan — Hidup / Mati</div>
+        <div class="fld"><label style="display:flex;align-items:center;gap:8px"><input type="checkbox" id="f_fChat" checked> Chat Grup (halaman doa &amp; chat)</label></div>
+        <div class="fld"><label style="display:flex;align-items:center;gap:8px"><input type="checkbox" id="f_fDoa" checked> Dinding Doa &amp; Ulasan + Buku Tamu Live</label></div>
+        <div class="fld"><label style="display:flex;align-items:center;gap:8px"><input type="checkbox" id="f_fTabur" checked> Tombol Tabur Uang</label></div>
+        <div class="fld"><label style="display:flex;align-items:center;gap:8px"><input type="checkbox" id="f_fAmplop" checked> Amplop Digital (rekening)</label></div>
+        <div class="fld"><label style="display:flex;align-items:center;gap:8px"><input type="checkbox" id="f_fRsvp" checked> RSVP Konfirmasi Kehadiran</label></div>
+        <div class="fld"><label style="display:flex;align-items:center;gap:8px"><input type="checkbox" id="f_fGaleri" checked> Galeri geser (bila mati: satu foto diam)</label></div>
+        <div class="fld"><label style="display:flex;align-items:center;gap:8px"><input type="checkbox" id="f_fMusik" checked> Musik latar</label></div>
+        <p class="hint2">Tekan Simpan Pengaturan untuk menerapkan perubahan fitur.</p>
+
         <button class="savebtn" id="btnSaveCfg" type="button">Simpan Pengaturan</button>
         <p class="hint" id="cfgStatus" style="text-align:center"></p>
         <div class="rowflex"></div>
@@ -273,7 +297,7 @@ async function loadTabur() {
   const box = $('taburList');
   try {
     const rows = await getPesan('acara=eq.' + CONFIG.acara + '&jenis=eq.tabur&isi=eq.pending&select=id,nama,kode,created_at&order=created_at.asc');
-    if (!rows.length) { box.innerHTML = '<div class="empty">Belum ada permintaan Tabur Uang yang menunggu.<br>Permintaan baru akan muncul di sini.</div>'; return; }
+    if (!rows.length) { box.innerHTML = ''; return; }
     box.innerHTML = '';
     rows.forEach(r => {
       const d = document.createElement('div'); d.className = 'req';
@@ -303,6 +327,51 @@ async function loadTabur() {
     });
   } catch (e) { box.innerHTML = '<div class="empty">Gagal memuat. Periksa koneksi lalu muat ulang.</div>'; }
 }
+async function postTaburAktif(nama, kode) {
+  const r = await fetch(CONFIG.sbUrl + '/rest/v1/pesan', {
+    method: 'POST',
+    headers: Object.assign({}, HEAD, { Prefer: 'return=minimal' }),
+    body: JSON.stringify({ acara: CONFIG.acara, nama: nama, jenis: 'tabur', isi: 'aktif', kode: kode })
+  });
+  if (!r.ok) throw new Error('post');
+}
+async function loadAktif() {
+  const box = $('aktifList');
+  try {
+    const rows = await getPesan('acara=eq.' + CONFIG.acara + '&jenis=in.("doa","ulasan","chat","stiker","tabur")&select=nama,kode,jenis,isi&limit=500');
+    const tamu = {}, aktif = {};
+    rows.forEach(r => {
+      if (!r.kode) return;
+      if (!tamu[r.kode]) tamu[r.kode] = r.nama;
+      if (r.jenis === 'tabur' && (r.isi === 'ok' || r.isi === 'aktif')) aktif[r.kode] = true;
+    });
+    const kodes = Object.keys(tamu);
+    if (!kodes.length) { box.innerHTML = '<div class="empty">Belum ada tamu yang menulis doa/chat. Pakai isian manual di bawah.</div>'; return; }
+    box.innerHTML = '';
+    kodes.sort().forEach(k => {
+      const on = !!aktif[k];
+      const d = document.createElement('div'); d.className = 'req';
+      d.innerHTML = '<div class="who"><b></b><span>' + (on ? 'Tabur Uang AKTIF — bisa menabur berkali-kali' : 'Tabur Uang terkunci') + '</span></div>' +
+        (on ? '<button type="button" class="no">Cabut</button>' : '<button type="button" class="ok">Aktifkan</button>');
+      d.querySelector('b').textContent = tamu[k];
+      d.querySelector('button').addEventListener('click', async ev => {
+        ev.target.disabled = true;
+        try {
+          if (on) {
+            const trs = await getPesan('acara=eq.' + CONFIG.acara + '&jenis=eq.tabur&kode=eq.' + encodeURIComponent(k) + '&isi=in.("ok","aktif")&select=id');
+            for (const t of trs) await delPesan(t.id);
+            showToast('Akses Tabur Uang ' + tamu[k] + ' dicabut.');
+          } else {
+            await postTaburAktif(tamu[k], k);
+            showToast(tamu[k] + ' diaktifkan — tombol Tabur Uangnya sudah terbuka.');
+          }
+          loadAktif();
+        } catch (e) { showToast('Gagal. Periksa koneksi lalu coba lagi.'); ev.target.disabled = false; }
+      });
+      box.appendChild(d);
+    });
+  } catch (e) { box.innerHTML = '<div class="empty">Gagal memuat daftar tamu.</div>'; }
+}
 async function loadMod() {
   const box = $('modList');
   try {
@@ -331,7 +400,7 @@ async function loadMod() {
 function openPanel() {
   $('gate').style.display = 'none';
   $('panel').style.display = 'flex';
-  loadStats(); loadTabur(); loadMod();
+  loadStats(); loadTabur(); loadAktif(); loadMod();
 }
 $('btnMasuk').addEventListener('click', async () => {
   const v = $('kodeIn').value.trim().toUpperCase();
@@ -351,7 +420,17 @@ $('btnMasuk').addEventListener('click', async () => {
 });
 $('kodeIn').addEventListener('keydown', e => { if (e.key === 'Enter') $('btnMasuk').click(); });
 $('btnKeluarPanel').addEventListener('click', () => { localStorage.removeItem('mempelai_kode'); location.reload(); });
-$('btnRefreshTabur').addEventListener('click', loadTabur);
+$('btnRefreshTabur').addEventListener('click', () => { loadTabur(); loadAktif(); });
+$('btnAktManual').addEventListener('click', async () => {
+  const nama = $('aktNama').value.trim(), kode = $('aktKode').value.trim().toUpperCase();
+  if (!nama || !kode) { showToast('Isi nama dan kode tamu dulu.'); return; }
+  try {
+    await postTaburAktif(nama.slice(0, 40), kode);
+    showToast(nama + ' diaktifkan — tombol Tabur Uangnya sudah terbuka.');
+    $('aktNama').value = ''; $('aktKode').value = '';
+    loadAktif();
+  } catch (e) { showToast('Gagal mengaktifkan. Coba lagi.'); }
+});
 $('btnRefreshMod').addEventListener('click', loadMod);
 (async () => { if (MOD && (await sha256(MOD)) === HASH_MOD) openPanel(); })();
 </script>
@@ -370,7 +449,7 @@ $('btnRefreshMod').addEventListener('click', loadMod);
     });
   });
   function HEAD() { return { apikey: CONFIG.sbKey, Authorization: 'Bearer ' + CONFIG.sbKey, 'Content-Type': 'application/json', 'x-tamu-kode': kode }; }
-  var DEF = { groomName: 'Raka', brideName: 'Sinta', groomFull: 'Raka Pratama, S.T.', brideFull: 'Sinta Maharani, S.E.', groomDad: 'H. Pratama', groomMom: 'Hj. Pratama', brideDad: 'H. Maharani', brideMom: 'Hj. Maharani', waNumber: '6281234567890', dateISO: '2027-02-14T08:00:00+07:00', akadTime: '08.00', resepsiTime: '11.00', venue: 'Gedung Serbaguna Melati', address: 'Jl. Raya Genteng No. 88, Banyuwangi', mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Gedung+Serbaguna+Melati+Banyuwangi', dresscode: 'Bebas sopan', venueR: 'Gedung Serbaguna Melati', addressR: 'Jl. Raya Genteng No. 88, Banyuwangi', mapsUrlR: 'https://www.google.com/maps/search/?api=1&query=Gedung+Serbaguna+Melati+Banyuwangi', mapsZoom: 15, theme: 'sage', rekBank: 'BCA', rekNo: '1234567890', rekNama: 'Raka Pratama', rekBank2: 'BRI', rekNo2: '0987654321', rekNama2: 'Sinta Maharani', musicUrl: '', heroImg: '', animCover: 'pudar', animSections: 'hidup' };
+  var DEF = { groomName: 'Raka', brideName: 'Sinta', groomFull: 'Raka Pratama, S.T.', brideFull: 'Sinta Maharani, S.E.', groomDad: 'H. Pratama', groomMom: 'Hj. Pratama', brideDad: 'H. Maharani', brideMom: 'Hj. Maharani', waNumber: '6281234567890', dateISO: '2027-02-14T08:00:00+07:00', akadTime: '08.00', resepsiTime: '11.00', venue: 'Gedung Serbaguna Melati', address: 'Jl. Raya Genteng No. 88, Banyuwangi', mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Gedung+Serbaguna+Melati+Banyuwangi', dresscode: 'Bebas sopan', venueR: 'Gedung Serbaguna Melati', addressR: 'Jl. Raya Genteng No. 88, Banyuwangi', mapsUrlR: 'https://www.google.com/maps/search/?api=1&query=Gedung+Serbaguna+Melati+Banyuwangi', mapsZoom: 15, theme: 'sage', rekBank: 'BCA', rekNo: '1234567890', rekNama: 'Raka Pratama', rekBank2: 'BRI', rekNo2: '0987654321', rekNama2: 'Sinta Maharani', musicUrl: '', heroImg: '', animCover: 'pudar', animSections: 'hidup', fitur: { chat: true, doa: true, tabur: true, amplop: true, rsvp: true, galeri: true, musik: true } };
   var cfgId = null, cfgLoaded = false, heroData = '';
   function V(id) { return document.getElementById(id).value.trim(); }
   function S(id, v) { document.getElementById(id).value = v == null ? '' : v; }
@@ -392,6 +471,10 @@ $('btnRefreshMod').addEventListener('click', loadMod);
     if (c.heroImg && c.heroImg.indexOf('data:') !== 0) S('f_heroUrl', c.heroImg);
     if (c.heroImg) { var hp = document.getElementById('heroPrev'); hp.src = c.heroImg; hp.style.display = 'block'; }
     S('f_animCover', c.animCover || 'pudar'); S('f_animSec', c.animSections || 'hidup');
+    var F = c.fitur || {};
+    function CK(id, v) { document.getElementById(id).checked = v !== false; }
+    CK('f_fChat', F.chat); CK('f_fDoa', F.doa); CK('f_fTabur', F.tabur); CK('f_fAmplop', F.amplop); CK('f_fRsvp', F.rsvp); CK('f_fGaleri', F.galeri); CK('f_fMusik', F.musik);
+    loadGal();
   }
   async function loadCfg() {
     if (cfgLoaded) return; cfgLoaded = true;
@@ -417,6 +500,57 @@ $('btnRefreshMod').addEventListener('click', loadMod);
     };
     img.src = URL.createObjectURL(f);
   });
+  async function loadGal() {
+    var box = document.getElementById('galList'); if (!box) return;
+    try {
+      const r = await fetch(CONFIG.sbUrl + '/rest/v1/pesan?acara=eq.' + CONFIG.acara + '&jenis=eq.galeri&select=id,isi&order=created_at.asc&limit=12', { headers: HEAD() });
+      const rows = await r.json();
+      box.innerHTML = '';
+      if (!rows.length) { box.innerHTML = '<span class="hint2">Belum ada foto galeri — undangan memakai foto bawaan.</span>'; return; }
+      rows.forEach(function (row) {
+        var w = document.createElement('div'); w.style.cssText = 'position:relative;width:76px;height:76px';
+        var im = document.createElement('img'); im.src = row.isi; im.style.cssText = 'width:76px;height:76px;object-fit:cover;border-radius:10px;border:1.5px solid #B08D57';
+        var del = document.createElement('button'); del.type = 'button'; del.textContent = '×'; del.title = 'Hapus foto';
+        del.style.cssText = 'position:absolute;right:-6px;top:-6px;width:22px;height:22px;border-radius:50%;background:#b3372a;color:#fff;border:2px solid #fff;font-size:14px;line-height:1;cursor:pointer';
+        del.addEventListener('click', async function () {
+          if (!confirm('Hapus foto galeri ini?')) return;
+          try {
+            const dr = await fetch(CONFIG.sbUrl + '/rest/v1/pesan?id=eq.' + row.id, { method: 'DELETE', headers: Object.assign(HEAD(), { Prefer: 'return=representation' }) });
+            const dd = await dr.json();
+            if (!dd.length) { showToast('Kode moderasi tidak diterima server.'); return; }
+            showToast('Foto galeri dihapus.'); loadGal();
+          } catch (e) { showToast('Gagal menghapus foto.'); }
+        });
+        w.appendChild(im); w.appendChild(del); box.appendChild(w);
+      });
+    } catch (e) {}
+  }
+  document.getElementById('f_galFile').addEventListener('change', async function (e) {
+    const files = Array.prototype.slice.call(e.target.files); if (!files.length) return;
+    for (const f of files) {
+      const url = await new Promise(function (res) {
+        const img = new Image();
+        img.onload = function () {
+          const maks = 1000, skala = Math.min(1, maks / Math.max(img.width, img.height));
+          const cv = document.createElement('canvas');
+          cv.width = Math.round(img.width * skala); cv.height = Math.round(img.height * skala);
+          cv.getContext('2d').drawImage(img, 0, 0, cv.width, cv.height);
+          URL.revokeObjectURL(img.src);
+          res(cv.toDataURL('image/jpeg', 0.82));
+        };
+        img.onerror = function () { res(null); };
+        img.src = URL.createObjectURL(f);
+      });
+      if (!url) continue;
+      try {
+        const r = await fetch(CONFIG.sbUrl + '/rest/v1/pesan', { method: 'POST', headers: Object.assign(HEAD(), { Prefer: 'return=minimal' }), body: JSON.stringify({ acara: CONFIG.acara, nama: 'Galeri', jenis: 'galeri', isi: url, kode: kode }) });
+        if (!r.ok) throw new Error('gal');
+        showToast('Foto galeri ditambahkan.');
+      } catch (err) { showToast('Gagal menambah foto — coba foto lain.'); }
+    }
+    e.target.value = '';
+    loadGal();
+  });
   document.getElementById('btnSaveCfg').addEventListener('click', async function () {
     kode = localStorage.getItem('mempelai_kode') || kode;
     const tgl = V('f_date') || '2027-02-14';
@@ -437,7 +571,8 @@ $('btnRefreshMod').addEventListener('click', loadMod);
       rekBank2: V('f_rekBank2'), rekNo2: V('f_rekNo2'), rekNama2: V('f_rekNama2'),
       venueR: V('f_venueR'), addressR: V('f_addressR'), mapsUrlR: V('f_mapsR'), mapsZoom: parseInt(V('f_mapsZoom'), 10) || 15, theme: V('f_theme'),
       heroImg: heroData || V('f_heroUrl'),
-      animCover: V('f_animCover'), animSections: V('f_animSec')
+      animCover: V('f_animCover'), animSections: V('f_animSec'),
+      fitur: { chat: document.getElementById('f_fChat').checked, doa: document.getElementById('f_fDoa').checked, tabur: document.getElementById('f_fTabur').checked, amplop: document.getElementById('f_fAmplop').checked, rsvp: document.getElementById('f_fRsvp').checked, galeri: document.getElementById('f_fGaleri').checked, musik: document.getElementById('f_fMusik').checked }
     };
     const btn = document.getElementById('btnSaveCfg'); btn.disabled = true; btn.textContent = 'Menyimpan...';
     try {

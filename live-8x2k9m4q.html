@@ -190,6 +190,10 @@
   /* tabur uang ikon saja */
   .chatbar .stkbtn { width:48px; height:48px; flex:0 0 auto; border-radius:50%; padding:0; justify-content:center; }
   .chatbar .stkbtn .mini { font-size:11px; padding:3px 6px; border-radius:5px; }
+  .chatbar .stkbtn { position:relative; }
+  .chatbar .stkbtn .lk { display:none; position:absolute; right:-3px; top:-3px; width:17px; height:17px; border-radius:50%; background:#5b5344; color:#fff; align-items:center; justify-content:center; }
+  .chatbar .stkbtn.locked { opacity:.45; filter:grayscale(.75); }
+  .chatbar .stkbtn.locked .lk { display:flex; }
 </style>
 </head>
 <body>
@@ -258,7 +262,7 @@
     <section id="tabChat">
       <div id="chatList"><div class="empty">Memuat chat...</div></div>
       <form class="chatbar" id="chatForm">
-        <button type="button" class="stkbtn" id="btnStiker" aria-label="Tabur Uang" title="Tabur Uang — khusus yang sudah memberi amplop; dikonfirmasi mempelai"><span class="mini">Rp</span></button>
+        <button type="button" class="stkbtn locked" id="btnStiker" aria-label="Tabur Uang" title="Tabur Uang — hanya untuk tamu yang sudah memberi amplop dan diaktifkan mempelai"><span class="lk"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><rect x="4" y="10" width="16" height="11" rx="2"></rect><path d="M8 10V7a4 4 0 0 1 8 0v3"></path></svg></span><span class="mini">Rp</span></button>
         <input type="text" id="chatInput" maxlength="300" placeholder="Tulis pesan untuk semua tamu..." autocomplete="off">
         <button id="btnChat" type="submit">Kirim</button>
       </form>
@@ -635,8 +639,8 @@ function onRow(row) {
   if (!row || row.acara !== CONFIG.acara) return;
   if (row.jenis === 'tabur') {
     if (guest && row.kode && row.kode === guest.kode) {
-      if (row.isi === 'ok') { guestVerified = true; showToast('Tabur Uangmu sudah dikonfirmasi mempelai. Terima kasih sudah memberi amplop!'); }
-      else if (row.isi === 'tolak') showToast('Permintaan Tabur Uang belum dikonfirmasi mempelai.');
+      if (row.isi === 'ok' || row.isi === 'aktif') { guestVerified = true; updateTaburBtn(); showToast('Tabur Uangmu sudah diaktifkan mempelai. Terima kasih sudah memberi amplop!'); }
+      else if (row.isi === 'tolak') showToast('Tabur Uangmu belum diaktifkan mempelai.');
     }
     return;
   }
@@ -737,27 +741,27 @@ $('doaForm').addEventListener('submit', async e => {
   btn.disabled = false; btn.textContent = 'Kirim';
 });
 
-/* ---------- tabur uang: sekali dikonfirmasi mempelai, seterusnya bebas ---------- */
+/* ---------- tabur uang: hanya tamu yang sudah diaktifkan mempelai (sudah memberi amplop) ---------- */
 let guestVerified = false;
 let lastStiker = 0;
+function updateTaburBtn() { $('btnStiker').classList.toggle('locked', !guestVerified); }
 async function cekTerverifikasi() {
   if (!guest) return;
   try {
     const url = CONFIG.sbUrl + '/rest/v1/pesan?acara=eq.' + encodeURIComponent(CONFIG.acara) +
-      '&jenis=eq.tabur&isi=eq.ok&kode=eq.' + encodeURIComponent(guest.kode) + '&select=id&limit=1';
+      '&jenis=eq.tabur&isi=in.("ok","aktif")&kode=eq.' + encodeURIComponent(guest.kode) + '&select=id&limit=1';
     const r = await fetch(url, { headers: { apikey: CONFIG.sbKey, Authorization: 'Bearer ' + CONFIG.sbKey } });
     if (r.ok) { const rows = await r.json(); if (rows.length) guestVerified = true; }
   } catch (e) {}
+  updateTaburBtn();
 }
 let tmResolve = null;
-function taburModal(mode) {
+function taburModal() {
   return new Promise(res => {
     tmResolve = res;
-    $('tmTitle').textContent = mode === 'langsung' ? 'Tabur Uang — Kamu Sudah Terkonfirmasi' : 'Tabur Uang';
-    $('tmText').innerHTML = mode === 'langsung'
-      ? 'Amplopmu <b>sudah diterima mempelai</b> — terima kasih! Kamu boleh Tabur Uang berkali-kali. Sekali tabur, hujan uang tampil di layar semua tamu dan semua tamu mendapat pengumuman.'
-      : 'Tabur Uang adalah tanda kamu <b>SUDAH memberi amplop</b> untuk mempelai — lewat transfer atau langsung di lokasi.<br><br>Permintaanmu dikonfirmasi oleh mempelai. Begitu amplop dinyatakan diterima, hujan uang tampil di layar semua tamu — dan setelah itu kamu bisa menabur berkali-kali tanpa konfirmasi lagi.';
-    $('tmOk').textContent = mode === 'langsung' ? 'Tabur Sekarang' : 'Kirim Permintaan';
+    $('tmTitle').textContent = 'Tabur Uang — Kamu Sudah Terkonfirmasi';
+    $('tmText').innerHTML = 'Amplopmu <b>sudah diterima mempelai</b> — terima kasih! Kamu boleh Tabur Uang berkali-kali. Sekali tabur, hujan uang tampil di layar semua tamu dan semua tamu mendapat pengumuman.';
+    $('tmOk').textContent = 'Tabur Sekarang';
     $('taburModal').classList.add('open');
   });
 }
@@ -774,21 +778,15 @@ function announceTabur(nama) {
 }
 $('btnStiker').addEventListener('click', async () => {
   if (!guest) return;
+  if (!guestVerified) { showToast('Tabur Uang masih terkunci — fitur ini hanya untuk tamu yang sudah memberikan amplop. Mempelai akan mengaktifkanmu begitu amplopmu diterima.'); return; }
   if (Date.now() - lastStiker < 10000) { showToast('Sabar sebentar ya — tabur uangnya jeda dulu beberapa detik.'); return; }
-  const langsung = guestVerified;
-  const setuju = await taburModal(langsung ? 'langsung' : 'minta');
+  const setuju = await taburModal();
   if (!setuju) return;
   const btn = $('btnStiker'); btn.disabled = true;
   try {
-    if (langsung) {
-      const rows = await sbSend(guest.nama.slice(0, 40), 'stiker', 'uang');
-      lastStiker = Date.now();
-      if (rows && rows[0]) onRow(rows[0]);
-    } else {
-      await sbSend(guest.nama.slice(0, 40), 'tabur', 'pending');
-      lastStiker = Date.now();
-      showToast('Permintaan Tabur Uang terkirim — menunggu konfirmasi mempelai.');
-    }
+    const rows = await sbSend(guest.nama.slice(0, 40), 'stiker', 'uang');
+    lastStiker = Date.now();
+    if (rows && rows[0]) onRow(rows[0]);
   } catch (err) { showToast('Gagal. Periksa koneksi lalu coba lagi.'); }
   btn.disabled = false;
 });
@@ -835,6 +833,10 @@ $('setModal').addEventListener('click', e => { if (e.target === $('setModal')) $
     const rows = await sbLoad(['konfig'], 1, false);
     if (rows && rows[0]) {
       const c = JSON.parse(rows[0].isi);
+      const F = c.fitur || {};
+      if (F.tabur === false) $('btnStiker').style.display = 'none';
+      if (F.doa === false) { $('tabBtnDoa').style.display = 'none'; switchTab(true); }
+      if (F.chat === false) { $('tabBtnChat').style.display = 'none'; switchTab(false); }
       if (c.heroImg) $('hdrFoto').src = c.heroImg;
       if (c.groomName && c.brideName) $('hdrNames').textContent = c.groomName + ' & ' + c.brideName;
       if (c.dateLong || c.venue) $('hdrInfo').textContent = (c.dateLong || 'Sabtu, 14 Februari 2027') + ' · ' + (c.venue || 'Gedung Serbaguna Melati, Banyuwangi');

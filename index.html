@@ -387,7 +387,7 @@
     <p class="sub">Gunakan tab untuk berpindah antara lokasi akad dan resepsi. Tombol "Lihat Lokasi di Google Maps" di kartu acara membuka aplikasi Maps untuk navigasi.</p>
   </section>
 
-  <section class="sec patw">
+  <section class="sec patw" id="secRsvp">
     <span class="kick rose">RSVP</span>
     <h2>Konfirmasi Kehadiran</h2>
     <div class="rsvpcard">
@@ -409,7 +409,7 @@
     </div>
   </section>
 
-  <section class="sec pat">
+  <section class="sec pat" id="secAmplop">
     <span class="kick">AMPLOP DIGITAL</span>
     <h2>Tanda Kasih</h2>
     <p class="sub">Doa restu Bapak/Ibu/Saudara/i adalah hadiah terindah. Namun apabila berkenan memberikan tanda kasih, kami sediakan dengan hormat:</p>
@@ -427,7 +427,7 @@
     <p class="kado"><b>Kirim kado fisik:</b> <span class="js-venue">Gedung Serbaguna Melati</span>, <span id="kadoAddr">Jl. Raya Genteng No. 88, Banyuwangi</span></p>
   </section>
 
-  <section class="sec patw">
+  <section class="sec patw" id="secBukuTamu">
     <div class="lv-head"><span class="lv-dot" id="lvDot"></span><span class="kick green" style="letter-spacing:2.5px">BUKU TAMU DIGITAL</span></div>
     <h2 style="font-size:24px">Doa &amp; Ulasan Live</h2>
     <p class="sub">Dari semua tamu yang membuka undangan ini — tampil real-time, tanpa perlu segarkan halaman.</p>
@@ -516,7 +516,7 @@ syncBuy();
 /* galeri slider geser + putar otomatis */
 const slider = document.getElementById('slider');
 const dotsBox = document.getElementById('sliderDots');
-const slideN = slider.children.length;
+let slideN = slider.children.length;
 let slideIdx = 0, lastInteract = 0;
 function markSlide() {
   dotsBox.querySelectorAll('button').forEach((d, j) => d.classList.toggle('on', j === slideIdx));
@@ -527,14 +527,35 @@ function goSlide(i) {
   slider.scrollTo({ left: slideIdx * slider.clientWidth, behavior: 'smooth' });
   markSlide();
 }
-for (let i = 0; i < slideN; i++) {
-  const d = document.createElement('button');
-  d.type = 'button';
-  d.setAttribute('aria-label', 'Foto ' + (i + 1));
-  if (i === 0) d.className = 'on';
-  d.addEventListener('click', () => { lastInteract = Date.now(); goSlide(i); });
-  dotsBox.appendChild(d);
+function buildDots() {
+  dotsBox.innerHTML = '';
+  for (let i = 0; i < slideN; i++) {
+    const d = document.createElement('button');
+    d.type = 'button';
+    d.setAttribute('aria-label', 'Foto ' + (i + 1));
+    if (i === slideIdx) d.className = 'on';
+    d.addEventListener('click', () => { lastInteract = Date.now(); goSlide(i); });
+    dotsBox.appendChild(d);
+  }
 }
+buildDots();
+window.setGallery = function (urls) {
+  if (!urls || !urls.length) return;
+  slider.innerHTML = urls.map(function (u, j) {
+    return '<div class="slide"><img' + (j === 0 ? ' id="heroImg" class="js-hero"' : '') + ' src="' + u + '" alt="Foto galeri mempelai"></div>';
+  }).join('');
+  slideN = urls.length; slideIdx = 0;
+  slider.scrollTo({ left: 0 });
+  buildDots(); markSlide();
+};
+window.setGallerySingle = function () {
+  slider.querySelectorAll('.slide').forEach(function (s, j) { if (j > 0) s.remove(); });
+  slideN = 1; slideIdx = 0;
+  dotsBox.innerHTML = '';
+  var pv = document.getElementById('slPrev'), nx = document.getElementById('slNext');
+  if (pv) pv.style.display = 'none'; if (nx) nx.style.display = 'none';
+  markSlide();
+};
 let scrollT;
 slider.addEventListener('scroll', () => {
   clearTimeout(scrollT);
@@ -558,7 +579,7 @@ document.getElementById('btnOpen').addEventListener('click', () => {
   cv.classList.add('bye');
   setTimeout(() => { cv.style.display = 'none'; }, 640);
   const au = document.getElementById('musikAudio');
-  if (au && au.getAttribute('src')) { au.play().catch(() => {}); const mb2 = document.getElementById('btnMusik'); mb2.style.display = 'flex'; mb2.classList.add('playing'); }
+  if (au && au.getAttribute('src') && !window.__musikOff) { au.play().catch(() => {}); const mb2 = document.getElementById('btnMusik'); mb2.style.display = 'flex'; mb2.classList.add('playing'); }
 });
 
 /* hitung mundur flash sale -> hari acara */
@@ -748,6 +769,21 @@ tick(); setInterval(tick, 1000);
     if (c.animSections === 'mati') {
       document.body.classList.remove('anim-on');
       if (window.__rio) window.__rio.disconnect();
+    }
+    var F = c.fitur || {};
+    if (F.amplop === false) { var sa = document.getElementById('secAmplop'); if (sa) sa.style.display = 'none'; }
+    if (F.rsvp === false) { var sr = document.getElementById('secRsvp'); if (sr) sr.style.display = 'none'; var bb = document.getElementById('btnBuy'); if (bb) bb.style.display = 'none'; }
+    if (F.doa === false) { var sbt = document.getElementById('secBukuTamu'); if (sbt) sbt.style.display = 'none'; }
+    if (F.musik === false) { window.__musikOff = true; mb.style.display = 'none'; }
+    if (F.galeri === false) { if (window.setGallerySingle) window.setGallerySingle(); }
+    else {
+      fetch(SB + '/rest/v1/pesan?acara=eq.' + ACARA + '&jenis=eq.galeri&select=isi&order=created_at.asc&limit=12',
+        { headers: { apikey: KEY, Authorization: 'Bearer ' + KEY } })
+        .then(function (r) { return r.json(); })
+        .then(function (rows) {
+          if (rows && rows.length && window.setGallery) window.setGallery(rows.map(function (x) { return x.isi; }).filter(Boolean));
+        })
+        .catch(function () {});
     }
     document.getElementById('btnCal').href = calHref();
     syncBuy(); tick();
