@@ -55,7 +55,7 @@
 <div class="wrap">
   <header>
     <h1>Admin Tamu &amp; Barcode</h1>
-    <p>UndanganKu — Raka &amp; Sinta · Sabtu, 14 Februari 2027<br>Halaman khusus admin/pengantin. Jangan bagikan tautan halaman ini ke tamu.</p>
+    <p>UndanganKu — <span id="admCouple">Lukman &amp; Ajeng</span> · <span id="admDate">Jumat, 25 Desember 2026</span><br>Halaman khusus admin/pengantin. Jangan bagikan tautan halaman ini ke tamu.</p>
   </header>
 
   <div class="panel input">
@@ -122,6 +122,22 @@ const $ = id => document.getElementById(id);
 const toast = $('toast'); let toastT = null;
 function showToast(m) { toast.textContent = m; toast.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => toast.classList.remove('show'), 3000); }
 const HEAD = { apikey: CONFIG.sbKey, Authorization: 'Bearer ' + CONFIG.sbKey, 'Content-Type': 'application/json' };
+const couple = { names: 'Lukman & Ajeng', dateLong: 'Jumat, 25 Desember 2026', venue: 'Kediaman Mempelai Wanita' };
+async function loadCouple() {
+  try {
+    const r = await fetch(CONFIG.sbUrl + '/rest/v1/pesan?acara=eq.' + CONFIG.acara + '&jenis=eq.konfig&select=isi&order=created_at.desc&limit=1', { headers: HEAD });
+    const rows = await r.json();
+    if (!rows.length) return;
+    const c = JSON.parse(rows[0].isi);
+    if (c.groomName && c.brideName) couple.names = c.groomName + ' & ' + c.brideName;
+    if (c.dateLong) couple.dateLong = c.dateLong;
+    if (c.venue) couple.venue = c.venue;
+    $('admCouple').textContent = couple.names;
+    $('admDate').textContent = couple.dateLong;
+    document.title = 'Admin Tamu & Barcode — ' + couple.names + ' | UndanganKu';
+  } catch (e) {}
+}
+loadCouple();
 
 let rows = [];
 try { rows = JSON.parse(localStorage.getItem('admin_tamu_rows') || '[]'); } catch (e) { rows = []; }
@@ -188,12 +204,12 @@ function renderCards() {
     const bWa = document.createElement('button'); bWa.className = 'btn wa'; bWa.textContent = 'Kirim WA';
     bWa.addEventListener('click', () => {
       const msg = [
-        '*Undangan Pernikahan Raka & Sinta*',
+        '*Undangan Pernikahan ' + couple.names + '*',
         '',
         'Halo *' + r.nama + '*,',
         'Kamu diundang ke pernikahan kami:',
-        'Sabtu, 14 Februari 2027',
-        'Gedung Serbaguna Melati, Banyuwangi',
+        couple.dateLong,
+        couple.venue,
         '',
         'Buka undangan digitalmu di sini — namamu sudah tercantum di sampulnya:',
         linkFor(r.kode),
@@ -206,7 +222,7 @@ function renderCards() {
         'Simpan tautan ini baik-baik dan jangan dibagikan ke orang lain ya — satu barcode hanya untuk satu tamu.',
         '',
         'Terima kasih, sampai jumpa di hari bahagia!',
-        '— Raka & Sinta'
+        '— ' + couple.names
       ].join('\n');
       const num = normWA(r.nomor);
       window.open('https://wa.me/' + num + '?text=' + encodeURIComponent(msg), '_blank');
@@ -224,7 +240,7 @@ function downloadCard(r) {
   x.strokeStyle = '#d4af37'; x.lineWidth = 6; x.strokeRect(14, 14, 692, 852);
   x.fillStyle = '#2b1740'; x.textAlign = 'center';
   x.font = 'italic 34px Georgia, serif'; x.fillText('Undangan Pernikahan', 360, 84);
-  x.font = '44px Georgia, serif'; x.fillText('Raka & Sinta', 360, 136);
+  x.font = '44px Georgia, serif'; x.fillText(couple.names, 360, 136);
   const qrCv = document.createElement('canvas'); const size = drawQR(qrCv, chatLinkFor(r.kode), 520);
   x.drawImage(qrCv, (720 - size) / 2, 168);
   x.font = 'bold 40px -apple-system, Segoe UI, Roboto, sans-serif'; x.fillStyle = '#241631';

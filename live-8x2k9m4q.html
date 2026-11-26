@@ -3,11 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Dinding Doa &amp; Chat Live — Raka &amp; Sinta | UndanganKu</title>
+<title>Dinding Doa &amp; Chat Live — Lukman &amp; Ajeng | UndanganKu</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
-<meta name="description" content="Tulis doa dan ulasan untuk Raka & Sinta, tampil live untuk semua tamu. Ada juga chat grup real-time antar tamu undangan.">
+<meta name="description" content="Tulis doa dan ulasan untuk Lukman & Ajeng, tampil live untuk semua tamu. Ada juga chat grup real-time antar tamu undangan.">
 <style>
   * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
   body { font-family:'Plus Jakarta Sans',-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; background:linear-gradient(180deg,#eee7f6,#f6f3fa 260px); color:#241631; }
@@ -838,7 +838,12 @@ $('setModal').addEventListener('click', e => { if (e.target === $('setModal')) $
       if (F.doa === false) { $('tabBtnDoa').style.display = 'none'; switchTab(true); }
       if (F.chat === false) { $('tabBtnChat').style.display = 'none'; switchTab(false); }
       if (c.heroImg) $('hdrFoto').src = c.heroImg;
-      if (c.groomName && c.brideName) $('hdrNames').textContent = c.groomName + ' & ' + c.brideName;
+      if (c.groomName && c.brideName) {
+        $('hdrNames').textContent = c.groomName + ' & ' + c.brideName;
+        const gi = (String(c.groomName).trim().charAt(0) || 'R').toUpperCase(), bi = (String(c.brideName).trim().charAt(0) || 'S').toUpperCase();
+        document.querySelectorAll('.mono').forEach(el => { el.innerHTML = gi + ' <i>&amp;</i> ' + bi; });
+        document.title = 'Dinding Doa & Chat Live — ' + c.groomName + ' & ' + c.brideName + ' | UndanganKu';
+      }
       if (c.dateLong || c.venue) $('hdrInfo').textContent = (c.dateLong || 'Sabtu, 14 Februari 2027') + ' · ' + (c.venue || 'Gedung Serbaguna Melati, Banyuwangi');
     }
   } catch (e) {}

@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Undangan Pernikahan Raka &amp; Sinta — Sabtu, 14 Februari 2027</title>
-<meta name="description" content="Undangan pernikahan digital Raka & Sinta — Sabtu, 14 Februari 2027, Gedung Serbaguna Melati, Banyuwangi. Konfirmasi kehadiran (RSVP), amplop digital, dan dinding doa live.">
+<title>Undangan Pernikahan Lukman &amp; Ajeng — Jumat, 25 Desember 2026</title>
+<meta name="description" content="Undangan pernikahan digital Lukman & Ajeng — Jumat, 25 Desember 2026, Kediaman Mempelai Wanita, Banyuwangi. Konfirmasi kehadiran (RSVP), amplop digital, dan dinding doa live.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;0,900;1,500;1,600&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -779,6 +779,9 @@ tick(); setInterval(tick, 1000);
     T('heroNames', gn + ' & ' + bn);
     T('titleNames', gn + ' & ' + bn);
     TA('js-names', gn + ' & ' + bn);
+    document.title = 'Undangan Pernikahan ' + gn + ' & ' + bn + (c.dateLong ? ' — ' + c.dateLong : '');
+    var mdEl = document.querySelector('meta[name="description"]');
+    if (mdEl) mdEl.setAttribute('content', 'Undangan pernikahan digital ' + gn + ' & ' + bn + (c.dateLong ? ' — ' + c.dateLong : '') + (c.venue ? ', ' + c.venue : '') + '. Konfirmasi kehadiran (RSVP), amplop digital, dan dinding doa live.');
     T('groomFull', c.groomFull); T('groomParents', c.groomParents);
     T('brideFull', c.brideFull); T('brideParents', c.brideParents);
     if (c.waNumber) CONFIG.waNumber = c.waNumber;
@@ -825,11 +828,11 @@ tick(); setInterval(tick, 1000);
     T('ampNamaPria', gn); T('ampNamaWanita', bn);
     setAmp(ampCur);
     if (c.heroImg) document.querySelectorAll('.js-hero').forEach(function (el) { el.src = c.heroImg; });
-    if (c.musicUrl) {
+    if (c.musicUrl && !ytExtract(c.musicUrl)) {
       au.src = c.musicUrl;
       if (document.getElementById('cover').style.display === 'none') mb.style.display = 'flex';
     }
-    var yid = ytExtract(c.musicYt);
+    var yid = ytExtract(c.musicYt) || ytExtract(c.musicUrl);
     if (yid && !(c.fitur && c.fitur.musik === false) && window.__musicMode !== 'yt') { window.__musicMode = 'yt'; ytSetup(yid); }
     if (c.animCover) document.body.dataset.anim = c.animCover;
     if (c.animSections === 'mati') {
