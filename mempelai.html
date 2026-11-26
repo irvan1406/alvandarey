@@ -171,6 +171,7 @@
 
         <div class="fsec">Musik Latar</div>
         <div class="fld"><label>Tautan file MP3</label><input id="f_music" type="url" placeholder="https://... .mp3"><div class="hint2">Kosongkan untuk memakai lagu bawaan undangan (Canon in D — Pachelbel, biola). Atau tempel tautan MP3 publik untuk lagu sendiri. Musik mulai berbunyi saat tamu menekan "Buka Undangan".</div></div>
+        <div class="fld"><label>Atau musik dari YouTube</label><input id="f_musicYt" type="url" placeholder="https://www.youtube.com/watch?v=..."><div class="hint2">Tempel tautan video YouTube untuk lagu latar. <b>Bila diisi, musik memakai YouTube</b> dan MP3 di atas hanya jadi cadangan. Musik mulai berbunyi saat tamu menekan "Buka Undangan" dan berulang terus. Catatan: sebagian video dilarang pemiliknya untuk diputar di situs lain — bila itu terjadi, undangan otomatis memakai MP3/cadangan.</div></div>
 
         <div class="fsec">Warna Tema Undangan</div>
         <div class="fld"><label>Pilih warna tema</label><select id="f_theme">
@@ -201,6 +202,41 @@
         <div class="fsec">Foto &amp; Animasi</div>
         <div class="fld"><label>Foto utama — unggah dari HP</label><input id="f_heroFile" type="file" accept="image/*"><div class="hint2">Foto otomatis diperkecil agar undangan tetap ringan. Atau isi tautan foto di bawah.</div><img id="heroPrev" alt="Pratinjau foto utama"></div>
         <div class="fld"><label>Atau tautan foto utama</label><input id="f_heroUrl" type="url" placeholder="https://..."></div>
+
+        <div class="fsec">Foto Sampul &amp; Mempelai</div>
+        <div class="fld"><label>Foto sampul depan undangan</label>
+          <div style="display:flex;gap:10px;align-items:flex-start;margin-top:6px">
+            <img id="prevSampul" alt="Pratinjau foto sampul" style="display:none;width:76px;height:76px;object-fit:cover;border-radius:10px;border:1.5px solid #B08D57">
+            <div style="flex:1">
+              <input id="f_fileSampul" type="file" accept="image/*">
+              <input id="f_urlSampul" type="url" placeholder="atau tempel tautan foto https://..." style="margin-top:6px;width:100%">
+              <div class="rowflex" style="margin-top:6px"><button class="btn" id="btnUrlSampul" type="button">Pakai Tautan</button><button class="btn" id="btnDelSampul" type="button">Hapus Foto</button></div>
+            </div>
+          </div>
+          <div class="hint2">Foto khusus layar sampul depan (sebelum tamu menekan "Buka Undangan"). Bila kosong, sampul memakai foto utama. <b>Langsung tersimpan</b> saat dipilih — tidak perlu menekan Simpan Pengaturan.</div>
+        </div>
+        <div class="fld"><label>Foto mempelai pria</label>
+          <div style="display:flex;gap:10px;align-items:flex-start;margin-top:6px">
+            <img id="prevPria" alt="Pratinjau foto mempelai pria" style="display:none;width:76px;height:76px;object-fit:cover;border-radius:10px;border:1.5px solid #B08D57">
+            <div style="flex:1">
+              <input id="f_filePria" type="file" accept="image/*">
+              <input id="f_urlPria" type="url" placeholder="atau tempel tautan foto https://..." style="margin-top:6px;width:100%">
+              <div class="rowflex" style="margin-top:6px"><button class="btn" id="btnUrlPria" type="button">Pakai Tautan</button><button class="btn" id="btnDelPria" type="button">Hapus Foto</button></div>
+            </div>
+          </div>
+          <div class="hint2">Foto profil mempelai pria di bagian "Kedua Mempelai". Bila kosong, memakai foto utama. <b>Langsung tersimpan</b> saat dipilih.</div>
+        </div>
+        <div class="fld"><label>Foto mempelai wanita</label>
+          <div style="display:flex;gap:10px;align-items:flex-start;margin-top:6px">
+            <img id="prevWanita" alt="Pratinjau foto mempelai wanita" style="display:none;width:76px;height:76px;object-fit:cover;border-radius:10px;border:1.5px solid #B08D57">
+            <div style="flex:1">
+              <input id="f_fileWanita" type="file" accept="image/*">
+              <input id="f_urlWanita" type="url" placeholder="atau tempel tautan foto https://..." style="margin-top:6px;width:100%">
+              <div class="rowflex" style="margin-top:6px"><button class="btn" id="btnUrlWanita" type="button">Pakai Tautan</button><button class="btn" id="btnDelWanita" type="button">Hapus Foto</button></div>
+            </div>
+          </div>
+          <div class="hint2">Foto profil mempelai wanita di bagian "Kedua Mempelai". Bila kosong, memakai foto utama. <b>Langsung tersimpan</b> saat dipilih.</div>
+        </div>
         <div class="frow">
           <div class="fld"><label>Animasi sampul</label><select id="f_animCover"><option value="pudar">Pudar lembut</option><option value="naik">Geser naik</option><option value="zoom">Zoom masuk</option></select></div>
           <div class="fld"><label>Animasi bagian halaman</label><select id="f_animSec"><option value="hidup">Hidup (muncul saat digulir)</option><option value="mati">Mati</option></select></div>
@@ -449,8 +485,10 @@ $('btnRefreshMod').addEventListener('click', loadMod);
     });
   });
   function HEAD() { return { apikey: CONFIG.sbKey, Authorization: 'Bearer ' + CONFIG.sbKey, 'Content-Type': 'application/json', 'x-tamu-kode': kode }; }
-  var DEF = { groomName: 'Raka', brideName: 'Sinta', groomFull: 'Raka Pratama, S.T.', brideFull: 'Sinta Maharani, S.E.', groomDad: 'H. Pratama', groomMom: 'Hj. Pratama', brideDad: 'H. Maharani', brideMom: 'Hj. Maharani', waNumber: '6281234567890', dateISO: '2027-02-14T08:00:00+07:00', akadTime: '08.00', resepsiTime: '11.00', venue: 'Gedung Serbaguna Melati', address: 'Jl. Raya Genteng No. 88, Banyuwangi', mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Gedung+Serbaguna+Melati+Banyuwangi', dresscode: 'Bebas sopan', venueR: 'Gedung Serbaguna Melati', addressR: 'Jl. Raya Genteng No. 88, Banyuwangi', mapsUrlR: 'https://www.google.com/maps/search/?api=1&query=Gedung+Serbaguna+Melati+Banyuwangi', mapsZoom: 15, theme: 'sage', rekBank: 'BCA', rekNo: '1234567890', rekNama: 'Raka Pratama', rekBank2: 'BRI', rekNo2: '0987654321', rekNama2: 'Sinta Maharani', musicUrl: '', heroImg: '', animCover: 'pudar', animSections: 'hidup', fitur: { chat: true, doa: true, tabur: true, amplop: true, rsvp: true, galeri: true, musik: true } };
+  var DEF = { groomName: 'Raka', brideName: 'Sinta', groomFull: 'Raka Pratama, S.T.', brideFull: 'Sinta Maharani, S.E.', groomDad: 'H. Pratama', groomMom: 'Hj. Pratama', brideDad: 'H. Maharani', brideMom: 'Hj. Maharani', waNumber: '6281234567890', dateISO: '2027-02-14T08:00:00+07:00', akadTime: '08.00', resepsiTime: '11.00', venue: 'Gedung Serbaguna Melati', address: 'Jl. Raya Genteng No. 88, Banyuwangi', mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Gedung+Serbaguna+Melati+Banyuwangi', dresscode: 'Bebas sopan', venueR: 'Gedung Serbaguna Melati', addressR: 'Jl. Raya Genteng No. 88, Banyuwangi', mapsUrlR: 'https://www.google.com/maps/search/?api=1&query=Gedung+Serbaguna+Melati+Banyuwangi', mapsZoom: 15, theme: 'sage', rekBank: 'BCA', rekNo: '1234567890', rekNama: 'Raka Pratama', rekBank2: 'BRI', rekNo2: '0987654321', rekNama2: 'Sinta Maharani', musicUrl: '', musicYt: '', heroImg: '', animCover: 'pudar', animSections: 'hidup', fitur: { chat: true, doa: true, tabur: true, amplop: true, rsvp: true, galeri: true, musik: true } };
   var cfgId = null, cfgLoaded = false, heroData = '';
+  var MARKERS = ['Sampul', 'Pria', 'Wanita'];
+  var markerIds = {};
   function V(id) { return document.getElementById(id).value.trim(); }
   function S(id, v) { document.getElementById(id).value = v == null ? '' : v; }
   function titik(t) { return t ? t.replace(':', '.') : ''; }
@@ -464,7 +502,7 @@ $('btnRefreshMod').addEventListener('click', loadMod);
     if (c.dateISO) S('f_date', c.dateISO.slice(0, 10));
     S('f_akad', kolon(c.akadTime)); S('f_resepsi', kolon(c.resepsiTime));
     S('f_venue', c.venue); S('f_address', c.address); S('f_maps', c.mapsUrl);
-    S('f_dress', c.dresscode); S('f_music', c.musicUrl);
+    S('f_dress', c.dresscode); S('f_music', c.musicUrl); S('f_musicYt', c.musicYt);
     S('f_rekBank', c.rekBank); S('f_rekNo', c.rekNo); S('f_rekNama', c.rekNama);
     S('f_rekBank2', c.rekBank2); S('f_rekNo2', c.rekNo2); S('f_rekNama2', c.rekNama2);
     S('f_venueR', c.venueR); S('f_addressR', c.addressR); S('f_mapsR', c.mapsUrlR); S('f_mapsZoom', c.mapsZoom); S('f_theme', c.theme);
@@ -475,6 +513,7 @@ $('btnRefreshMod').addEventListener('click', loadMod);
     function CK(id, v) { document.getElementById(id).checked = v !== false; }
     CK('f_fChat', F.chat); CK('f_fDoa', F.doa); CK('f_fTabur', F.tabur); CK('f_fAmplop', F.amplop); CK('f_fRsvp', F.rsvp); CK('f_fGaleri', F.galeri); CK('f_fMusik', F.musik);
     loadGal();
+    loadMarkers();
   }
   async function loadCfg() {
     if (cfgLoaded) return; cfgLoaded = true;
@@ -503,8 +542,9 @@ $('btnRefreshMod').addEventListener('click', loadMod);
   async function loadGal() {
     var box = document.getElementById('galList'); if (!box) return;
     try {
-      const r = await fetch(CONFIG.sbUrl + '/rest/v1/pesan?acara=eq.' + CONFIG.acara + '&jenis=eq.galeri&select=id,isi&order=created_at.asc&limit=12', { headers: HEAD() });
-      const rows = await r.json();
+      const r = await fetch(CONFIG.sbUrl + '/rest/v1/pesan?acara=eq.' + CONFIG.acara + '&jenis=eq.galeri&select=id,isi,nama&order=created_at.asc&limit=30', { headers: HEAD() });
+      const allRows = await r.json();
+      const rows = allRows.filter(function (x) { return MARKERS.indexOf(x.nama) < 0; }).slice(0, 12);
       box.innerHTML = '';
       if (!rows.length) { box.innerHTML = '<span class="hint2">Belum ada foto galeri — undangan memakai foto bawaan.</span>'; return; }
       rows.forEach(function (row) {
@@ -551,6 +591,88 @@ $('btnRefreshMod').addEventListener('click', loadMod);
     e.target.value = '';
     loadGal();
   });
+  /* ===== Foto sampul & mempelai (baris galeri bernama Sampul/Pria/Wanita, langsung tersimpan) ===== */
+  async function loadMarkers() {
+    try {
+      const r = await fetch(CONFIG.sbUrl + '/rest/v1/pesan?acara=eq.' + CONFIG.acara + '&jenis=eq.galeri&nama=in.(Sampul,Pria,Wanita)&select=id,nama,isi', { headers: HEAD() });
+      const rows = await r.json();
+      markerIds = {};
+      rows.forEach(function (row) {
+        markerIds[row.nama] = row.id;
+        var pv = document.getElementById('prev' + row.nama);
+        if (pv && row.isi) { pv.src = row.isi; pv.style.display = 'block'; }
+        var uf = document.getElementById('f_url' + row.nama);
+        if (uf && row.isi && row.isi.indexOf('data:') !== 0) uf.value = row.isi;
+      });
+    } catch (e) {}
+  }
+  async function saveMarker(nama, isi) {
+    kode = localStorage.getItem('mempelai_kode') || kode;
+    try {
+      if (markerIds[nama]) {
+        const r = await fetch(CONFIG.sbUrl + '/rest/v1/pesan?id=eq.' + markerIds[nama], { method: 'PATCH', headers: Object.assign(HEAD(), { Prefer: 'return=representation' }), body: JSON.stringify({ isi: isi }) });
+        const rows = await r.json();
+        if (!rows.length) throw new Error('patch');
+      } else {
+        const r = await fetch(CONFIG.sbUrl + '/rest/v1/pesan', { method: 'POST', headers: Object.assign(HEAD(), { Prefer: 'return=representation' }), body: JSON.stringify({ acara: CONFIG.acara, nama: nama, jenis: 'galeri', isi: isi, kode: kode }) });
+        if (!r.ok) throw new Error('post ' + r.status);
+        const rows = await r.json();
+        if (rows.length) markerIds[nama] = rows[0].id;
+      }
+      var pv = document.getElementById('prev' + nama);
+      if (pv) { pv.src = isi; pv.style.display = 'block'; }
+      showToast('Foto tersimpan dan langsung tampil di undangan.');
+    } catch (e) { showToast('Gagal menyimpan foto — coba lagi.'); }
+  }
+  async function delMarker(nama) {
+    if (!markerIds[nama]) { showToast('Belum ada foto khusus — undangan masih memakai foto bawaan/utama.'); return; }
+    if (!confirm('Hapus foto ini? Undangan kembali memakai foto bawaan/utama.')) return;
+    try {
+      const r = await fetch(CONFIG.sbUrl + '/rest/v1/pesan?id=eq.' + markerIds[nama], { method: 'DELETE', headers: Object.assign(HEAD(), { Prefer: 'return=representation' }) });
+      const rows = await r.json();
+      if (!rows.length) throw new Error('del');
+      delete markerIds[nama];
+      var pv = document.getElementById('prev' + nama);
+      if (pv) { pv.removeAttribute('src'); pv.style.display = 'none'; }
+      var uf = document.getElementById('f_url' + nama); if (uf) uf.value = '';
+      showToast('Foto dihapus.');
+    } catch (e) { showToast('Gagal menghapus foto.'); }
+  }
+  function markerFile(nama, maks, q) {
+    return function (e) {
+      const f = e.target.files[0]; e.target.value = '';
+      if (!f) return;
+      const img = new Image();
+      img.onload = function () {
+        const skala = Math.min(1, maks / Math.max(img.width, img.height));
+        const cv = document.createElement('canvas');
+        cv.width = Math.round(img.width * skala); cv.height = Math.round(img.height * skala);
+        cv.getContext('2d').drawImage(img, 0, 0, cv.width, cv.height);
+        let out = cv.toDataURL('image/jpeg', q);
+        if (out.length > 290000) {
+          const cv2 = document.createElement('canvas');
+          cv2.width = Math.round(cv.width * 0.7); cv2.height = Math.round(cv.height * 0.7);
+          cv2.getContext('2d').drawImage(cv, 0, 0, cv2.width, cv2.height);
+          out = cv2.toDataURL('image/jpeg', 0.68);
+        }
+        URL.revokeObjectURL(img.src);
+        saveMarker(nama, out);
+      };
+      img.onerror = function () { showToast('Foto tidak bisa dibaca.'); };
+      img.src = URL.createObjectURL(f);
+    };
+  }
+  document.getElementById('f_fileSampul').addEventListener('change', markerFile('Sampul', 900, 0.8));
+  document.getElementById('f_filePria').addEventListener('change', markerFile('Pria', 700, 0.8));
+  document.getElementById('f_fileWanita').addEventListener('change', markerFile('Wanita', 700, 0.8));
+  MARKERS.forEach(function (nama) {
+    document.getElementById('btnUrl' + nama).addEventListener('click', function () {
+      var u = document.getElementById('f_url' + nama).value.trim();
+      if (!u) { showToast('Tempel dulu tautan fotonya.'); return; }
+      saveMarker(nama, u);
+    });
+    document.getElementById('btnDel' + nama).addEventListener('click', function () { delMarker(nama); });
+  });
   document.getElementById('btnSaveCfg').addEventListener('click', async function () {
     kode = localStorage.getItem('mempelai_kode') || kode;
     const tgl = V('f_date') || '2027-02-14';
@@ -567,7 +689,7 @@ $('btnRefreshMod').addEventListener('click', loadMod);
       dateLong: d.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }),
       akadTime: akad, resepsiTime: resp,
       venue: V('f_venue'), address: V('f_address'), mapsUrl: V('f_maps'),
-      dresscode: V('f_dress'), musicUrl: V('f_music'), rekBank: V('f_rekBank'), rekNo: V('f_rekNo'), rekNama: V('f_rekNama'),
+      dresscode: V('f_dress'), musicUrl: V('f_music'), musicYt: V('f_musicYt'), rekBank: V('f_rekBank'), rekNo: V('f_rekNo'), rekNama: V('f_rekNama'),
       rekBank2: V('f_rekBank2'), rekNo2: V('f_rekNo2'), rekNama2: V('f_rekNama2'),
       venueR: V('f_venueR'), addressR: V('f_addressR'), mapsUrlR: V('f_mapsR'), mapsZoom: parseInt(V('f_mapsZoom'), 10) || 15, theme: V('f_theme'),
       heroImg: heroData || V('f_heroUrl'),

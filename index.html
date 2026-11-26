@@ -313,7 +313,7 @@
     <div class="orn"><b></b><i></i><b></b></div>
     <div class="person">
       <div class="phwrap">
-        <img class="ph js-hero" src="img-shop/hero-raka-sinta.jpg" alt="Mempelai pria">
+        <img class="ph js-hero" id="groomPhoto" src="img-shop/hero-raka-sinta.jpg" alt="Mempelai pria">
         <span class="phbdg">MEMPELAI PRIA</span>
       </div>
       <div class="fn gold-text" id="groomFull">Raka Pratama, S.T.</div>
@@ -322,7 +322,7 @@
     <div class="amp">&amp;</div>
     <div class="person">
       <div class="phwrap">
-        <img class="ph js-hero" src="img-shop/hero-raka-sinta.jpg" alt="Mempelai wanita">
+        <img class="ph js-hero" id="bridePhoto" src="img-shop/hero-raka-sinta.jpg" alt="Mempelai wanita">
         <span class="phbdg">MEMPELAI WANITA</span>
       </div>
       <div class="fn gold-text" id="brideFull">Sinta Maharani, S.E.</div>
@@ -578,8 +578,11 @@ document.getElementById('btnOpen').addEventListener('click', () => {
   const cv = document.getElementById('cover');
   cv.classList.add('bye');
   setTimeout(() => { cv.style.display = 'none'; }, 640);
+  if (window.__musikOff) return;
+  const mb2 = document.getElementById('btnMusik');
+  if (window.__musicMode === 'yt') { if (window.__ytStart) window.__ytStart(); mb2.style.display = 'flex'; mb2.classList.add('playing'); mb2.classList.remove('off'); return; }
   const au = document.getElementById('musikAudio');
-  if (au && au.getAttribute('src') && !window.__musikOff) { au.play().catch(() => {}); const mb2 = document.getElementById('btnMusik'); mb2.style.display = 'flex'; mb2.classList.add('playing'); }
+  if (au && au.getAttribute('src')) { au.play().catch(() => {}); mb2.style.display = 'flex'; mb2.classList.add('playing'); }
 });
 
 /* hitung mundur flash sale -> hari acara */
@@ -688,10 +691,71 @@ tick(); setInterval(tick, 1000);
   var ACARA = 'raka-sinta';
   var au = document.getElementById('musikAudio'), mb = document.getElementById('btnMusik');
   mb.addEventListener('click', function () {
+    if (window.__musicMode === 'yt') {
+      var r = window.__ytToggle ? window.__ytToggle() : false;
+      if (r === 'playing') { mb.classList.remove('off'); mb.classList.add('playing'); }
+      else if (r === 'paused') { mb.classList.add('off'); mb.classList.remove('playing'); }
+      return;
+    }
     if (!au.getAttribute('src')) return;
     if (au.paused) { au.play().catch(function () {}); mb.classList.remove('off'); mb.classList.add('playing'); }
     else { au.pause(); mb.classList.add('off'); mb.classList.remove('playing'); }
   });
+  /* ===== Musik dari YouTube (bila Panel Mempelai mengisi tautan YouTube) ===== */
+  var ytPlayer = null, ytReady = false, ytWantPlay = false, ytId = '';
+  function ytExtract(u) {
+    if (!u) return '';
+    u = String(u).trim();
+    var m = u.match(/(?:youtube\.com\/(?:watch\?[^#]*v=|embed\/|shorts\/|live\/|v\/)|youtu\.be\/)([A-Za-z0-9_-]{11})/);
+    if (m) return m[1];
+    return /^[A-Za-z0-9_-]{11}$/.test(u) ? u : '';
+  }
+  function ytFallback() {
+    if (window.__musicMode !== 'yt') return;
+    window.__musicMode = '';
+    ytWantPlay = false;
+    if (ytPlayer && ytPlayer.destroy) { try { ytPlayer.destroy(); } catch (e) {} }
+    ytPlayer = null; ytReady = false;
+    var box = document.getElementById('ytBox'); if (box && box.parentNode) box.parentNode.removeChild(box);
+    var coverGone = document.getElementById('cover').style.display === 'none';
+    if (coverGone && !window.__musikOff && au.getAttribute('src')) { au.play().catch(function () {}); mb.style.display = 'flex'; mb.classList.add('playing'); mb.classList.remove('off'); }
+  }
+  function ytSetup(id) {
+    ytId = id;
+    var holder = document.createElement('div');
+    holder.id = 'ytBox';
+    holder.style.cssText = 'position:fixed;left:-9999px;top:0;width:8px;height:8px;overflow:hidden;opacity:0;pointer-events:none';
+    holder.innerHTML = '<div id="ytPlayerEl"></div>';
+    document.body.appendChild(holder);
+    window.onYouTubeIframeAPIReady = function () {
+      try {
+        ytPlayer = new YT.Player('ytPlayerEl', {
+          videoId: ytId,
+          playerVars: { autoplay: 0, controls: 0, loop: 1, playlist: ytId, playsinline: 1, modestbranding: 1, rel: 0 },
+          events: {
+            onReady: function () { ytReady = true; if (ytWantPlay) { try { ytPlayer.playVideo(); } catch (e) {} } },
+            onError: function () { ytFallback(); }
+          }
+        });
+      } catch (e) { ytFallback(); }
+    };
+    var s = document.createElement('script');
+    s.src = 'https://www.youtube.com/iframe_api';
+    s.onerror = function () { ytFallback(); };
+    document.head.appendChild(s);
+  }
+  window.__ytStart = function () {
+    ytWantPlay = true;
+    if (ytReady && ytPlayer) { try { ytPlayer.playVideo(); } catch (e) {} return; }
+    setTimeout(function () { if (ytWantPlay && !ytReady && window.__musicMode === 'yt') ytFallback(); }, 7000);
+  };
+  window.__ytToggle = function () {
+    if (!ytPlayer || !ytReady) return false;
+    try {
+      if (ytPlayer.getPlayerState() === 1) { ytPlayer.pauseVideo(); return 'paused'; }
+      ytPlayer.playVideo(); return 'playing';
+    } catch (e) { return false; }
+  };
   var bs = document.getElementById('btnSalin');
   if (bs) bs.addEventListener('click', function () {
     var n = document.getElementById('rekNo').textContent.replace(/\s/g, '');
@@ -765,6 +829,8 @@ tick(); setInterval(tick, 1000);
       au.src = c.musicUrl;
       if (document.getElementById('cover').style.display === 'none') mb.style.display = 'flex';
     }
+    var yid = ytExtract(c.musicYt);
+    if (yid && !(c.fitur && c.fitur.musik === false) && window.__musicMode !== 'yt') { window.__musicMode = 'yt'; ytSetup(yid); }
     if (c.animCover) document.body.dataset.anim = c.animCover;
     if (c.animSections === 'mati') {
       document.body.classList.remove('anim-on');
@@ -776,15 +842,22 @@ tick(); setInterval(tick, 1000);
     if (F.doa === false) { var sbt = document.getElementById('secBukuTamu'); if (sbt) sbt.style.display = 'none'; }
     if (F.musik === false) { window.__musikOff = true; mb.style.display = 'none'; }
     if (F.galeri === false) { if (window.setGallerySingle) window.setGallerySingle(); }
-    else {
-      fetch(SB + '/rest/v1/pesan?acara=eq.' + ACARA + '&jenis=eq.galeri&select=isi&order=created_at.asc&limit=12',
-        { headers: { apikey: KEY, Authorization: 'Bearer ' + KEY } })
-        .then(function (r) { return r.json(); })
-        .then(function (rows) {
-          if (rows && rows.length && window.setGallery) window.setGallery(rows.map(function (x) { return x.isi; }).filter(Boolean));
-        })
-        .catch(function () {});
-    }
+    fetch(SB + '/rest/v1/pesan?acara=eq.' + ACARA + '&jenis=eq.galeri&select=isi,nama&order=created_at.asc&limit=30',
+      { headers: { apikey: KEY, Authorization: 'Bearer ' + KEY } })
+      .then(function (r) { return r.json(); })
+      .then(function (rows) {
+        if (!rows || !rows.length) return;
+        var gal = [];
+        rows.forEach(function (x) {
+          if (!x.isi) return;
+          if (x.nama === 'Sampul') { var ci = document.getElementById('coverImg'); if (ci) ci.src = x.isi; }
+          else if (x.nama === 'Pria') { var gp = document.getElementById('groomPhoto'); if (gp) gp.src = x.isi; }
+          else if (x.nama === 'Wanita') { var bp = document.getElementById('bridePhoto'); if (bp) bp.src = x.isi; }
+          else gal.push(x.isi);
+        });
+        if (F.galeri !== false && gal.length && window.setGallery) window.setGallery(gal.slice(0, 12));
+      })
+      .catch(function () {});
     document.getElementById('btnCal').href = calHref();
     syncBuy(); tick();
   }
